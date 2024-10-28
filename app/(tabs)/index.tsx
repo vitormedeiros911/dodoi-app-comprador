@@ -1,15 +1,15 @@
 import Header from "@/components/Header";
 import ScrollView from "@/components/ScrollView";
 import { ThemedText } from "@/components/ThemedText";
+import { ThemedView } from "@/components/ThemedView";
 import React from "react";
 import { StyleSheet } from "react-native";
 
 export default function HomeScreen() {
   return (
     <>
-      <ScrollView>
-        <Header />
-      </ScrollView>
+      <Header />
+      <ScrollView></ScrollView>
     </>
   );
 }

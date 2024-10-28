@@ -1,17 +1,25 @@
-import { Platform, StyleSheet, useColorScheme } from "react-native";
+import { Appearance, Platform, StyleSheet } from "react-native";
+
+const colorScheme = Appearance.getColorScheme();
 
 export const styles = StyleSheet.create({
   container: {
-    marginTop: Platform.OS === "ios" ? 40 : 20,
-    padding: 10,
+    paddingTop: Platform.OS === "ios" ? 60 : 40,
+    padding: 30,
     width: "100%",
+    backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+  },
+  firstRow: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 20,
+    backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
   },
   userInfoContainer: {
     flexDirection: "row",
     alignItems: "center",
+    backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
   },
   userImg: {
     width: 50,
@@ -21,10 +29,11 @@ export const styles = StyleSheet.create({
   userName: {
     marginLeft: 10,
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "medium",
   },
   menuItens: {
     flexDirection: "row",
     gap: 30,
+    backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
   },
 });
