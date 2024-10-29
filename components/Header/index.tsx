@@ -3,12 +3,15 @@ import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, useColorScheme } from "react-native";
 
-import SearchInput from "../SearchInput";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { styles } from "./styles";
 
-export default function Header() {
+type Props = {
+  children: React.ReactNode;
+};
+
+export default function Header({ children }: Props) {
   const colorScheme = useColorScheme();
 
   return (
@@ -36,7 +39,7 @@ export default function Header() {
           />
         </ThemedView>
       </ThemedView>
-      <SearchInput />
+      {children}
     </ThemedView>
   );
 }
