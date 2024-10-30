@@ -1,4 +1,3 @@
-import { Colors } from "@/constants/Colors";
 import { Appearance, StyleSheet } from "react-native";
 
 const colorScheme = Appearance.getColorScheme();
