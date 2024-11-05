@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 
 export const styles = StyleSheet.create({
   card: {
+    flex: 1,
     width: 180,
     margin: 6,
     borderRadius: 12,
@@ -13,12 +14,12 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
   imageContainer: {
-    padding: 10,
+    padding: 14,
   },
   image: {
     width: "100%",
-    height: 120,
-    borderRadius: 6,
+    height: 140,
+    borderRadius: 12,
   },
   textContainer: {
     paddingBottom: 10,
