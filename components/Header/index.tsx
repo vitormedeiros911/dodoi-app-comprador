@@ -1,17 +1,20 @@
 import { Colors } from "@/constants/Colors";
+import { UserDto } from "@/dto/UserDto";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
 import { Image, useColorScheme } from "react-native";
 
+import getFirstName from "../../utils/getFirstName";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { styles } from "./styles";
 
-type Props = {
+type HeaderProps = {
   children: React.ReactNode;
+  user?: UserDto;
 };
 
-export default function Header({ children }: Props) {
+export default function Header({ children, user }: HeaderProps) {
   const colorScheme = useColorScheme();
 
   return (
@@ -20,11 +23,13 @@ export default function Header({ children }: Props) {
         <ThemedView style={styles.userInfoContainer}>
           <Image
             source={{
-              uri: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=2080&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+              uri: user?.avatar ? user.avatar : "https://i.pravatar.cc/300",
             }}
             style={styles.userImg}
           />
-          <ThemedText style={styles.userName}>Olá, João</ThemedText>
+          <ThemedText style={styles.userName}>
+            Olá, {getFirstName(user?.nome ? user.nome : "")}
+          </ThemedText>
         </ThemedView>
         <ThemedView style={styles.menuItens}>
           <Ionicons

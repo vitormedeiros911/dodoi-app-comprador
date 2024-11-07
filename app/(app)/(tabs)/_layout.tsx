@@ -33,8 +33,8 @@ export default function TabLayout() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="pedidos/index"
+      {/* <Tabs.Screen
+        name="(pedidos)"
         options={{
           title: "Meus pedidos",
           tabBarIcon: ({ color, focused }) => (
@@ -44,7 +44,7 @@ export default function TabLayout() {
             />
           ),
         }}
-      />
+      /> */}
       <Tabs.Screen
         name="favoritos"
         options={{

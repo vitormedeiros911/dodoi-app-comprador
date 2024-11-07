@@ -1,17 +1,12 @@
 import googleIcon from "@/assets/images/google-icon.png";
 import handsImgBg from "@/assets/images/handsImgBg.jpg";
 import Button from "@/components/Button";
-import { API_URL, IOS_CLIENT_ID, WEB_CLIENT_ID } from "@env";
+import { useAuth } from "@/hooks/useAuth";
+import { IOS_CLIENT_ID, WEB_CLIENT_ID } from "@env";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
+import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-  Alert,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 GoogleSignin.configure({
   scopes: ["email", "profile"],
@@ -19,45 +14,17 @@ GoogleSignin.configure({
   iosClientId: IOS_CLIENT_ID,
 });
 
-export default function index() {
+export default function Login() {
   const [isAuthenticating, setIsAuthenticating] = useState<boolean>();
+  const { signIn } = useAuth();
 
   const handleGoogleSignIn = async () => {
-    try {
-      setIsAuthenticating(true);
+    setIsAuthenticating(true);
 
-      const response = await GoogleSignin.signIn();
+    signIn();
 
-      const idToken = response.data?.idToken;
-
-      if (idToken) {
-        const loginResponse = await fetch(`${API_URL}/auth/login`, {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ idToken }),
-        });
-
-        if (loginResponse.ok) {
-          const { access_token } = await loginResponse.json();
-
-          if (access_token) {
-            Alert.alert("Entrar", "Login realizado com sucesso.");
-          }
-        }
-
-        setIsAuthenticating(false);
-      } else {
-        setIsAuthenticating(false);
-        Alert.alert("Entrar", "Não foi possível realizar o login.");
-      }
-    } catch (error) {
-      console.error(error);
-      Alert.alert("Entrar", "Não foi possível realizar o login.");
-      setIsAuthenticating(false);
-    }
+    router.navigate("/(app)/(tabs)");
+    setIsAuthenticating(false);
   };
 
   return (
@@ -84,7 +51,7 @@ export default function index() {
   );
 }
 
-const styles = StyleSheet.create({
+export const styles = StyleSheet.create({
   imgBg: {
     flex: 1,
     justifyContent: "center",
@@ -132,8 +99,8 @@ const styles = StyleSheet.create({
   },
 
   googleIcon: {
-    width: 42,
-    height: 42,
+    width: 48,
+    height: 48,
   },
 
   textContainer: {
