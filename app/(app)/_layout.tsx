@@ -1,13 +1,16 @@
-import Loading from "@/components/Loading";
-import { useAuth } from "@/hooks/useAuth";
-import { Redirect, Slot } from "expo-router";
+import { storageUserGet } from "@/storage/storageUser";
+import { router, Slot } from "expo-router";
+import { useEffect } from "react";
 
 export default function AppLayout() {
-  const { session, isLoading } = useAuth();
+  useEffect(() => {
+    async function checkUser() {
+      const user = await storageUserGet();
+      if (!user) router.replace("/login");
+    }
 
-  if (!session) return <Redirect href="/login" />;
-
-  if (isLoading) return <Loading />;
+    checkUser();
+  }, []);
 
   return <Slot />;
 }

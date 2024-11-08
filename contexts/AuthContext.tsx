@@ -1,33 +1,27 @@
+import { UserDto } from "@/dto/UserDto";
 import { api } from "@/services/api";
-import { USER_STORAGE } from "@/storage/storageConfig";
 import { storageUserGet, storageUserSave } from "@/storage/storageUser";
-import { useStorageState } from "@/storage/useStorageState";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export type AuthContextDataProps = {
-  session: string | null;
+  user: UserDto;
   signIn: () => void;
   signOut: () => void;
-  isLoading: boolean;
 };
 
 type AuthContextProviderProps = {
   children: React.ReactNode;
 };
 
-export const AuthContext = createContext<AuthContextDataProps>({
-  signIn: () => null,
-  signOut: () => null,
-  session: null,
-  isLoading: false,
-} as AuthContextDataProps);
+export const AuthContext = createContext<AuthContextDataProps>(
+  {} as AuthContextDataProps
+);
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  // const [user, setUser] = useState<UserDto>({} as UserDto);
-  const [[isLoading, session], setSession] = useStorageState(USER_STORAGE);
+  const [user, setUser] = useState<UserDto>({} as UserDto);
 
   async function signIn() {
     try {
@@ -46,7 +40,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
             avatar: response.data.usuario.urlImagem,
           };
 
-          setSession(JSON.stringify(user));
+          setUser(user);
           storageUserSave(user);
         }
       }
@@ -59,13 +53,13 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function signOut() {
-    setSession(null);
+    setUser({} as UserDto);
   }
 
   async function loadUserData() {
     const userLogged = await storageUserGet();
 
-    if (userLogged) setSession(JSON.stringify(userLogged));
+    if (userLogged) setUser(userLogged);
   }
 
   useEffect(() => {
@@ -73,7 +67,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ session, signIn, signOut, isLoading }}>
+    <AuthContext.Provider value={{ user, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -13,9 +13,9 @@ export default function HomeScreen() {
     "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse2.mm.bing.net%2Fth%3Fid%3DOIP.d6ZRi51vrfZAtneW93B20wHaHa%26pid%3DApi&f=1&ipt=593023d288ccea28dee909a18a908131107aee91d8ab30dfaf6e22e7cb26c89f&ipo=images",
   ];
 
-  const { session } = useAuth();
+  const { user } = useAuth();
 
-  console.log("HomeScreen", session);
+  // const user = extractUser(session);
 
   const promotionsData = [
     {
@@ -58,7 +58,7 @@ export default function HomeScreen() {
 
   return (
     <>
-      <Header>
+      <Header user={user}>
         <SearchInput />
       </Header>
       <ScrollView>

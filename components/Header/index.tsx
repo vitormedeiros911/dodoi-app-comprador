@@ -1,47 +1,51 @@
+import defaultUserImg from "@/assets/images/defaultUserImg.png";
 import { Colors } from "@/constants/Colors";
 import { UserDto } from "@/dto/UserDto";
+import getFirstName from "@/utils/getFirstName";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { Image, useColorScheme } from "react-native";
+import { Image, TouchableOpacity, useColorScheme } from "react-native";
 
-import getFirstName from "../../utils/getFirstName";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 
 type HeaderProps = {
   children: React.ReactNode;
-  user?: UserDto;
+  user: UserDto;
 };
 
 export default function Header({ children, user }: HeaderProps) {
   const colorScheme = useColorScheme();
+  const styles = createStyles(colorScheme);
 
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.firstRow}>
         <ThemedView style={styles.userInfoContainer}>
           <Image
-            source={{
-              uri: user?.avatar ? user.avatar : "https://i.pravatar.cc/300",
-            }}
+            source={user.avatar ? { uri: user.avatar } : defaultUserImg}
             style={styles.userImg}
           />
           <ThemedText style={styles.userName}>
-            Olá, {getFirstName(user?.nome ? user.nome : "")}
+            Olá, {getFirstName(user.nome)}
           </ThemedText>
         </ThemedView>
         <ThemedView style={styles.menuItens}>
-          <Ionicons
-            name="cart-outline"
-            size={24}
-            color={Colors[colorScheme ?? "light"].tint}
-          />
-          <Ionicons
-            name="ellipsis-horizontal"
-            size={24}
-            color={Colors[colorScheme ?? "light"].tint}
-          />
+          <TouchableOpacity>
+            <Ionicons
+              name="cart-outline"
+              size={24}
+              color={Colors[colorScheme ?? "light"].tint}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity>
+            <Ionicons
+              name="notifications-outline"
+              size={24}
+              color={Colors[colorScheme ?? "light"].tint}
+            />
+          </TouchableOpacity>
         </ThemedView>
       </ThemedView>
       {children}

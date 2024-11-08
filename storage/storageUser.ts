@@ -9,9 +9,7 @@ export async function storageUserSave(user: UserDto) {
 export async function storageUserGet(): Promise<UserDto | null> {
   const user = await AsyncStorage.getItem(USER_STORAGE);
 
-  if (user) {
-    return JSON.parse(user) as UserDto;
-  }
+  if (user) return JSON.parse(user) as UserDto;
 
   return null;
 }
