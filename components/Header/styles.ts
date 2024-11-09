@@ -3,8 +3,8 @@ import { ColorSchemeName, Platform, StyleSheet } from "react-native";
 export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     container: {
-      paddingTop: Platform.OS === "ios" ? 60 : 40,
-      padding: 30,
+      paddingTop: Platform.OS === "ios" ? 60 : 50,
+      padding: 20,
       width: "100%",
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
     },

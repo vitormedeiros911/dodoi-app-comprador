@@ -15,5 +15,13 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       padding: 8,
       marginBottom: 8,
     },
+
+    loaderContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      height: 200, // Definir uma altura específica para garantir que o carregamento fique centralizado
+      marginVertical: 20, // Adicionando margem para melhorar a apresentação
+    },
   });
 };

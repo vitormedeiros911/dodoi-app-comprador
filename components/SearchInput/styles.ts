@@ -3,9 +3,10 @@ import { ColorSchemeName, StyleSheet } from "react-native";
 export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     container: {
+      marginTop: 5,
       flexDirection: "row",
       alignItems: "center",
-      borderRadius: 10,
+      borderRadius: 6,
       padding: 12,
       shadowColor: "#000",
       shadowOpacity: 0.1,

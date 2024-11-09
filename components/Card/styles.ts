@@ -12,12 +12,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
       shadowRadius: 5,
-      elevation: 2,
       overflow: "hidden",
     },
     imageContainer: {
       backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
-      padding: 14,
+      padding: 12,
     },
     image: {
       width: "100%",
@@ -27,14 +26,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     textContainer: {
       paddingBottom: 10,
       paddingHorizontal: 10,
-      alignItems: "center",
       backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
     },
     title: {
       fontSize: 14,
       fontWeight: "500",
-      margin: 5,
-      marginBottom: 4,
       color: Colors[colorScheme ?? "light"].text,
     },
     price: {
