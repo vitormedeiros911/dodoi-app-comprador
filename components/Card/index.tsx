@@ -1,19 +1,22 @@
 import React from "react";
-import { Image } from "react-native";
+import { Image, useColorScheme } from "react-native";
 
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 
 interface ICardProps {
   image: string;
   title: string;
-  price: string;
+  price: number;
 }
 
 export default function Card({ image, price, title }: ICardProps) {
+  const colorScheme = useColorScheme();
+  const styles = createStyles(colorScheme);
+
   return (
-    <ThemedView style={styles.card}>
+    <ThemedView style={styles.card} darkColor="#282828">
       <ThemedView style={styles.imageContainer}>
         <Image source={{ uri: image }} style={styles.image} />
       </ThemedView>

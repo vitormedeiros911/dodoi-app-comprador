@@ -1,13 +1,14 @@
-import { UserDto } from "@/dto/UserDto";
+import { SessionStorageDto } from "@/dto/SessionStorageDto";
 import { api } from "@/services/api";
 import { storageUserGet, storageUserSave } from "@/storage/storageUser";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import axios from "axios";
 import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export type AuthContextDataProps = {
-  user: UserDto;
+  session: SessionStorageDto;
   signIn: () => void;
   signOut: () => void;
 };
@@ -21,7 +22,10 @@ export const AuthContext = createContext<AuthContextDataProps>(
 );
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [user, setUser] = useState<UserDto>({} as UserDto);
+  const [session, setSession] = useState<SessionStorageDto>({
+    user: {},
+    token: "",
+  } as SessionStorageDto);
 
   async function signIn() {
     try {
@@ -40,8 +44,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
             avatar: response.data.usuario.urlImagem,
           };
 
-          setUser(user);
-          storageUserSave(user);
+          setSession({ user, token: response.data.access_token });
+          storageUserSave(user, response.data.access_token);
         }
       }
     } catch (error) {
@@ -53,13 +57,16 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function signOut() {
-    setUser({} as UserDto);
+    setSession({
+      user: {},
+      token: "",
+    } as SessionStorageDto);
   }
 
   async function loadUserData() {
     const userLogged = await storageUserGet();
 
-    if (userLogged) setUser(userLogged);
+    if (userLogged) setSession(userLogged);
   }
 
   useEffect(() => {
@@ -67,7 +74,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }, []);
 
   return (
-    <AuthContext.Provider value={{ user, signIn, signOut }}>
+    <AuthContext.Provider value={{ session, signIn, signOut }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,13 +1,18 @@
+import { Colors } from "@/constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
-import { View, TextInput, useColorScheme } from "react-native";
+import { TextInput, useColorScheme, View } from "react-native";
 
-import { styles } from "./styles";
-import { Colors } from "@/constants/Colors";
 import { ThemedView } from "../ThemedView";
+import { createStyles } from "./styles";
 
-export default function SearchInput() {
+type SearchInputProps = {
+  setBusca: (busca: string) => void;
+};
+
+export default function SearchInput({ setBusca }: SearchInputProps) {
   const colorScheme = useColorScheme();
+  const styles = createStyles(colorScheme);
 
   return (
     <ThemedView style={styles.container}>
@@ -15,6 +20,7 @@ export default function SearchInput() {
         style={styles.input}
         placeholder="Remédio ou Farmácia"
         placeholderTextColor={Colors[colorScheme ?? "light"].lightText}
+        onChangeText={setBusca}
       />
       <View style={styles.separator} />
       <Ionicons
