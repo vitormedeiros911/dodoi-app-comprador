@@ -1,3 +1,4 @@
+import { Colors } from "@/constants/Colors";
 import { ColorSchemeName, Platform, StyleSheet } from "react-native";
 
 export const createStyles = (colorScheme: ColorSchemeName) => {
@@ -33,6 +34,22 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: "row",
       gap: 30,
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+    },
+    cartBadge: {
+      position: "absolute",
+      top: -5,
+      right: -5,
+      backgroundColor: "#f00",
+      borderRadius: 12,
+      width: 20,
+      height: 20,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    cartBadgeText: {
+      fontSize: 12,
+      fontWeight: "bold",
+      color: "#fff",
     },
   });
 };

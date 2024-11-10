@@ -13,6 +13,8 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import { CarrinhoProvider } from "../contexts/CarrinhoContext";
+import CarrinhoOverlay from "@/components/CarrinhoOverlay";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -37,7 +39,10 @@ export default function RootLayout() {
         <AuthContextProvider>
           <LoadingProvider>
             <LoadingOverlay />
-            <Slot />
+            <CarrinhoProvider>
+              <Slot />
+              <CarrinhoOverlay />
+            </CarrinhoProvider>
           </LoadingProvider>
         </AuthContextProvider>
       </ThemeProvider>

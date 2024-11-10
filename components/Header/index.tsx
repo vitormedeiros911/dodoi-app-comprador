@@ -1,6 +1,7 @@
 import defaultUserImg from "@/assets/images/defaultUserImg.png";
 import { Colors } from "@/constants/Colors";
 import { UserDto } from "@/dto/UserDto";
+import { useCarrinho } from "@/hooks/useCarrinho"; // Hook para carrinho
 import { useHeader } from "@/hooks/useHeader";
 import getFirstName from "@/utils/getFirstName";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,6 +21,7 @@ export default function Header({ user }: HeaderProps) {
   const styles = createStyles(colorScheme);
 
   const { headerContent } = useHeader();
+  const { carrinho, toggleCarrinhoOverlay } = useCarrinho();
 
   return (
     <ThemedView style={styles.container}>
@@ -34,12 +36,19 @@ export default function Header({ user }: HeaderProps) {
           </ThemedText>
         </ThemedView>
         <ThemedView style={styles.menuItens}>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={toggleCarrinhoOverlay}>
             <Ionicons
               name="cart-outline"
               size={24}
               color={Colors[colorScheme ?? "light"].tint}
             />
+            {carrinho.length > 0 && (
+              <ThemedView style={styles.cartBadge}>
+                <ThemedText style={styles.cartBadgeText}>
+                  {carrinho.length}
+                </ThemedText>
+              </ThemedView>
+            )}
           </TouchableOpacity>
           <TouchableOpacity>
             <Ionicons

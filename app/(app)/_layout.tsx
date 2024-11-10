@@ -1,11 +1,12 @@
+import CarrinhoOverlay from "@/components/CarrinhoOverlay";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
+import { CarrinhoProvider } from "@/contexts/CarrinhoContext";
 import { HeaderProvider } from "@/contexts/HeaderContext";
 import { UserDto } from "@/dto/UserDto";
 import { storageUserGet } from "@/storage/storageUser";
 import { router, Slot } from "expo-router";
-import React from "react";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 
 export default function AppLayout() {
   const [loading, setLoading] = useState(true);
@@ -32,9 +33,13 @@ export default function AppLayout() {
   if (loading) return <Loading />;
 
   return (
-    <HeaderProvider>
-      <Header user={user} />
-      <Slot />
-    </HeaderProvider>
+    <CarrinhoProvider>
+      <HeaderProvider>
+        <Header user={user} />
+        <Slot />
+      </HeaderProvider>
+
+      <CarrinhoOverlay />
+    </CarrinhoProvider>
   );
 }
