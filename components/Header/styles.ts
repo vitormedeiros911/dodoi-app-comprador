@@ -37,8 +37,8 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     cartBadge: {
       position: "absolute",
-      top: -5,
-      right: -5,
+      top: -8,
+      right: -8,
       backgroundColor: "#f00",
       borderRadius: 12,
       width: 20,

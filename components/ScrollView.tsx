@@ -9,7 +9,7 @@ import type { PropsWithChildren } from "react";
 type Props = PropsWithChildren<{}>;
 
 interface ScrollViewProps {
-  onScrollToTop?: () => void; // Função que será chamada quando o topo for alcançado
+  onScrollToTop?: () => void;
 }
 
 export default function ScrollView({
@@ -18,16 +18,13 @@ export default function ScrollView({
 }: Props & ScrollViewProps) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
-  // Função que detecta o movimento de scroll
   const scrollHandler = useAnimatedScrollHandler((event) => {
     if (event.contentOffset.y === 0) {
-      // Quando chegar ao topo, chama a função onScrollToTop
       if (onScrollToTop) {
         onScrollToTop();
       }
     }
   });
-
   return (
     <ThemedView style={styles.container}>
       <Animated.ScrollView

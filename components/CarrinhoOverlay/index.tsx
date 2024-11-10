@@ -7,7 +7,6 @@ import {
   FlatList,
   Image,
   Modal,
-  Text,
   TouchableOpacity,
   useColorScheme,
   View,
@@ -15,7 +14,7 @@ import {
 
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
-import { styles } from "./styles";
+import { createStyles } from "./styles";
 
 const CarrinhoOverlay: React.FC = () => {
   const colorScheme = useColorScheme();
@@ -29,16 +28,21 @@ const CarrinhoOverlay: React.FC = () => {
     toggleCarrinhoOverlay,
   } = useCarrinho();
 
-  if (!isCarrinhoVisible) return null; // Se o carrinho não for visível, não renderiza nada
+  if (!isCarrinhoVisible) return null;
 
-  // Função para renderizar cada item do carrinho
+  const styles = createStyles(colorScheme);
+
   const renderItem = ({ item }: { item: ItemCarrinhoDto }) => (
     <ThemedView style={styles.item}>
       <Image source={{ uri: item.urlImagem }} style={styles.itemImage} />
       <ThemedView style={styles.itemDetails}>
-        <Text style={styles.itemName}>{item.nomeProduto}</Text>
-        <Text style={styles.itemPrice}>Preço: R$ {item.precoUnitario}</Text>
-        <Text style={styles.itemQuantity}>Quantidade: {item.quantidade}</Text>
+        <ThemedText style={styles.itemName}>{item.nomeProduto}</ThemedText>
+        <ThemedText style={styles.itemPrice}>
+          Preço: R$ {item.precoUnitario}
+        </ThemedText>
+        <ThemedText style={styles.itemQuantity}>
+          Quantidade: {item.quantidade}
+        </ThemedText>
       </ThemedView>
       <ThemedView style={styles.itemActions}>
         <TouchableOpacity onPress={() => incrementarQuantidade(item.idProduto)}>
@@ -56,11 +60,7 @@ const CarrinhoOverlay: React.FC = () => {
           />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => removerDoCarrinho(item.idProduto)}>
-          <Ionicons
-            name="trash-outline"
-            size={24}
-            color="red" // Ícone de lixeira vermelho
-          />
+          <Ionicons name="trash-outline" size={24} color="red" />
         </TouchableOpacity>
       </ThemedView>
     </ThemedView>
@@ -80,7 +80,7 @@ const CarrinhoOverlay: React.FC = () => {
         animationType="slide"
         transparent={true}
         visible={isCarrinhoVisible}
-        onRequestClose={toggleCarrinhoOverlay} // Fecha ao pressionar o botão de fechar
+        onRequestClose={toggleCarrinhoOverlay}
       >
         <ThemedView style={styles.wrap}>
           <ThemedView style={styles.carrinhoContainer}>
@@ -103,15 +103,14 @@ const CarrinhoOverlay: React.FC = () => {
               <ThemedText style={styles.emptyText}>Carrinho vazio</ThemedText>
             )}
 
-            <View style={styles.footer}>
-              {/* Preço Total em uma linha separada */}
+            <ThemedView style={styles.footer}>
               <ThemedView style={styles.totalPriceRow}>
                 <ThemedText style={styles.totalPrice}>
                   Preço Total: R$ {precoTotal}
                 </ThemedText>
               </ThemedView>
 
-              <View style={styles.actionsRow}>
+              <ThemedView style={styles.actionsRow}>
                 <TouchableOpacity onPress={limparCarrinho}>
                   <ThemedText style={styles.clearText}>
                     Limpar Carrinho
@@ -123,8 +122,8 @@ const CarrinhoOverlay: React.FC = () => {
                     Finalizar Compra
                   </ThemedText>
                 </TouchableOpacity>
-              </View>
-            </View>
+              </ThemedView>
+            </ThemedView>
           </ThemedView>
         </ThemedView>
       </Modal>

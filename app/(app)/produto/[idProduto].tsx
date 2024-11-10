@@ -4,6 +4,8 @@ import LoadingOverlay from "@/components/LoadingOverlay";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { ItemCarrinhoDto } from "@/dto/ItemCarrinhoDto";
+import { useCarrinho } from "@/hooks/useCarrinho";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,8 +15,6 @@ import React, { memo } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 
 import { createStyles } from "./styles";
-import { useCarrinho } from "@/hooks/useCarrinho"; // Importa o hook do carrinho
-import { ItemCarrinhoDto } from "@/dto/ItemCarrinhoDto";
 
 type ProdutoProps = {
   favorited: boolean;
@@ -42,7 +42,7 @@ export default function Produto({ favorited }: ProdutoProps) {
   const styles = createStyles(colorScheme);
   const { idProduto } = useLocalSearchParams();
   const { startLoading, stopLoading } = useLoading();
-  const { adicionarAoCarrinho } = useCarrinho(); // Usando o hook do carrinho
+  const { adicionarAoCarrinho } = useCarrinho();
 
   const getProduto = async () => {
     startLoading();
@@ -56,7 +56,6 @@ export default function Produto({ favorited }: ProdutoProps) {
     }
   };
 
-  // Função para adicionar ao carrinho
   const handleAdicionarAoCarrinho = () => {
     if (produto) {
       const produtoParaCarrinho: ItemCarrinhoDto = {
@@ -117,17 +116,13 @@ export default function Produto({ favorited }: ProdutoProps) {
         <ThemedText style={styles.description}>{produto.descricao}</ThemedText>
         <TouchableOpacity
           style={styles.buyContainer}
-          onPress={handleAdicionarAoCarrinho} // Chama a função ao pressionar
+          onPress={handleAdicionarAoCarrinho}
         >
           <ThemedView style={styles.buyButton}>
             <ThemedText style={styles.buyText}>
               Adicionar ao carrinho
             </ThemedText>
-            <Ionicons
-              name="cart-outline"
-              size={24}
-              color={Colors[colorScheme ?? "light"].tint}
-            />
+            <Ionicons name="cart-outline" size={24} color={"#fff"} />
           </ThemedView>
         </TouchableOpacity>
       </ThemedView>

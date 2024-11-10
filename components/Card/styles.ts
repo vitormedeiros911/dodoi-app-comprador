@@ -14,15 +14,16 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       shadowOpacity: 0.1,
       shadowRadius: 5,
       overflow: "hidden",
+      backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
     },
     imageContainer: {
       backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
-      padding: 12,
+      padding: 10,
     },
     image: {
       width: "100%",
       height: 120,
-      borderRadius: 6,
+      borderRadius: 4,
     },
     textContainer: {
       paddingBottom: 10,
@@ -36,7 +37,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     price: {
       fontSize: 12,
-      color: Colors[colorScheme ?? "light"].text,
+      color: Colors[colorScheme ?? "light"].lightText,
     },
   });
 };

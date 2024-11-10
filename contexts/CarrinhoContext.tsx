@@ -5,13 +5,13 @@ import React, { createContext, useEffect, useState } from "react";
 
 type CarrinhoContextDataProps = {
   carrinho: ItemCarrinhoDto[];
-  isCarrinhoVisible: boolean; // Estado de visibilidade
+  isCarrinhoVisible: boolean;
   adicionarAoCarrinho: (item: ItemCarrinhoDto) => void;
   removerDoCarrinho: (itemId: string) => void;
-  incrementarQuantidade: (itemId: string) => void; // Função para incrementar a quantidade
-  decrementarQuantidade: (itemId: string) => void; // Função para decrementar a quantidade
+  incrementarQuantidade: (itemId: string) => void;
+  decrementarQuantidade: (itemId: string) => void;
   limparCarrinho: () => void;
-  toggleCarrinhoOverlay: () => void; // Função para alternar a visibilidade
+  toggleCarrinhoOverlay: () => void;
 };
 
 type CarrinhoContextProviderProps = {
@@ -41,7 +41,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     }
   };
 
-  // Função para salvar o carrinho no AsyncStorage
   const salvarCarrinho = async (novoCarrinho: ItemCarrinhoDto[]) => {
     try {
       await AsyncStorage.setItem(
@@ -53,7 +52,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     }
   };
 
-  // Adicionar um item ao carrinho
   const adicionarAoCarrinho = (item: ItemCarrinhoDto) => {
     const itemExistente = carrinho.find((i) => i.idProduto === item.idProduto);
     if (itemExistente) {
@@ -71,7 +69,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     }
   };
 
-  // Incrementar a quantidade de um item no carrinho
   const incrementarQuantidade = (itemId: string) => {
     const carrinhoAtualizado = carrinho.map((item) =>
       item.idProduto === itemId
@@ -82,7 +79,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     salvarCarrinho(carrinhoAtualizado);
   };
 
-  // Decrementar a quantidade de um item no carrinho
   const decrementarQuantidade = (itemId: string) => {
     const carrinhoAtualizado = carrinho.map((item) =>
       item.idProduto === itemId && item.quantidade > 1
@@ -93,7 +89,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     salvarCarrinho(carrinhoAtualizado);
   };
 
-  // Remover um item do carrinho
   const removerDoCarrinho = (itemId: string) => {
     const carrinhoAtualizado = carrinho.filter(
       (item) => item.idProduto !== itemId
@@ -102,7 +97,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     salvarCarrinho(carrinhoAtualizado);
   };
 
-  // Limpar o carrinho
   const limparCarrinho = () => {
     setCarrinho([]);
     salvarCarrinho([]);

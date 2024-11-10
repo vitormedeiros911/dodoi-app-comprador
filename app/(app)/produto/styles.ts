@@ -85,6 +85,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       textAlign: "center",
       fontSize: 16,
       marginRight: 10,
+      color: "white",
     },
   });
 };
