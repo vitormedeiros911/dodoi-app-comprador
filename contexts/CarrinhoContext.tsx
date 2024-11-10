@@ -78,13 +78,17 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     setCarrinho(carrinhoAtualizado);
     salvarCarrinho(carrinhoAtualizado);
   };
-
   const decrementarQuantidade = (itemId: string) => {
-    const carrinhoAtualizado = carrinho.map((item) =>
-      item.idProduto === itemId && item.quantidade > 1
-        ? { ...item, quantidade: item.quantidade - 1 }
-        : item
-    );
+    const carrinhoAtualizado = carrinho.reduce((acc, item) => {
+      if (item.idProduto === itemId) {
+        if (item.quantidade > 1)
+          acc.push({ ...item, quantidade: item.quantidade - 1 });
+      } else {
+        acc.push(item);
+      }
+      return acc;
+    }, [] as typeof carrinho);
+
     setCarrinho(carrinhoAtualizado);
     salvarCarrinho(carrinhoAtualizado);
   };

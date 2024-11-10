@@ -1,12 +1,17 @@
 import defaultUserImg from "@/assets/images/defaultUserImg.png";
 import { Colors } from "@/constants/Colors";
 import { UserDto } from "@/dto/UserDto";
-import { useCarrinho } from "@/hooks/useCarrinho"; // Hook para carrinho
+import { useCarrinho } from "@/hooks/useCarrinho";
 import { useHeader } from "@/hooks/useHeader";
 import getFirstName from "@/utils/getFirstName";
 import { Ionicons } from "@expo/vector-icons";
-import React from "react";
-import { Image, TouchableOpacity, useColorScheme } from "react-native";
+import React, { useEffect, useMemo, useRef } from "react";
+import {
+  Animated,
+  Image,
+  TouchableOpacity,
+  useColorScheme,
+} from "react-native";
 
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
@@ -22,6 +27,29 @@ export default function Header({ user }: HeaderProps) {
 
   const { headerContent } = useHeader();
   const { carrinho, toggleCarrinhoOverlay } = useCarrinho();
+
+  const scaleAnim = useRef(new Animated.Value(1)).current;
+
+  const totalItensCarrinho = useMemo(() => {
+    return carrinho.reduce((total, item) => total + item.quantidade, 0);
+  }, [carrinho]);
+
+  useEffect(() => {
+    if (totalItensCarrinho > 0) {
+      Animated.sequence([
+        Animated.timing(scaleAnim, {
+          toValue: 1.5,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+        Animated.timing(scaleAnim, {
+          toValue: 1,
+          duration: 150,
+          useNativeDriver: true,
+        }),
+      ]).start();
+    }
+  }, [totalItensCarrinho]);
 
   return (
     <ThemedView style={styles.container}>
@@ -42,12 +70,17 @@ export default function Header({ user }: HeaderProps) {
               size={24}
               color={Colors[colorScheme ?? "light"].tint}
             />
-            {carrinho.length > 0 && (
-              <ThemedView style={styles.cartBadge}>
+            {totalItensCarrinho > 0 && (
+              <Animated.View
+                style={[
+                  styles.cartBadge,
+                  { transform: [{ scale: scaleAnim }] },
+                ]}
+              >
                 <ThemedText style={styles.cartBadgeText}>
-                  {carrinho.length}
+                  {totalItensCarrinho}
                 </ThemedText>
-              </ThemedView>
+              </Animated.View>
             )}
           </TouchableOpacity>
           <TouchableOpacity>
