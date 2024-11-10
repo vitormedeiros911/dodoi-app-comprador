@@ -1,6 +1,7 @@
 import defaultUserImg from "@/assets/images/defaultUserImg.png";
 import { Colors } from "@/constants/Colors";
 import { UserDto } from "@/dto/UserDto";
+import { useHeader } from "@/hooks/useHeader";
 import getFirstName from "@/utils/getFirstName";
 import { Ionicons } from "@expo/vector-icons";
 import React from "react";
@@ -9,16 +10,16 @@ import { Image, TouchableOpacity, useColorScheme } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
-import Line from "../Line";
 
 type HeaderProps = {
-  children?: React.ReactNode;
   user: UserDto;
 };
 
-export default function Header({ children, user }: HeaderProps) {
+export default function Header({ user }: HeaderProps) {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
+
+  const { headerContent } = useHeader();
 
   return (
     <ThemedView style={styles.container}>
@@ -49,8 +50,7 @@ export default function Header({ children, user }: HeaderProps) {
           </TouchableOpacity>
         </ThemedView>
       </ThemedView>
-      {children}
-      <Line />
+      {headerContent}
     </ThemedView>
   );
 }

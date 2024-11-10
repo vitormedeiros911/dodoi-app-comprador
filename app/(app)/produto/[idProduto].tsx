@@ -1,9 +1,10 @@
 import ImageWithFallback from "@/components/ImageWithFallback";
 import Line from "@/components/Line";
-import Loading from "@/components/Loading";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
+import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { Ionicons } from "@expo/vector-icons";
 import { useLocalSearchParams } from "expo-router";
@@ -36,13 +37,17 @@ export default function Produto({ favorited }: ProdutoProps) {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
   const { idProduto } = useLocalSearchParams();
+  const { startLoading, stopLoading } = useLoading();
 
   const getProduto = async () => {
+    startLoading();
     try {
       const response = await api.get(`/produto/${idProduto}`);
       setProduto(response.data);
     } catch (error) {
       console.log(error);
+    } finally {
+      stopLoading();
     }
   };
 
@@ -50,10 +55,11 @@ export default function Produto({ favorited }: ProdutoProps) {
     getProduto();
   }, [idProduto]);
 
-  if (!produto) return <Loading />;
+  if (!produto) return null;
 
   return (
     <ThemedView style={styles.container}>
+      <LoadingOverlay />
       <ThemedView style={styles.card}>
         <ImageWithFallback
           source={{ uri: produto.urlImagem }}

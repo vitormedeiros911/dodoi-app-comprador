@@ -1,5 +1,7 @@
 import Loading from "@/components/Loading";
+import LoadingOverlay from "@/components/LoadingOverlay";
 import { AuthContextProvider } from "@/contexts/AuthContext";
+import { LoadingProvider } from "@/contexts/LoadingContext";
 import {
   DarkTheme,
   DefaultTheme,
@@ -33,7 +35,10 @@ export default function RootLayout() {
     <GestureHandlerRootView>
       <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
         <AuthContextProvider>
-          <Slot />
+          <LoadingProvider>
+            <LoadingOverlay />
+            <Slot />
+          </LoadingProvider>
         </AuthContextProvider>
       </ThemeProvider>
     </GestureHandlerRootView>

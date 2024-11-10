@@ -6,8 +6,8 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     card: {
       flex: 1,
       width: 140,
-      margin: 6,
-      height: 200,
+      marginHorizontal: 6,
+      height: 220,
       borderRadius: 10,
       shadowColor: colorScheme === "light" ? "#000" : "#fff",
       shadowOffset: { width: 0, height: 2 },

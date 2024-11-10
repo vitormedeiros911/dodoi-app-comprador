@@ -1,13 +1,13 @@
 import Card from "@/components/Card";
-import Header from "@/components/Header";
 import HorizontalList from "@/components/HorizontalList";
 import ListItem from "@/components/ListItem";
 import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
-import { useAuth } from "@/hooks/useAuth";
+import { useHeader } from "@/hooks/useHeader";
+import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
-import { router } from "expo-router";
-import React, { useEffect, useRef, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 
 interface IProduto {
   id: string;
@@ -23,12 +23,11 @@ interface IFarmacia {
 }
 
 export default function HomeScreen() {
+  const { setHeaderContent } = useHeader();
+  const { isLoading, startLoading, stopLoading } = useLoading();
   const [produtos, setProdutos] = useState<IProduto[]>([]);
   const [farmacias, setFarmacias] = useState<IFarmacia[]>([]);
   const [busca, setBusca] = useState("");
-  const { session } = useAuth();
-  const [loadingProdutos, setLoadingProdutos] = useState(false);
-  const [loadingFarmacias, setLoadingFarmacias] = useState(false);
   const [totalProdutos, setTotalProdutos] = useState(0);
   const [totalFarmacias, setTotalFarmacias] = useState(0);
   const produtosPageRef = useRef(1);
@@ -49,7 +48,7 @@ export default function HomeScreen() {
     abortControllerRef.current = controller;
 
     try {
-      setLoadingProdutos(true);
+      startLoading();
       const response = await api.get<{ produtos: IProduto[]; total: number }>(
         "/produto",
         {
@@ -65,12 +64,12 @@ export default function HomeScreen() {
         setProdutos((prev) => [...prev, ...response.data.produtos]);
       }
 
-      setLoadingProdutos(false);
+      stopLoading();
     } catch (error) {
       if (error !== "AbortError") {
         console.log(error);
       }
-      setLoadingProdutos(false);
+      stopLoading();
     }
   };
 
@@ -88,7 +87,7 @@ export default function HomeScreen() {
     abortControllerRef.current = controller;
 
     try {
-      setLoadingFarmacias(true);
+      startLoading();
       const response = await api.get<{ farmacias: IFarmacia[]; total: number }>(
         "/farmacia",
         {
@@ -104,12 +103,12 @@ export default function HomeScreen() {
         setFarmacias((prev) => [...prev, ...response.data.farmacias]);
       }
 
-      setLoadingFarmacias(false);
+      stopLoading();
     } catch (error) {
       if (error !== "AbortError") {
         console.log(error);
       }
-      setLoadingFarmacias(false);
+      stopLoading();
     }
   };
 
@@ -126,8 +125,17 @@ export default function HomeScreen() {
     };
   }, [busca]);
 
+  useFocusEffect(
+    useCallback(() => {
+      setHeaderContent(<SearchInput setBusca={setBusca} />);
+      return () => {
+        setHeaderContent(null);
+      };
+    }, [setHeaderContent])
+  );
+
   const handleProdutosEndReached = () => {
-    if (!loadingProdutos && produtos.length < totalProdutos) {
+    if (!isLoading && produtos.length < totalProdutos) {
       const nextPage = produtosPageRef.current + 1;
       produtosPageRef.current = nextPage;
       getProdutos(busca, nextPage);
@@ -135,7 +143,7 @@ export default function HomeScreen() {
   };
 
   const handleFarmaciasEndReached = () => {
-    if (!loadingFarmacias && farmacias.length < totalFarmacias) {
+    if (!isLoading && farmacias.length < totalFarmacias) {
       const nextPage = farmaciasPageRef.current + 1;
       farmaciasPageRef.current = nextPage;
       getFarmacias(busca, nextPage);
@@ -143,41 +151,34 @@ export default function HomeScreen() {
   };
 
   return (
-    <>
-      <Header user={session.user}>
-        <SearchInput setBusca={setBusca} />
-      </Header>
-      <ScrollView>
-        <HorizontalList
-          data={farmacias}
-          title="Farmácias"
-          renderItem={({ item }) => (
-            <ListItem image={item.urlImagem} title={item.nome} />
-          )}
-          onEndReached={handleFarmaciasEndReached}
-          onEndReachedThreshold={0.5}
-          loading={loadingFarmacias}
-        />
+    <ScrollView>
+      <HorizontalList
+        data={farmacias}
+        title="Farmácias"
+        renderItem={({ item }) => (
+          <ListItem image={item.urlImagem} title={item.nome} />
+        )}
+        onEndReached={handleFarmaciasEndReached}
+        onEndReachedThreshold={0.5}
+      />
 
-        <HorizontalList
-          data={produtos}
-          title="Produtos"
-          renderItem={({ item }) => (
-            <Card
-              image={item.urlImagem}
-              defaultSource={require("@/assets/images/remedioGenericoImg.jpg")}
-              title={item.nome}
-              price={item.precoUnitario}
-              onPress={() => {
-                router.push(`/produto/${item.id}`);
-              }}
-            />
-          )}
-          onEndReached={handleProdutosEndReached}
-          onEndReachedThreshold={0.5}
-          loading={loadingProdutos}
-        />
-      </ScrollView>
-    </>
+      <HorizontalList
+        data={produtos}
+        title="Produtos"
+        renderItem={({ item }) => (
+          <Card
+            image={item.urlImagem}
+            defaultSource={require("@/assets/images/remedioGenericoImg.jpg")}
+            title={item.nome}
+            price={item.precoUnitario}
+            onPress={() => {
+              router.push(`/produto/${item.id}`);
+            }}
+          />
+        )}
+        onEndReached={handleProdutosEndReached}
+        onEndReachedThreshold={0.5}
+      />
+    </ScrollView>
   );
 }
