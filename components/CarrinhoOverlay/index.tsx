@@ -89,7 +89,11 @@ const CarrinhoOverlay: React.FC = () => {
                 Carrinho de Compras
               </ThemedText>
               <TouchableOpacity onPress={toggleCarrinhoOverlay}>
-                <Ionicons name="close" size={30} color={Colors.mainColor} />
+                <Ionicons
+                  name="close"
+                  size={30}
+                  color={Colors[colorScheme ?? "light"].lightText}
+                />
               </TouchableOpacity>
             </ThemedView>
 

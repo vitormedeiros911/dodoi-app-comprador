@@ -16,6 +16,7 @@ import {
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
+import ImageWithFallback from "../ImageWithFallback";
 
 type HeaderProps = {
   user: UserDto;
@@ -55,8 +56,9 @@ export default function Header({ user }: HeaderProps) {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.firstRow}>
         <ThemedView style={styles.userInfoContainer}>
-          <Image
-            source={user.avatar ? { uri: user.avatar } : defaultUserImg}
+          <ImageWithFallback
+            source={{ uri: user.avatar }}
+            fallbackSource={defaultUserImg}
             style={styles.userImg}
           />
           <ThemedText style={styles.userName}>

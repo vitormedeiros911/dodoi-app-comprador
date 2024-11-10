@@ -3,12 +3,12 @@ import { Ionicons } from "@expo/vector-icons";
 import React, { useEffect, useState } from "react";
 import {
   Animated,
+  Keyboard,
   TextInput,
   TouchableOpacity,
   useColorScheme,
   View,
 } from "react-native";
-
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
 
@@ -25,35 +25,44 @@ export default function SearchInput({ setBusca }: SearchInputProps) {
   const handleClear = () => {
     setText("");
     setBusca("");
+    Keyboard.dismiss();
   };
 
   const animateIcon = () => {
-    Animated.timing(iconAnim, {
+    Animated.spring(iconAnim, {
       toValue: text ? 1 : 0,
-      duration: 600,
+      friction: 5,
+      tension: 100,
       useNativeDriver: true,
     }).start();
   };
 
   useEffect(() => {
     animateIcon();
-  }, [text]);
+
+    if (text === "") setBusca("");
+    else if (text.length >= 3) setBusca(text);
+  }, [text, setBusca]);
 
   const iconScale = iconAnim.interpolate({
     inputRange: [0, 1],
     outputRange: [1, 0.8],
   });
 
+  const iconOpacity = iconAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0.5, 1],
+  });
+
   return (
     <ThemedView style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Remédio ou Farmácia"
+        placeholder="Busque por produto ou farmácia"
         placeholderTextColor={Colors[colorScheme ?? "light"].lightText}
         value={text}
         onChangeText={(newText) => {
           setText(newText);
-          setBusca(newText);
         }}
       />
       <View style={styles.separator} />
@@ -61,6 +70,7 @@ export default function SearchInput({ setBusca }: SearchInputProps) {
         <Animated.View
           style={{
             transform: [{ scale: iconScale }],
+            opacity: iconOpacity,
           }}
         >
           <Ionicons

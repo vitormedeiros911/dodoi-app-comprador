@@ -27,7 +27,7 @@ export default function HomeScreen() {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [produtos, setProdutos] = useState<IProduto[]>([]);
   const [farmacias, setFarmacias] = useState<IFarmacia[]>([]);
-  const [busca, setBusca] = useState("");
+  const [busca, setBusca] = useState(""); // Estado de busca
   const [totalProdutos, setTotalProdutos] = useState(0);
   const [totalFarmacias, setTotalFarmacias] = useState(0);
   const produtosPageRef = useRef(1);
@@ -40,9 +40,7 @@ export default function HomeScreen() {
       skip: (page - 1) * 10,
     };
 
-    if (search) {
-      params.nome = search;
-    }
+    if (search) params.nome = search;
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
@@ -66,9 +64,6 @@ export default function HomeScreen() {
 
       stopLoading();
     } catch (error) {
-      if (error !== "AbortError") {
-        console.log(error);
-      }
       stopLoading();
     }
   };
@@ -79,9 +74,7 @@ export default function HomeScreen() {
       skip: (page - 1) * 10,
     };
 
-    if (search) {
-      params.nome = search;
-    }
+    if (search) params.nome = search;
 
     const controller = new AbortController();
     abortControllerRef.current = controller;
@@ -105,9 +98,6 @@ export default function HomeScreen() {
 
       stopLoading();
     } catch (error) {
-      if (error !== "AbortError") {
-        console.log(error);
-      }
       stopLoading();
     }
   };
@@ -117,8 +107,14 @@ export default function HomeScreen() {
 
     produtosPageRef.current = 1;
     farmaciasPageRef.current = 1;
-    getProdutos(busca, 1);
-    getFarmacias(busca, 1);
+
+    if (busca === "") {
+      getProdutos();
+      getFarmacias();
+    } else {
+      getProdutos(busca, 1);
+      getFarmacias(busca, 1);
+    }
 
     return () => {
       if (abortControllerRef.current) abortControllerRef.current.abort();
@@ -128,6 +124,7 @@ export default function HomeScreen() {
   useFocusEffect(
     useCallback(() => {
       setHeaderContent(<SearchInput setBusca={setBusca} />);
+
       return () => {
         setHeaderContent(null);
       };
