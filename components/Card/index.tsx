@@ -11,35 +11,38 @@ interface ICardProps {
   title: string;
   price: number;
   defaultSource: any;
+  onPress?: () => void;
 }
 
-const Card = memo(({ image, price, title, defaultSource }: ICardProps) => {
-  const colorScheme = useColorScheme();
-  const styles = createStyles(colorScheme);
+const Card = memo(
+  ({ image, price, title, defaultSource, onPress }: ICardProps) => {
+    const colorScheme = useColorScheme();
+    const styles = createStyles(colorScheme);
 
-  return (
-    <TouchableOpacity>
-      <ThemedView style={styles.card} darkColor="#282828">
-        <ThemedView style={styles.imageContainer}>
-          <ImageWithFallback
-            source={{ uri: image }}
-            fallbackSource={defaultSource}
-            style={styles.image}
-          />
+    return (
+      <TouchableOpacity onPress={onPress}>
+        <ThemedView style={styles.card} darkColor="#282828">
+          <ThemedView style={styles.imageContainer}>
+            <ImageWithFallback
+              source={{ uri: image }}
+              fallbackSource={defaultSource}
+              style={styles.image}
+            />
+          </ThemedView>
+          <ThemedView style={styles.textContainer}>
+            <ThemedText
+              style={styles.title}
+              numberOfLines={1}
+              ellipsizeMode="tail"
+            >
+              {title}
+            </ThemedText>
+            <ThemedText style={styles.price}>R$ {price}</ThemedText>
+          </ThemedView>
         </ThemedView>
-        <ThemedView style={styles.textContainer}>
-          <ThemedText
-            style={styles.title}
-            numberOfLines={1}
-            ellipsizeMode="tail"
-          >
-            {title}
-          </ThemedText>
-          <ThemedText style={styles.price}>R$ {price}</ThemedText>
-        </ThemedView>
-      </ThemedView>
-    </TouchableOpacity>
-  );
-});
+      </TouchableOpacity>
+    );
+  }
+);
 
 export default Card;

@@ -12,7 +12,6 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      marginBottom: 20,
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
     },
     userInfoContainer: {

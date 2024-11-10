@@ -6,6 +6,7 @@ import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
 import { useAuth } from "@/hooks/useAuth";
 import { api } from "@/services/api";
+import { router } from "expo-router";
 import React, { useEffect, useRef, useState } from "react";
 
 interface IProduto {
@@ -113,9 +114,7 @@ export default function HomeScreen() {
   };
 
   useEffect(() => {
-    if (abortControllerRef.current) {
-      abortControllerRef.current.abort();
-    }
+    if (abortControllerRef.current) abortControllerRef.current.abort();
 
     produtosPageRef.current = 1;
     farmaciasPageRef.current = 1;
@@ -169,6 +168,9 @@ export default function HomeScreen() {
               defaultSource={require("@/assets/images/remedioGenericoImg.jpg")}
               title={item.nome}
               price={item.precoUnitario}
+              onPress={() => {
+                router.push(`/produto/${item.id}`);
+              }}
             />
           )}
           onEndReached={handleProdutosEndReached}

@@ -3,7 +3,7 @@ import { ColorSchemeName, StyleSheet } from "react-native";
 export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     container: {
-      marginTop: 5,
+      marginTop: 20,
       flexDirection: "row",
       alignItems: "center",
       borderRadius: 6,

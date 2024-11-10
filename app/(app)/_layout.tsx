@@ -1,6 +1,7 @@
 import Loading from "@/components/Loading";
 import { storageUserGet } from "@/storage/storageUser";
 import { router, Slot } from "expo-router";
+import React from "react";
 import { useEffect, useState } from "react";
 
 export default function AppLayout() {
@@ -9,9 +10,9 @@ export default function AppLayout() {
   useEffect(() => {
     async function checkUser() {
       try {
-        const user = await storageUserGet();
+        const session = await storageUserGet();
 
-        if (!user) router.replace("/login");
+        if (!session) router.replace("/login");
       } catch (error) {
         router.replace("/login");
       } finally {

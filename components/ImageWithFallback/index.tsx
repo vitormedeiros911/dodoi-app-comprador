@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Image } from "react-native";
 
 type ImageWithFallbackProps = {
@@ -11,16 +11,22 @@ export default function ImageWithFallback({
   fallbackSource,
   style,
 }: ImageWithFallbackProps) {
-  const [imageSource, setImageSource] = useState(source || fallbackSource);
+  const [imageSource, setImageSource] = useState(source);
+
+  useEffect(() => {
+    if (!source) {
+      setImageSource(fallbackSource);
+    } else {
+      setImageSource(source);
+    }
+  }, [source, fallbackSource]);
 
   return (
     <Image
-      source={imageSource}
+      source={imageSource || fallbackSource}
       style={style}
       onError={() => {
-        if (fallbackSource) {
-          setImageSource(fallbackSource);
-        }
+        setImageSource(fallbackSource);
       }}
     />
   );

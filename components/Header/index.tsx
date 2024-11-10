@@ -9,9 +9,10 @@ import { Image, TouchableOpacity, useColorScheme } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
+import Line from "../Line";
 
 type HeaderProps = {
-  children: React.ReactNode;
+  children?: React.ReactNode;
   user: UserDto;
 };
 
@@ -49,6 +50,7 @@ export default function Header({ children, user }: HeaderProps) {
         </ThemedView>
       </ThemedView>
       {children}
+      <Line />
     </ThemedView>
   );
 }

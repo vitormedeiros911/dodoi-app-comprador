@@ -5,9 +5,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     card: {
       flex: 1,
-      width: 160,
+      width: 140,
       margin: 6,
-      borderRadius: 16,
+      height: 200,
+      borderRadius: 10,
       shadowColor: colorScheme === "light" ? "#000" : "#fff",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -21,7 +22,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     image: {
       width: "100%",
       height: 120,
-      borderRadius: 12,
+      borderRadius: 6,
     },
     textContainer: {
       paddingBottom: 10,
