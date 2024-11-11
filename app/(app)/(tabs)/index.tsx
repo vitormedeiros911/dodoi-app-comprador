@@ -3,11 +3,13 @@ import HorizontalList from "@/components/HorizontalList";
 import ListItem from "@/components/ListItem";
 import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
+import { Colors } from "@/constants/Colors";
 import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
+import { useColorScheme } from "react-native";
 
 interface IProduto {
   id: string;
@@ -27,12 +29,13 @@ export default function HomeScreen() {
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [produtos, setProdutos] = useState<IProduto[]>([]);
   const [farmacias, setFarmacias] = useState<IFarmacia[]>([]);
-  const [busca, setBusca] = useState(""); // Estado de busca
+  const [busca, setBusca] = useState("");
   const [totalProdutos, setTotalProdutos] = useState(0);
   const [totalFarmacias, setTotalFarmacias] = useState(0);
   const produtosPageRef = useRef(1);
   const farmaciasPageRef = useRef(1);
   const abortControllerRef = useRef<AbortController | null>(null);
+  const colorScheme = useColorScheme();
 
   const getProdutos = async (search?: string, page: number = 1) => {
     const params: { limit: number; skip: number; nome?: string } = {
@@ -148,7 +151,9 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView style={{ height: "100%" }}>
+    <ScrollView
+      style={{ backgroundColor: Colors[colorScheme ?? "light"].background }}
+    >
       <HorizontalList
         data={farmacias}
         title="Farmácias"
@@ -158,7 +163,6 @@ export default function HomeScreen() {
         onEndReached={handleFarmaciasEndReached}
         onEndReachedThreshold={0.5}
       />
-
       <HorizontalList
         data={produtos}
         title="Produtos"

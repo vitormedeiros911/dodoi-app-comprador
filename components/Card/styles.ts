@@ -7,7 +7,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flex: 1,
       width: 140,
       marginHorizontal: 6,
-      height: 220,
+      height: 190,
       borderRadius: 10,
       shadowColor: colorScheme === "light" ? "#000" : "#fff",
       shadowOffset: { width: 0, height: 2 },

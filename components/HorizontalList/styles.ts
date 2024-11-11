@@ -6,7 +6,6 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flex: 1,
       padding: 8,
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
-      height: 260,
     },
 
     title: {
@@ -15,14 +14,6 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       color: colorScheme === "light" ? "#000" : "#fff",
       padding: 8,
       marginBottom: 8,
-    },
-
-    loaderContainer: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      height: 200,
-      marginVertical: 20,
     },
   });
 };

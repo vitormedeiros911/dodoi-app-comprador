@@ -1,18 +1,10 @@
 // components/HorizontalList.tsx
-
 import React from "react";
-import {
-  FlatList,
-  FlatListProps,
-  useColorScheme,
-  View,
-  StyleSheet,
-} from "react-native";
+import { FlatList, FlatListProps, useColorScheme } from "react-native";
 
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
-import LoadingOverlay from "../LoadingOverlay"; // Importando o LoadingOverlay
 
 interface HorizontalListProps<T> extends FlatListProps<T> {
   data: T[];

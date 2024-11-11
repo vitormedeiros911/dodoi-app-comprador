@@ -15,16 +15,13 @@ import { TouchableOpacity, useColorScheme } from "react-native";
 
 import { createStyles } from "./styles";
 
-type ProdutoProps = {
-  favorited: boolean;
-};
-
 interface IProduto {
   id: string;
   nome: string;
   urlImagem: string;
   precoUnitario: number;
   descricao: string;
+  isFavorito: boolean;
   farmacia: {
     id: string;
     nome: string;
@@ -34,9 +31,9 @@ interface IProduto {
 
 const MemoizedImage = memo(ImageWithFallback);
 
-export default function Produto({ favorited }: ProdutoProps) {
+export default function Produto() {
   const [produto, setProduto] = useState<IProduto | null>(null);
-  const [isFavorited, setIsFavorited] = useState(favorited);
+  const [isFavorited, setIsFavorited] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [quantidade, setQuantidade] = useState(1);
   const colorScheme = useColorScheme();
@@ -50,6 +47,7 @@ export default function Produto({ favorited }: ProdutoProps) {
     try {
       const response = await api.get(`/produto/${idProduto}`);
       setProduto(response.data);
+      setIsFavorited(response.data.isFavorito);
     } catch (error) {
       console.log(error);
     } finally {
@@ -68,12 +66,35 @@ export default function Produto({ favorited }: ProdutoProps) {
       };
 
       adicionarAoCarrinho(produtoParaCarrinho);
+      setQuantidade(1);
     }
   }, [produto, quantidade, adicionarAoCarrinho]);
 
+  const addFavorito = async () => {
+    try {
+      await api.post(`/produto/favorito`, { idProduto: produto?.id });
+      setIsFavorited(true);
+    } catch (error) {
+      console.log("Erro ao adicionar aos favoritos:", error);
+    }
+  };
+
+  const removeFavorito = async () => {
+    try {
+      await api.delete(`/produto/${produto?.id}/favorito`);
+      setIsFavorited(false);
+    } catch (error) {
+      console.log("Erro ao remover dos favoritos:", error);
+    }
+  };
+
   const toggleFavorited = useCallback(() => {
-    setIsFavorited((prev) => !prev);
-  }, []);
+    if (isFavorited) {
+      removeFavorito();
+    } else {
+      addFavorito();
+    }
+  }, [isFavorited, produto]);
 
   const toggleDescription = useCallback(() => {
     setIsDescriptionExpanded((prev) => !prev);
@@ -91,13 +112,18 @@ export default function Produto({ favorited }: ProdutoProps) {
 
   useEffect(() => {
     getProduto();
-  }, [idProduto]);
+  }, []);
 
   if (!produto) return null;
 
   return (
     <ThemedView style={styles.container}>
-      <ScrollView contentStyle={{ paddingBottom: 80 }}>
+      <ScrollView
+        style={{
+          backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+          paddingBottom: 80,
+        }}
+      >
         <MemoizedImage
           source={{ uri: produto.urlImagem }}
           fallbackSource={require("@/assets/images/remedioGenericoImg.jpg")}

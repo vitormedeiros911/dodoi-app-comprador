@@ -5,11 +5,11 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
     },
 
     card: {
-      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
       width: "100%",
       padding: 18,
       height: "100%",
@@ -19,7 +19,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
       marginBottom: 10,
     },
 
@@ -50,7 +50,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     farmaciaContainer: {
       flexDirection: "row",
       marginTop: 20,
-      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
       alignItems: "center",
     },
 
@@ -97,14 +97,14 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
 
     footer: {
-      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
       paddingHorizontal: 20,
       borderTopWidth: 1,
       borderTopColor: Colors[colorScheme ?? "light"].border,
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      position: "absolute",
+      position: "relative",
       bottom: 0,
       width: "100%",
     },

@@ -1,27 +1,32 @@
-import { ThemedView } from "@/components/ThemedView";
-import { StyleSheet } from "react-native";
+import { useThemeColor } from "@/hooks/useThemeColor";
+import { StyleSheet, View } from "react-native";
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
 } from "react-native-reanimated";
 
 import type { PropsWithChildren } from "react";
-
 type Props = PropsWithChildren<{}>;
 
 interface ScrollViewProps {
   onScrollToTop?: () => void;
   style?: any;
-  contentStyle?: any;
+  lightColor?: string;
+  darkColor?: string;
 }
 
 export default function ScrollView({
   children,
   onScrollToTop,
   style,
-  contentStyle,
+  lightColor,
+  darkColor,
 }: Props & ScrollViewProps) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
+  const backgroundColor = useThemeColor(
+    { light: lightColor, dark: darkColor },
+    "background"
+  );
 
   const scrollHandler = useAnimatedScrollHandler((event) => {
     if (event.contentOffset.y === 0) {
@@ -32,18 +37,15 @@ export default function ScrollView({
   });
 
   return (
-    <ThemedView style={[styles.container, style]}>
-      <Animated.ScrollView
-        ref={scrollRef}
-        scrollEventThrottle={16}
-        onScroll={scrollHandler}
-        showsVerticalScrollIndicator={false}
-      >
-        <ThemedView style={[styles.content, contentStyle]}>
-          {children}
-        </ThemedView>
-      </Animated.ScrollView>
-    </ThemedView>
+    <Animated.ScrollView
+      ref={scrollRef}
+      scrollEventThrottle={16}
+      onScroll={scrollHandler}
+      showsVerticalScrollIndicator={false}
+      style={[styles.container, { backgroundColor }, style]}
+    >
+      <View style={styles.content}>{children}</View>
+    </Animated.ScrollView>
   );
 }
 
@@ -53,7 +55,6 @@ const styles = StyleSheet.create({
   },
 
   content: {
-    flex: 1,
     flexGrow: 1,
     overflow: "hidden",
   },

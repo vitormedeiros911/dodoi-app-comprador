@@ -1,3 +1,4 @@
+import CarrinhoOverlay from "@/components/CarrinhoOverlay";
 import Loading from "@/components/Loading";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import { AuthContextProvider } from "@/contexts/AuthContext";
@@ -12,11 +13,9 @@ import { Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import { useColorScheme } from "react-native";
-import { GestureHandlerRootView } from "react-native-gesture-handler";
-import { CarrinhoProvider } from "../contexts/CarrinhoContext";
-import CarrinhoOverlay from "@/components/CarrinhoOverlay";
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
+import { CarrinhoProvider } from "../contexts/CarrinhoContext";
+
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
@@ -34,18 +33,16 @@ export default function RootLayout() {
   if (!loaded) return <Loading />;
 
   return (
-    <GestureHandlerRootView>
-      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-        <AuthContextProvider>
-          <LoadingProvider>
-            <LoadingOverlay />
-            <CarrinhoProvider>
-              <Slot />
-              <CarrinhoOverlay />
-            </CarrinhoProvider>
-          </LoadingProvider>
-        </AuthContextProvider>
-      </ThemeProvider>
-    </GestureHandlerRootView>
+    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+      <AuthContextProvider>
+        <LoadingProvider>
+          <LoadingOverlay />
+          <CarrinhoProvider>
+            <Slot />
+            <CarrinhoOverlay />
+          </CarrinhoProvider>
+        </LoadingProvider>
+      </AuthContextProvider>
+    </ThemeProvider>
   );
 }
