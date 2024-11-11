@@ -8,6 +8,8 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       padding: 20,
       width: "100%",
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      borderBottomWidth: 1,
+      borderBottomColor: Colors[colorScheme ?? "light"].border,
     },
     firstRow: {
       flexDirection: "row",

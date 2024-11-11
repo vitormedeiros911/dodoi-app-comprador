@@ -1,60 +1,57 @@
 import { Colors } from "@/constants/Colors";
-import { ColorSchemeName, StyleSheet } from "react-native";
+import { StyleSheet, ColorSchemeName } from "react-native";
 
 export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      paddingHorizontal: 20,
-      alignItems: "center",
-      justifyContent: "center",
-      paddingBottom: 20,
+      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
     },
 
     card: {
-      flex: 1,
-      backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
       width: "100%",
-      borderRadius: 10,
       padding: 18,
-      justifyContent: "space-between",
+      height: "100%",
     },
 
     firstRow: {
-      marginTop: 20,
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      marginBottom: 10,
     },
 
     title: {
-      fontSize: 24,
+      fontSize: 18,
       fontWeight: "500",
     },
 
     image: {
       width: "100%",
-      height: 200,
-      borderRadius: 10,
+      height: 240,
     },
 
     price: {
-      fontSize: 18,
+      fontSize: 16,
       fontWeight: "500",
+      color: Colors[colorScheme ?? "light"].lightText,
     },
 
     description: {
       marginTop: 20,
       textAlign: "justify",
       fontSize: 14,
+      color: Colors[colorScheme ?? "light"].lightText,
+      lineHeight: 18,
     },
 
     farmaciaContainer: {
       flexDirection: "row",
-      alignItems: "center",
       marginTop: 20,
-      backgroundColor: colorScheme === "light" ? "#f2f2f2" : "#282828",
+      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      alignItems: "center",
     },
 
     farmaciaImage: {
@@ -64,26 +61,67 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
 
     farmaciaName: {
-      fontSize: 16,
+      fontSize: 14,
       marginLeft: 10,
+      color: Colors[colorScheme ?? "light"].text,
     },
 
-    buyContainer: {
+    descriptionLink: {
+      color: Colors.mainColor,
+      fontSize: 14,
+      marginTop: 10,
+      textDecorationLine: "underline",
+      fontWeight: "bold",
+    },
+
+    quantityContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      marginVertical: 15,
+    },
+
+    quantityButton: {
+      padding: 12,
+      opacity: 1,
+    },
+
+    quantityButtonDisabled: {
+      padding: 12,
+      opacity: 0.3,
+    },
+
+    quantityText: {
+      fontSize: 16,
+      marginHorizontal: 10,
+      fontWeight: "500",
+    },
+
+    footer: {
+      backgroundColor: colorScheme === "light" ? "#fff" : "#282828",
+      paddingHorizontal: 20,
+      borderTopWidth: 1,
+      borderTopColor: Colors[colorScheme ?? "light"].border,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-between",
+      position: "absolute",
+      bottom: 0,
       width: "100%",
-      marginTop: "auto",
     },
 
     buyButton: {
       backgroundColor: Colors.mainColor,
-      padding: 10,
+      paddingVertical: 12,
+      paddingHorizontal: 20,
       borderRadius: 8,
       flexDirection: "row",
-      justifyContent: "center",
+      justifyContent: "space-between",
+      width: 200,
     },
 
     buyText: {
       textAlign: "center",
-      fontSize: 16,
+      fontSize: 14,
       marginRight: 10,
       color: "white",
     },

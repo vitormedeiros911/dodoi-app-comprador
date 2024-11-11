@@ -54,10 +54,11 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
 
   const adicionarAoCarrinho = (item: ItemCarrinhoDto) => {
     const itemExistente = carrinho.find((i) => i.idProduto === item.idProduto);
+
     if (itemExistente) {
       const carrinhoAtualizado = carrinho.map((i) =>
         i.idProduto === item.idProduto
-          ? { ...i, quantidade: i.quantidade + 1 }
+          ? { ...i, quantidade: i.quantidade + item.quantidade }
           : i
       );
       setCarrinho(carrinhoAtualizado);
@@ -68,7 +69,6 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
       salvarCarrinho(carrinhoAtualizado);
     }
   };
-
   const incrementarQuantidade = (itemId: string) => {
     const carrinhoAtualizado = carrinho.map((item) =>
       item.idProduto === itemId

@@ -6,15 +6,20 @@ import Animated, {
 } from "react-native-reanimated";
 
 import type { PropsWithChildren } from "react";
+
 type Props = PropsWithChildren<{}>;
 
 interface ScrollViewProps {
   onScrollToTop?: () => void;
+  style?: any;
+  contentStyle?: any;
 }
 
 export default function ScrollView({
   children,
   onScrollToTop,
+  style,
+  contentStyle,
 }: Props & ScrollViewProps) {
   const scrollRef = useAnimatedRef<Animated.ScrollView>();
 
@@ -25,14 +30,18 @@ export default function ScrollView({
       }
     }
   });
+
   return (
-    <ThemedView style={styles.container}>
+    <ThemedView style={[styles.container, style]}>
       <Animated.ScrollView
         ref={scrollRef}
         scrollEventThrottle={16}
-        onScroll={scrollHandler} // Usando o scrollHandler para detectar o movimento
+        onScroll={scrollHandler}
+        showsVerticalScrollIndicator={false}
       >
-        <ThemedView style={styles.content}>{children}</ThemedView>
+        <ThemedView style={[styles.content, contentStyle]}>
+          {children}
+        </ThemedView>
       </Animated.ScrollView>
     </ThemedView>
   );
@@ -42,8 +51,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+
   content: {
     flex: 1,
+    flexGrow: 1,
     overflow: "hidden",
   },
 });

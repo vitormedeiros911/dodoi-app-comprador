@@ -15,6 +15,7 @@ import {
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
+import { formatBRL } from "../../utils/formatBRL";
 
 const CarrinhoOverlay: React.FC = () => {
   const colorScheme = useColorScheme();
@@ -38,7 +39,7 @@ const CarrinhoOverlay: React.FC = () => {
       <ThemedView style={styles.itemDetails}>
         <ThemedText style={styles.itemName}>{item.nomeProduto}</ThemedText>
         <ThemedText style={styles.itemPrice}>
-          Preço: R$ {item.precoUnitario}
+          Preço: {formatBRL(item.precoUnitario)}
         </ThemedText>
         <ThemedText style={styles.itemQuantity}>
           Quantidade: {item.quantidade}
@@ -67,9 +68,10 @@ const CarrinhoOverlay: React.FC = () => {
   );
 
   const calcularPrecoTotal = () => {
-    return carrinho
-      .reduce((total, item) => total + item.precoUnitario * item.quantidade, 0)
-      .toFixed(2);
+    return carrinho.reduce(
+      (total, item) => total + item.precoUnitario * item.quantidade,
+      0
+    );
   };
 
   const precoTotal = calcularPrecoTotal();
@@ -110,7 +112,7 @@ const CarrinhoOverlay: React.FC = () => {
             <ThemedView style={styles.footer}>
               <ThemedView style={styles.totalPriceRow}>
                 <ThemedText style={styles.totalPrice}>
-                  Preço Total: R$ {precoTotal}
+                  Preço Total: {formatBRL(precoTotal)}
                 </ThemedText>
               </ThemedView>
 

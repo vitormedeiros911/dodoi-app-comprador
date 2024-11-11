@@ -148,7 +148,7 @@ export default function HomeScreen() {
   };
 
   return (
-    <ScrollView>
+    <ScrollView style={{ height: "100%" }}>
       <HorizontalList
         data={farmacias}
         title="Farmácias"

@@ -1,4 +1,5 @@
 // components/LoadingOverlay.tsx
+import { Colors } from "@/constants/Colors";
 import { useLoading } from "@/hooks/useLoading";
 import React from "react";
 import { ActivityIndicator, StyleSheet, View } from "react-native";
@@ -10,7 +11,7 @@ const LoadingOverlay = () => {
 
   return (
     <View style={styles.overlay}>
-      <ActivityIndicator size="large" color="#fff" />
+      <ActivityIndicator size="large" color={Colors.mainColor} />
     </View>
   );
 };
