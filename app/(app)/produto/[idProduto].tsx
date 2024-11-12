@@ -9,11 +9,12 @@ import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { formatBRL } from "@/utils/formatBRL";
 import { Ionicons } from "@expo/vector-icons";
-import { useLocalSearchParams } from "expo-router";
+import { useFocusEffect, useLocalSearchParams } from "expo-router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 
 import { createStyles } from "./styles";
+import { useHeader } from "@/hooks/useHeader";
 
 interface IProduto {
   id: string;
@@ -41,6 +42,7 @@ export default function Produto() {
   const { idProduto } = useLocalSearchParams();
   const { startLoading, stopLoading } = useLoading();
   const { adicionarAoCarrinho } = useCarrinho();
+  const { setBackIndicator } = useHeader();
 
   const getProduto = async () => {
     startLoading();
@@ -89,11 +91,8 @@ export default function Produto() {
   };
 
   const toggleFavorited = useCallback(() => {
-    if (isFavorited) {
-      removeFavorito();
-    } else {
-      addFavorito();
-    }
+    if (isFavorited) removeFavorito();
+    else addFavorito();
   }, [isFavorited, produto]);
 
   const toggleDescription = useCallback(() => {
@@ -105,14 +104,22 @@ export default function Produto() {
   };
 
   const diminuirQuantidade = () => {
-    if (quantidade > 1) {
-      setQuantidade((prev) => prev - 1);
-    }
+    if (quantidade > 1) setQuantidade((prev) => prev - 1);
   };
 
   useEffect(() => {
     getProduto();
   }, []);
+
+  useFocusEffect(
+    useCallback(() => {
+      setBackIndicator(true);
+
+      return () => {
+        setBackIndicator(false);
+      };
+    }, [setBackIndicator])
+  );
 
   if (!produto) return null;
 

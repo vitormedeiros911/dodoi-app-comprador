@@ -104,11 +104,8 @@ export default function home() {
     const fetchData = async () => {
       startLoading();
       try {
-        if (busca === "") {
-          await Promise.all([getProdutos(), getFarmacias()]);
-        } else {
-          await Promise.all([getProdutos(busca, 1), getFarmacias(busca, 1)]);
-        }
+        if (busca === "") await Promise.all([getProdutos(), getFarmacias()]);
+        else await Promise.all([getProdutos(busca, 1), getFarmacias(busca, 1)]);
       } finally {
         stopLoading();
       }

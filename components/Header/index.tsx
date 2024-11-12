@@ -17,6 +17,7 @@ import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
 import ImageWithFallback from "../ImageWithFallback";
+import { useRouter } from "expo-router";
 
 type HeaderProps = {
   user: UserDto;
@@ -26,8 +27,9 @@ export default function Header({ user }: HeaderProps) {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
 
-  const { headerContent } = useHeader();
+  const { headerContent, backIndicator } = useHeader();
   const { carrinho, toggleCarrinhoOverlay } = useCarrinho();
+  const router = useRouter();
 
   const scaleAnim = useRef(new Animated.Value(1)).current;
 
@@ -55,16 +57,22 @@ export default function Header({ user }: HeaderProps) {
   return (
     <ThemedView style={styles.container}>
       <ThemedView style={styles.firstRow}>
-        <ThemedView style={styles.userInfoContainer}>
-          <ImageWithFallback
-            source={{ uri: user.avatar }}
-            fallbackSource={defaultUserImg}
-            style={styles.userImg}
-          />
-          <ThemedText style={styles.userName}>
-            Olá, {getFirstName(user.nome)}
-          </ThemedText>
-        </ThemedView>
+        {backIndicator ? (
+          <TouchableOpacity onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color={Colors.mainColor} />
+          </TouchableOpacity>
+        ) : (
+          <ThemedView style={styles.userInfoContainer}>
+            <ImageWithFallback
+              source={{ uri: user.avatar }}
+              fallbackSource={defaultUserImg}
+              style={styles.userImg}
+            />
+            <ThemedText style={styles.userName}>
+              Olá, {getFirstName(user.nome)}
+            </ThemedText>
+          </ThemedView>
+        )}
         <ThemedView style={styles.menuItens}>
           <TouchableOpacity onPress={toggleCarrinhoOverlay}>
             <Ionicons

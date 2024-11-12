@@ -15,8 +15,15 @@ export default function TabLayout() {
         headerShown: false,
         tabBarStyle: {
           backgroundColor: Colors[colorScheme ?? "light"].tabBackground,
-          height: Platform.OS === "ios" ? 90 : 60,
-          padding: 10,
+          height: Platform.OS === "ios" ? 90 : 64,
+          flexDirection: "row",
+          alignItems: "center",
+          justifyContent: "center",
+        },
+        tabBarIconStyle: {
+          flex: 0,
+          width: 26,
+          height: 26,
         },
       }}
     >
@@ -56,8 +63,8 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="(perfil)"
+      <Tabs.Screen
+        name="perfil/index"
         options={{
           title: "Perfil",
           tabBarIcon: ({ color, focused }) => (
@@ -67,7 +74,7 @@ export default function TabLayout() {
             />
           ),
         }}
-      /> */}
+      />
     </Tabs>
   );
 }

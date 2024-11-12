@@ -4,6 +4,7 @@ import Loading from "@/components/Loading";
 import { CarrinhoProvider } from "@/contexts/CarrinhoContext";
 import { HeaderProvider } from "@/contexts/HeaderContext";
 import { UserDto } from "@/dto/UserDto";
+import { useHeader } from "@/hooks/useHeader";
 import { storageUserGet } from "@/storage/storageUser";
 import { router, Slot } from "expo-router";
 import React, { useEffect, useState } from "react";
@@ -11,6 +12,7 @@ import React, { useEffect, useState } from "react";
 export default function AppLayout() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState({} as UserDto);
+  const { isVisible } = useHeader();
 
   useEffect(() => {
     async function checkUser() {
@@ -35,7 +37,7 @@ export default function AppLayout() {
   return (
     <CarrinhoProvider>
       <HeaderProvider>
-        <Header user={user} />
+        {isVisible && <Header user={user} />}
         <Slot />
       </HeaderProvider>
 

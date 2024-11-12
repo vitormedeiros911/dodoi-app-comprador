@@ -8,7 +8,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       width: 140,
       marginHorizontal: 6,
       height: 190,
-      borderRadius: 10,
+      borderRadius: 6,
       shadowColor: colorScheme === "light" ? "#000" : "#fff",
       shadowOffset: { width: 0, height: 2 },
       shadowOpacity: 0.1,
@@ -22,7 +22,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
     image: {
       width: "100%",
-      height: 120,
+      height: 110,
       borderRadius: 4,
     },
     textContainer: {

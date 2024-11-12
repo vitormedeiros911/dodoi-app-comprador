@@ -7,7 +7,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       paddingTop: Platform.OS === "ios" ? 60 : 50,
       padding: 20,
       width: "100%",
-      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      backgroundColor: Colors[colorScheme ?? "light"].background,
       borderBottomWidth: 1,
       borderBottomColor: Colors[colorScheme ?? "light"].border,
     },
@@ -15,12 +15,12 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: "row",
       justifyContent: "space-between",
       alignItems: "center",
-      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      backgroundColor: Colors[colorScheme ?? "light"].background,
     },
     userInfoContainer: {
       flexDirection: "row",
       alignItems: "center",
-      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      backgroundColor: Colors[colorScheme ?? "light"].background,
     },
     userImg: {
       width: 50,
@@ -35,7 +35,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     menuItens: {
       flexDirection: "row",
       gap: 30,
-      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      backgroundColor: Colors[colorScheme ?? "light"].background,
     },
     cartBadge: {
       position: "absolute",

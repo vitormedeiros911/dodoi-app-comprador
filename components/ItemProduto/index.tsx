@@ -1,11 +1,11 @@
 import { formatBRL } from "@/utils/formatBRL";
 import { router } from "expo-router";
-import { Image, TouchableOpacity, useColorScheme } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 
+import ImageWithFallback from "../ImageWithFallback";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
-import ImageWithFallback from "../ImageWithFallback";
 
 type ItemProdutoProps = {
   item: {
