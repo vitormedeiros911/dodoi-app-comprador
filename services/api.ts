@@ -1,4 +1,3 @@
-import { useAuth } from "@/hooks/useAuth";
 import { storageUserGet } from "@/storage/storageUser";
 import { API_URL } from "@env";
 import axios from "axios";
@@ -6,6 +5,8 @@ import axios from "axios";
 const api = axios.create({
   baseURL: API_URL,
 });
+
+api.defaults.timeout = 5000;
 
 (async () => {
   const session = await storageUserGet();

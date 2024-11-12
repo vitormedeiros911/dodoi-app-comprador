@@ -1,6 +1,6 @@
 import Card from "@/components/Card";
 import HorizontalList from "@/components/HorizontalList";
-import ListItem from "@/components/ListItem";
+import ListItem from "@/components/SimpleCard";
 import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
 import { Categorias } from "@/constants/Categorias";
@@ -25,7 +25,7 @@ interface IFarmacia {
   urlImagem: string;
 }
 
-export default function HomeScreen() {
+export default function home() {
   const { setHeaderContent } = useHeader();
   const { isLoading, startLoading, stopLoading } = useLoading();
   const [produtos, setProdutos] = useState<IProduto[]>([]);
