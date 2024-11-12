@@ -37,6 +37,7 @@ export default function HomeScreen() {
   const farmaciasPageRef = useRef(1);
   const abortControllerRef = useRef<AbortController | null>(null);
   const colorScheme = useColorScheme();
+  const [refreshing, setRefreshing] = useState(false);
 
   const getProdutos = async (search?: string, page: number = 1) => {
     const params: { limit: number; skip: number; nome?: string } = {
@@ -60,11 +61,8 @@ export default function HomeScreen() {
       );
       setTotalProdutos(response.data.total);
 
-      if (page === 1) {
-        setProdutos(response.data.produtos);
-      } else {
-        setProdutos((prev) => [...prev, ...response.data.produtos]);
-      }
+      if (page === 1) setProdutos(response.data.produtos);
+      else setProdutos((prev) => [...prev, ...response.data.produtos]);
 
       stopLoading();
     } catch (error) {
@@ -94,11 +92,8 @@ export default function HomeScreen() {
       );
       setTotalFarmacias(response.data.total);
 
-      if (page === 1) {
-        setFarmacias(response.data.farmacias);
-      } else {
-        setFarmacias((prev) => [...prev, ...response.data.farmacias]);
-      }
+      if (page === 1) setFarmacias(response.data.farmacias);
+      else setFarmacias((prev) => [...prev, ...response.data.farmacias]);
 
       stopLoading();
     } catch (error) {
@@ -151,9 +146,19 @@ export default function HomeScreen() {
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    produtosPageRef.current = 1;
+    farmaciasPageRef.current = 1;
+    await Promise.all([getProdutos(busca, 1), getFarmacias(busca, 1)]);
+    setRefreshing(false);
+  };
+
   return (
     <ScrollView
       style={{ backgroundColor: Colors[colorScheme ?? "light"].background }}
+      onRefresh={handleRefresh}
+      refreshing={refreshing}
     >
       <HorizontalList
         data={Categorias}

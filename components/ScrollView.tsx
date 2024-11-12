@@ -1,5 +1,5 @@
 import { useThemeColor } from "@/hooks/useThemeColor";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, RefreshControl } from "react-native";
 import Animated, {
   useAnimatedRef,
   useAnimatedScrollHandler,
@@ -10,6 +10,8 @@ type Props = PropsWithChildren<{}>;
 
 interface ScrollViewProps {
   onScrollToTop?: () => void;
+  onRefresh?: () => Promise<void>; // Adiciona a prop de refresh
+  refreshing?: boolean; // Adiciona a prop de estado de atualização
   style?: any;
   lightColor?: string;
   darkColor?: string;
@@ -18,6 +20,8 @@ interface ScrollViewProps {
 export default function ScrollView({
   children,
   onScrollToTop,
+  onRefresh,
+  refreshing = false, // Inicializa como falso por padrão
   style,
   lightColor,
   darkColor,
@@ -43,6 +47,11 @@ export default function ScrollView({
       onScroll={scrollHandler}
       showsVerticalScrollIndicator={false}
       style={[styles.container, { backgroundColor }, style]}
+      refreshControl={
+        onRefresh ? (
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        ) : undefined
+      }
     >
       <View style={styles.content}>{children}</View>
     </Animated.ScrollView>
