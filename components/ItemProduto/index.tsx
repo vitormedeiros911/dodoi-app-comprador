@@ -5,6 +5,7 @@ import { Image, TouchableOpacity, useColorScheme } from "react-native";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
+import ImageWithFallback from "../ImageWithFallback";
 
 type ItemProdutoProps = {
   item: {
@@ -28,11 +29,15 @@ export default function ItemProduto({ item }: ItemProdutoProps) {
       style={styles.container}
       onPress={handleVisualizarProduto}
     >
-      <Image source={{ uri: item.urlImagem }} style={styles.itemImage} />
+      <ImageWithFallback
+        source={{ uri: item.urlImagem }}
+        fallbackSource={require("@/assets/images/remedioGenericoImg.jpg")}
+        style={styles.itemImage}
+      />
       <ThemedView style={styles.itemDetails}>
         <ThemedText style={styles.itemName}>{item.nome}</ThemedText>
         <ThemedText style={styles.itemPrice}>
-          Preço unitário: {formatBRL(item.precoUnitario)}
+          {formatBRL(item.precoUnitario)}
         </ThemedText>
       </ThemedView>
     </TouchableOpacity>

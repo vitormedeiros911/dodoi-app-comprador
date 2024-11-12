@@ -5,7 +5,8 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
     container: {
       flexDirection: "row",
       justifyContent: "space-between",
-      paddingVertical: 10,
+      paddingVertical: 20,
+      paddingHorizontal: 16,
       borderBottomWidth: 1,
       borderBottomColor: "#ccc",
       alignItems: "center",
@@ -14,7 +15,7 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
     itemImage: {
       width: 60,
       height: 60,
-      marginRight: 10,
+      marginRight: 16,
       borderRadius: 5,
     },
     itemDetails: {
