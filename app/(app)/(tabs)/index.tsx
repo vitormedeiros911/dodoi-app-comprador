@@ -3,6 +3,7 @@ import HorizontalList from "@/components/HorizontalList";
 import ListItem from "@/components/ListItem";
 import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
+import { Categorias } from "@/constants/Categorias";
 import { Colors } from "@/constants/Colors";
 import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
@@ -155,13 +156,11 @@ export default function HomeScreen() {
       style={{ backgroundColor: Colors[colorScheme ?? "light"].background }}
     >
       <HorizontalList
-        data={farmacias}
-        title="Farmácias"
+        data={Categorias}
+        title="Categorias"
         renderItem={({ item }) => (
-          <ListItem image={item.urlImagem} title={item.nome} />
+          <ListItem imageSource={item.imagem} title={item.nome} />
         )}
-        onEndReached={handleFarmaciasEndReached}
-        onEndReachedThreshold={0.5}
       />
       <HorizontalList
         data={produtos}
@@ -178,6 +177,15 @@ export default function HomeScreen() {
           />
         )}
         onEndReached={handleProdutosEndReached}
+        onEndReachedThreshold={0.5}
+      />
+      <HorizontalList
+        data={farmacias}
+        title="Farmácias"
+        renderItem={({ item }) => (
+          <ListItem imageUrl={item.urlImagem} title={item.nome} />
+        )}
+        onEndReached={handleFarmaciasEndReached}
         onEndReachedThreshold={0.5}
       />
     </ScrollView>

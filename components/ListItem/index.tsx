@@ -1,22 +1,32 @@
-import { Image, TouchableOpacity } from "react-native";
+import { TouchableOpacity } from "react-native";
 
+import ImageWithFallback from "../ImageWithFallback";
 import { ThemedText } from "../ThemedText";
-import { ThemedView } from "../ThemedView";
 import { styles } from "./styles";
 
 type ListItemProps = {
-  image: string;
+  imageUrl?: string;
   title: string;
+  imageSource?: any;
 };
 
-export default function ListItem({ image, title }: ListItemProps) {
+export default function ListItem({
+  imageUrl,
+  imageSource,
+  title,
+}: ListItemProps) {
   return (
     <TouchableOpacity style={styles.container}>
-      <Image
+      <ImageWithFallback
         style={styles.img}
-        source={{
-          uri: image,
-        }}
+        source={
+          imageSource
+            ? imageSource
+            : {
+                uri: imageUrl,
+              }
+        }
+        fallbackSource={require("@/assets/images/imgNotFound.jpg")}
       />
       <ThemedText style={styles.title} numberOfLines={1} ellipsizeMode="tail">
         {title}

@@ -78,6 +78,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flexDirection: "row",
       alignItems: "center",
       marginVertical: 15,
+      backgroundColor: Colors[colorScheme ?? "light"].backgroundSecondary,
     },
 
     quantityButton: {

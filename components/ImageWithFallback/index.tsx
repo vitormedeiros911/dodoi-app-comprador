@@ -4,7 +4,8 @@ import { Image } from "react-native";
 type ImageWithFallbackProps = {
   source: any;
   fallbackSource: any;
-} & React.ComponentProps<typeof Image>;
+  style?: any;
+};
 
 export default function ImageWithFallback({
   source,
@@ -14,11 +15,8 @@ export default function ImageWithFallback({
   const [imageSource, setImageSource] = useState(source);
 
   useEffect(() => {
-    if (!source) {
-      setImageSource(fallbackSource);
-    } else {
-      setImageSource(source);
-    }
+    if (!source) setImageSource(fallbackSource);
+    else setImageSource(source);
   }, [source, fallbackSource]);
 
   return (

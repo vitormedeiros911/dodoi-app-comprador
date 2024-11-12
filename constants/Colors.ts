@@ -8,13 +8,14 @@ export const Colors = {
   light: {
     text: "#11181C",
     lightText: "#7A7F83",
-    background: "#f2f2f2",
+    background: "#fff",
     tint: tintColorLight,
     icon: "#4F4F4F",
     tabIconDefault: "#4F4F4F",
     tabIconSelected: "#000",
     tabBackground: mainColor,
     border: "#E5E5E5",
+    backgroundSecondary: "#f2f2f2",
   },
   dark: {
     text: "#fff",
@@ -26,5 +27,6 @@ export const Colors = {
     tabIconSelected: mainColor,
     tabBackground: "#121212",
     border: "#303030",
+    backgroundSecondary: "#282828",
   },
 };
