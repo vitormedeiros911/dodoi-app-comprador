@@ -51,7 +51,6 @@ export default function home() {
     abortControllerRef.current = controller;
 
     try {
-      startLoading();
       const response = await api.get<{ produtos: IProduto[]; total: number }>(
         "/produto",
         {
@@ -63,10 +62,8 @@ export default function home() {
 
       if (page === 1) setProdutos(response.data.produtos);
       else setProdutos((prev) => [...prev, ...response.data.produtos]);
-
-      stopLoading();
     } catch (error) {
-      stopLoading();
+      console.error("Erro em getProdutos:", error);
     }
   };
 
@@ -82,7 +79,6 @@ export default function home() {
     abortControllerRef.current = controller;
 
     try {
-      startLoading();
       const response = await api.get<{ farmacias: IFarmacia[]; total: number }>(
         "/farmacia",
         {
@@ -94,10 +90,8 @@ export default function home() {
 
       if (page === 1) setFarmacias(response.data.farmacias);
       else setFarmacias((prev) => [...prev, ...response.data.farmacias]);
-
-      stopLoading();
     } catch (error) {
-      stopLoading();
+      console.error("Erro em getFarmacias:", error);
     }
   };
 
@@ -107,13 +101,20 @@ export default function home() {
     produtosPageRef.current = 1;
     farmaciasPageRef.current = 1;
 
-    if (busca === "") {
-      getProdutos();
-      getFarmacias();
-    } else {
-      getProdutos(busca, 1);
-      getFarmacias(busca, 1);
-    }
+    const fetchData = async () => {
+      startLoading();
+      try {
+        if (busca === "") {
+          await Promise.all([getProdutos(), getFarmacias()]);
+        } else {
+          await Promise.all([getProdutos(busca, 1), getFarmacias(busca, 1)]);
+        }
+      } finally {
+        stopLoading();
+      }
+    };
+
+    fetchData();
 
     return () => {
       if (abortControllerRef.current) abortControllerRef.current.abort();
@@ -130,19 +131,29 @@ export default function home() {
     }, [setHeaderContent])
   );
 
-  const handleProdutosEndReached = () => {
+  const handleProdutosEndReached = async () => {
     if (!isLoading && produtos.length < totalProdutos) {
       const nextPage = produtosPageRef.current + 1;
       produtosPageRef.current = nextPage;
-      getProdutos(busca, nextPage);
+      try {
+        startLoading();
+        await getProdutos(busca, nextPage);
+      } finally {
+        stopLoading();
+      }
     }
   };
 
-  const handleFarmaciasEndReached = () => {
+  const handleFarmaciasEndReached = async () => {
     if (!isLoading && farmacias.length < totalFarmacias) {
       const nextPage = farmaciasPageRef.current + 1;
       farmaciasPageRef.current = nextPage;
-      getFarmacias(busca, nextPage);
+      try {
+        startLoading();
+        await getFarmacias(busca, nextPage);
+      } finally {
+        stopLoading();
+      }
     }
   };
 

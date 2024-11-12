@@ -2,7 +2,6 @@ import googleIcon from "@/assets/images/google-icon.png";
 import handsImgBg from "@/assets/images/handsImgBg.jpg";
 import Button from "@/components/Button";
 import { useAuth } from "@/hooks/useAuth";
-import { IOS_CLIENT_ID, WEB_CLIENT_ID } from "@env";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import React, { useState } from "react";
@@ -10,8 +9,8 @@ import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 GoogleSignin.configure({
   scopes: ["email", "profile"],
-  webClientId: WEB_CLIENT_ID,
-  iosClientId: IOS_CLIENT_ID,
+  webClientId: process.env.EXPO_PUBLIC_WEB_CLIENT_ID,
+  iosClientId: process.env.EXPO_PUBLIC_IOS_CLIENT_ID,
 });
 
 export default function Login() {
@@ -21,10 +20,12 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     setIsAuthenticating(true);
 
-    signIn();
-
-    router.navigate("/(app)/(tabs)");
-    setIsAuthenticating(false);
+    try {
+      signIn();
+    } finally {
+      router.navigate("/(app)/(tabs)");
+      setIsAuthenticating(false);
+    }
   };
 
   return (
