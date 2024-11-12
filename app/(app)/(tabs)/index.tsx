@@ -1,6 +1,6 @@
 import Card from "@/components/Card";
 import HorizontalList from "@/components/HorizontalList";
-import ListItem from "@/components/SimpleCard";
+import ListItem from "@/components/ListItem";
 import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
 import { Categorias } from "@/constants/Categorias";
