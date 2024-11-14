@@ -34,15 +34,15 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <AuthContextProvider>
-        <LoadingProvider>
+      <LoadingProvider>
+        <AuthContextProvider>
           <LoadingOverlay />
           <CarrinhoProvider>
             <Slot />
             <CarrinhoOverlay />
           </CarrinhoProvider>
-        </LoadingProvider>
-      </AuthContextProvider>
+        </AuthContextProvider>
+      </LoadingProvider>
     </ThemeProvider>
   );
 }

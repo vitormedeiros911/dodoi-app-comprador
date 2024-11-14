@@ -22,30 +22,42 @@ interface IFavorito {
   };
 }
 
+const MemoizedItemProduto = React.memo(ItemProduto);
+
 export default function favoritos() {
   const [favoritos, setFavoritos] = useState<IFavorito[]>([] as IFavorito[]);
+  const [refreshing, setRefreshing] = useState(false);
   const { startLoading, stopLoading } = useLoading();
   const colorScheme = useColorScheme();
   const styles = createColorScheme(colorScheme);
 
   const getFavoritos = async () => {
     try {
-      startLoading();
       const response = await api.get("produto/favoritos", {
         params: {
           limit: 10,
         },
       });
       setFavoritos(response.data.favoritos);
-      stopLoading();
     } catch (error) {
       console.error(error);
-      stopLoading();
     }
   };
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await getFavoritos();
+    setRefreshing(false);
+  };
+
   useEffect(() => {
-    getFavoritos();
+    const fetchData = async () => {
+      startLoading();
+      await getFavoritos();
+      stopLoading();
+    };
+
+    fetchData();
   }, []);
 
   return (
@@ -54,7 +66,9 @@ export default function favoritos() {
       <FlatList
         data={favoritos}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => <ItemProduto item={item.produto} />}
+        onRefresh={handleRefresh}
+        refreshing={refreshing}
+        renderItem={({ item }) => <MemoizedItemProduto item={item.produto} />}
       />
     </ThemedView>
   );

@@ -63,7 +63,7 @@ export default function home() {
       if (page === 1) setProdutos(response.data.produtos);
       else setProdutos((prev) => [...prev, ...response.data.produtos]);
     } catch (error) {
-      console.error("Erro em getProdutos:", error);
+      console.log("Erro em getProdutos:", error);
     }
   };
 
@@ -91,7 +91,7 @@ export default function home() {
       if (page === 1) setFarmacias(response.data.farmacias);
       else setFarmacias((prev) => [...prev, ...response.data.farmacias]);
     } catch (error) {
-      console.error("Erro em getFarmacias:", error);
+      console.log("Erro em getFarmacias:", error);
     }
   };
 

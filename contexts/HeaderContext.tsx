@@ -9,9 +9,9 @@ type HeaderContextType = {
   setIsVisible: (isVisible: boolean) => void;
 };
 
-export const HeaderContext = createContext<HeaderContextType>(
-  {} as HeaderContextType
-);
+export const HeaderContext = createContext<HeaderContextType>({
+  isVisible: true,
+} as HeaderContextType);
 
 export const HeaderProvider = ({ children }: { children: ReactNode }) => {
   const [headerContent, setHeaderContent] = useState<ReactNode>(null);

@@ -21,9 +21,9 @@ export default function Login() {
     setIsAuthenticating(true);
 
     try {
-      signIn();
-    } finally {
+      await signIn();
       router.navigate("/(app)/(tabs)");
+    } finally {
       setIsAuthenticating(false);
     }
   };

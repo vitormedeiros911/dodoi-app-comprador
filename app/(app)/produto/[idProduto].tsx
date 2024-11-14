@@ -5,6 +5,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { ItemCarrinhoDto } from "@/dto/ItemCarrinhoDto";
 import { useCarrinho } from "@/hooks/useCarrinho";
+import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { formatBRL } from "@/utils/formatBRL";
@@ -14,7 +15,6 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 
 import { createStyles } from "./styles";
-import { useHeader } from "@/hooks/useHeader";
 
 interface IProduto {
   id: string;

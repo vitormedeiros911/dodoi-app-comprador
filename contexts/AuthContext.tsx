@@ -1,15 +1,18 @@
 import { SessionStorageDto } from "@/dto/SessionStorageDto";
+import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
+import { USER_STORAGE } from "@/storage/storageConfig";
 import { storageUserGet, storageUserSave } from "@/storage/storageUser";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import axios from "axios";
+import { router } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
 
 export type AuthContextDataProps = {
   session: SessionStorageDto;
-  signIn: () => void;
+  signIn: () => Promise<void>;
   signOut: () => void;
 };
 
@@ -26,6 +29,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
     user: {},
     token: "",
   } as SessionStorageDto);
+
+  const { startLoading, stopLoading } = useLoading();
 
   async function signIn() {
     try {
@@ -57,10 +62,12 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   }
 
   async function signOut() {
-    setSession({
-      user: {},
-      token: "",
-    } as SessionStorageDto);
+    startLoading();
+    setSession({} as SessionStorageDto);
+    await AsyncStorage.removeItem(USER_STORAGE);
+
+    stopLoading();
+    router.replace("/login");
   }
 
   async function loadUserData() {

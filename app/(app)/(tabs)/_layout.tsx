@@ -9,6 +9,7 @@ export default function TabLayout() {
 
   return (
     <Tabs
+      initialRouteName="home"
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? "light"].tabIconSelected,
         tabBarInactiveTintColor: Colors[colorScheme ?? "light"].tabIconDefault,
@@ -25,6 +26,9 @@ export default function TabLayout() {
           width: 26,
           height: 26,
         },
+        tabBarLabelStyle: {
+          marginTop: 3,
+        },
       }}
     >
       <Tabs.Screen
@@ -39,18 +43,6 @@ export default function TabLayout() {
           ),
         }}
       />
-      {/* <Tabs.Screen
-        name="(pedidos)"
-        options={{
-          title: "Meus pedidos",
-          tabBarIcon: ({ color, focused }) => (
-            <TabBarIcon
-              name={focused ? "receipt" : "receipt-outline"}
-              color={color}
-            />
-          ),
-        }}
-      /> */}
       <Tabs.Screen
         name="favoritos"
         options={{
@@ -58,6 +50,18 @@ export default function TabLayout() {
           tabBarIcon: ({ color, focused }) => (
             <TabBarIcon
               name={focused ? "heart" : "heart-outline"}
+              color={color}
+            />
+          ),
+        }}
+      />
+      <Tabs.Screen
+        name="pedidos"
+        options={{
+          title: "Meus pedidos",
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              name={focused ? "receipt" : "receipt-outline"}
               color={color}
             />
           ),
