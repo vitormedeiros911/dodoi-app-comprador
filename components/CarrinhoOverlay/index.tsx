@@ -2,6 +2,7 @@ import { Colors } from "@/constants/Colors";
 import { ItemCarrinhoDto } from "@/dto/ItemCarrinhoDto";
 import { useCarrinho } from "@/hooks/useCarrinho";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import React from "react";
 import {
   FlatList,
@@ -12,66 +13,31 @@ import {
   View,
 } from "react-native";
 
+import { formatBRL } from "../../utils/formatBRL";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
-import { formatBRL } from "../../utils/formatBRL";
+import ItemCarrinho from "../ItemCarrinho";
 
 const CarrinhoOverlay: React.FC = () => {
   const colorScheme = useColorScheme();
-  const {
-    carrinho,
-    isCarrinhoVisible,
-    removerDoCarrinho,
-    incrementarQuantidade,
-    decrementarQuantidade,
-    limparCarrinho,
-    toggleCarrinhoOverlay,
-  } = useCarrinho();
+  const { carrinho, isCarrinhoVisible, limparCarrinho, toggleCarrinhoOverlay } =
+    useCarrinho();
 
   if (!isCarrinhoVisible) return null;
 
   const styles = createStyles(colorScheme);
-
-  const renderItem = ({ item }: { item: ItemCarrinhoDto }) => (
-    <ThemedView style={styles.item}>
-      <Image source={{ uri: item.urlImagem }} style={styles.itemImage} />
-      <ThemedView style={styles.itemDetails}>
-        <ThemedText style={styles.itemName}>{item.nomeProduto}</ThemedText>
-        <ThemedText style={styles.itemPrice}>
-          Preço: {formatBRL(item.precoUnitario)}
-        </ThemedText>
-        <ThemedText style={styles.itemQuantity}>
-          Quantidade: {item.quantidade}
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.itemActions}>
-        <TouchableOpacity onPress={() => incrementarQuantidade(item.idProduto)}>
-          <Ionicons
-            name="add-circle-outline"
-            size={24}
-            color={Colors[colorScheme ?? "light"].tint}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => decrementarQuantidade(item.idProduto)}>
-          <Ionicons
-            name="remove-circle-outline"
-            size={24}
-            color={Colors[colorScheme ?? "light"].tint}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity onPress={() => removerDoCarrinho(item.idProduto)}>
-          <Ionicons name="trash-outline" size={24} color="red" />
-        </TouchableOpacity>
-      </ThemedView>
-    </ThemedView>
-  );
 
   const calcularPrecoTotal = () => {
     return carrinho.reduce(
       (total, item) => total + item.precoUnitario * item.quantidade,
       0
     );
+  };
+
+  const handleCheckout = () => {
+    router.push("/checkout");
+    toggleCarrinhoOverlay();
   };
 
   const precoTotal = calcularPrecoTotal();
@@ -102,8 +68,9 @@ const CarrinhoOverlay: React.FC = () => {
             {carrinho.length > 0 ? (
               <FlatList
                 data={carrinho}
-                renderItem={renderItem}
+                renderItem={({ item }) => <ItemCarrinho item={item} />}
                 keyExtractor={(item) => item.idProduto}
+                showsVerticalScrollIndicator={false}
               />
             ) : (
               <ThemedText style={styles.emptyText}>Carrinho vazio</ThemedText>
@@ -112,21 +79,24 @@ const CarrinhoOverlay: React.FC = () => {
             <ThemedView style={styles.footer}>
               <ThemedView style={styles.totalPriceRow}>
                 <ThemedText style={styles.totalPrice}>
-                  Preço Total: {formatBRL(precoTotal)}
+                  Total: {formatBRL(precoTotal)}
                 </ThemedText>
               </ThemedView>
 
               <ThemedView style={styles.actionsRow}>
                 <TouchableOpacity onPress={limparCarrinho}>
-                  <ThemedText style={styles.clearText}>
-                    Limpar Carrinho
-                  </ThemedText>
+                  <ThemedText style={styles.clearText}>Limpar</ThemedText>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={styles.checkoutButton}>
-                  <ThemedText style={styles.checkoutText}>
-                    Finalizar Compra
-                  </ThemedText>
+                <TouchableOpacity
+                  style={[
+                    styles.checkoutButton,
+                    carrinho.length === 0 && styles.disabledButton,
+                  ]}
+                  onPress={handleCheckout}
+                  disabled={carrinho.length === 0}
+                >
+                  <ThemedText style={styles.checkoutText}>Continuar</ThemedText>
                 </TouchableOpacity>
               </ThemedView>
             </ThemedView>

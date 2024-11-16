@@ -9,7 +9,7 @@ export function TabBarIcon({
 }: IconProps<ComponentProps<typeof Ionicons>["name"]>) {
   return (
     <Ionicons
-      size={Platform.OS === "ios" ? 22 : 26}
+      size={Platform.OS === "ios" ? 22 : 24}
       style={[{ marginBottom: -3 }, style]}
       {...rest}
     />

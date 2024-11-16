@@ -95,8 +95,8 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
     },
     totalPrice: {
-      fontSize: 18,
-      fontWeight: "bold",
+      fontSize: 16,
+      fontWeight: "500",
     },
     actionsRow: {
       flexDirection: "row",
@@ -116,6 +116,9 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     checkoutText: {
       fontSize: 16,
       color: "white",
+    },
+    disabledButton: {
+      opacity: 0.5,
     },
   });
 };

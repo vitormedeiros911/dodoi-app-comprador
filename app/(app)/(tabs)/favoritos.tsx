@@ -68,6 +68,8 @@ export default function favoritos() {
         keyExtractor={(item) => item.id}
         onRefresh={handleRefresh}
         refreshing={refreshing}
+        style={styles.list}
+        showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <MemoizedItemProduto item={item.produto} />}
       />
     </ThemedView>
@@ -79,12 +81,18 @@ const createColorScheme = (colorScheme: ColorSchemeName) =>
     container: {
       flex: 1,
       backgroundColor: Colors[colorScheme ?? "light"].background,
-      padding: 20,
+    },
+
+    list: {
+      flex: 1,
+      paddingHorizontal: 20,
+      paddingBottom: 20,
     },
 
     title: {
       fontSize: 24,
       fontWeight: "bold",
-      marginBottom: 16,
+      marginVertical: 20,
+      marginLeft: 20,
     },
   });
