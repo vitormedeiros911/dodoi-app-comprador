@@ -127,7 +127,7 @@ export default function Produto() {
     <ThemedView style={styles.container}>
       <ScrollView
         style={{
-          backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+          backgroundColor: Colors[colorScheme ?? "light"].background,
           paddingBottom: 80,
         }}
       >

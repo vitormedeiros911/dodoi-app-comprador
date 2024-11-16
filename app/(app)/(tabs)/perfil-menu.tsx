@@ -3,6 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import {
   ColorSchemeName,
   StyleSheet,
@@ -25,7 +26,10 @@ export default function MenuPerfil() {
         />
         <ThemedText style={styles.menuText}>Meus Dados</ThemedText>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.navigate("/cartoes")}
+      >
         <Ionicons
           name="card-outline"
           size={24}

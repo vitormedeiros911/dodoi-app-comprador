@@ -68,7 +68,7 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="perfil/index"
+        name="perfil-menu"
         options={{
           title: "Perfil",
           tabBarIcon: ({ color, focused }) => (
