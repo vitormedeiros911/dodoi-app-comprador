@@ -44,7 +44,7 @@ if (getRNMinorVersion() >= 75) {
   }
 }
 
-rootProject.name = 'dodoi-app-comprador'
+rootProject.name = 'Dodoi'
 
 dependencyResolutionManagement {
   versionCatalogs {

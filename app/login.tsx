@@ -1,5 +1,6 @@
 import googleIcon from "@/assets/images/google-icon.png";
 import handsImgBg from "@/assets/images/handsImgBg.jpg";
+import logo from "@/assets/images/logo.png";
 import Button from "@/components/Button";
 import { useAuth } from "@/hooks/useAuth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
@@ -32,8 +33,7 @@ export default function Login() {
     <ImageBackground source={handsImgBg} style={styles.imgBg}>
       <View style={styles.overlay} />
       <View style={styles.content}>
-        <Text style={styles.title}>Dodói</Text>
-        <Text style={styles.subtitle}>Deixa que a gente cuida.</Text>
+        <Image source={logo} style={styles.logo} />
 
         <Button
           style={styles.button}
@@ -65,21 +65,15 @@ export const styles = StyleSheet.create({
   },
 
   content: {
-    position: "absolute",
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
 
-  title: {
-    fontSize: 64,
-    fontWeight: "bold",
-    fontStyle: "italic",
-  },
-
-  subtitle: {
-    fontSize: 18,
-    fontWeight: "semibold",
-    fontStyle: "italic",
+  logo: {
+    width: 200,
+    height: 200,
+    resizeMode: "contain",
   },
 
   button: {
@@ -90,7 +84,7 @@ export const styles = StyleSheet.create({
     borderRadius: 10,
     padding: 10,
     alignItems: "center",
-    marginTop: 140,
+    bottom: 0,
   },
 
   iconContainer: {
