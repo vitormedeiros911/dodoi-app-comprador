@@ -61,7 +61,7 @@ export const styles = StyleSheet.create({
 
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(16, 191, 16, 0.68)", // Cor verde com opacidade de 70%
+    backgroundColor: "rgba(16, 191, 16, 0.68)",
   },
 
   content: {
@@ -78,8 +78,8 @@ export const styles = StyleSheet.create({
 
   button: {
     backgroundColor: "#16B2F4",
-    height: 80,
-    width: 340,
+    height: 60,
+    width: 300,
     flexDirection: "row",
     borderRadius: 10,
     padding: 10,
@@ -94,8 +94,8 @@ export const styles = StyleSheet.create({
   },
 
   googleIcon: {
-    width: 48,
-    height: 48,
+    width: 38,
+    height: 38,
   },
 
   textContainer: {

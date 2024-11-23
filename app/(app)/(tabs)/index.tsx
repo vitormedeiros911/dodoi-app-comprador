@@ -25,6 +25,9 @@ interface IFarmacia {
   urlImagem: string;
 }
 
+const MemoizedCard = React.memo(Card);
+const MemoizedListItem = React.memo(ListItem);
+
 export default function home() {
   const { setHeaderContent } = useHeader();
   const { isLoading, startLoading, stopLoading } = useLoading();
@@ -172,14 +175,14 @@ export default function home() {
         data={Categorias}
         title="Categorias"
         renderItem={({ item }) => (
-          <ListItem imageSource={item.imagem} title={item.nome} />
+          <MemoizedListItem imageSource={item.imagem} title={item.nome} />
         )}
       />
       <HorizontalList
         data={produtos}
         title="Produtos"
         renderItem={({ item }) => (
-          <Card
+          <MemoizedCard
             image={item.urlImagem}
             defaultSource={require("@/assets/images/remedioGenericoImg.jpg")}
             title={item.nome}
@@ -196,7 +199,7 @@ export default function home() {
         data={farmacias}
         title="Farmácias"
         renderItem={({ item }) => (
-          <ListItem imageUrl={item.urlImagem} title={item.nome} />
+          <MemoizedListItem imageUrl={item.urlImagem} title={item.nome} />
         )}
         onEndReached={handleFarmaciasEndReached}
         onEndReachedThreshold={0.5}

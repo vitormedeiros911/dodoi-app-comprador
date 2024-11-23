@@ -1,7 +1,5 @@
-import CarrinhoOverlay from "@/components/CarrinhoOverlay";
 import Header from "@/components/Header";
 import Loading from "@/components/Loading";
-import { CarrinhoProvider } from "@/contexts/CarrinhoContext";
 import { HeaderProvider } from "@/contexts/HeaderContext";
 import { UserDto } from "@/dto/UserDto";
 import { useHeader } from "@/hooks/useHeader";
@@ -35,13 +33,9 @@ export default function AppLayout() {
   if (loading) return <Loading />;
 
   return (
-    <CarrinhoProvider>
-      <HeaderProvider>
-        {isVisible && <Header user={user} />}
-        <Slot />
-      </HeaderProvider>
-
-      <CarrinhoOverlay />
-    </CarrinhoProvider>
+    <HeaderProvider>
+      {isVisible && <Header user={user} />}
+      <Slot />
+    </HeaderProvider>
   );
 }
