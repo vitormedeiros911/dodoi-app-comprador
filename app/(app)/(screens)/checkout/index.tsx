@@ -1,5 +1,6 @@
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
+import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/useAuth";
 import { useCarrinho } from "@/hooks/useCarrinho";
 import { useHeader } from "@/hooks/useHeader";
@@ -9,7 +10,7 @@ import {
   initPaymentSheet,
   presentPaymentSheet,
 } from "@stripe/stripe-react-native";
-import { useFocusEffect } from "expo-router";
+import { router, useFocusEffect } from "expo-router";
 import { useCallback, useEffect, useState } from "react";
 import {
   Alert,
@@ -20,11 +21,12 @@ import {
 
 import { createStyles } from "./styles";
 
-export default function checkout() {
+export default function Checkout() {
   const [quantia, setQuantia] = useState(600);
   const [loading, setLoading] = useState(false);
+  const [voucher, setVoucher] = useState("");
   const { setBackIndicator } = useHeader();
-  const { carrinho } = useCarrinho();
+  const { carrinho, limparCarrinho } = useCarrinho();
   const { session } = useAuth();
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
@@ -93,7 +95,12 @@ export default function checkout() {
         `Erro: ${error.code}`,
         "Não foi possível finalizar o pedido."
       );
-    else Alert.alert("Sucesso", "Pedido feito com sucesso!");
+    else {
+      limparCarrinho();
+      router.back();
+
+      Alert.alert("Sucesso", "Pedido feito com sucesso!");
+    }
   };
 
   useFocusEffect(
@@ -108,18 +115,34 @@ export default function checkout() {
 
   return (
     <ThemedView style={styles.container}>
-      <ThemedText>Realizar Pedido</ThemedText>
+      <ThemedText style={styles.title}>Realizar Pedido</ThemedText>
 
-      <ThemedText>Endereço</ThemedText>
-      <ThemedText></ThemedText>
+      <ThemedText style={styles.label}>Endereço</ThemedText>
+      <ThemedText style={styles.address}>Endereço qualquer XXX</ThemedText>
 
-      <ThemedText>Cupom</ThemedText>
-      <TextInput></TextInput>
+      <ThemedText style={styles.label}>Cupom</ThemedText>
+      <TextInput
+        style={styles.voucherInput}
+        placeholder="Digite um cupom de desconto"
+        placeholderTextColor={Colors[colorScheme ?? "light"].lightText}
+        value={voucher}
+        onChangeText={(newVoucher) => {
+          setVoucher(newVoucher);
+        }}
+      />
 
-      <ThemedText>Total: {formatBRL(quantia)}</ThemedText>
-      <TouchableOpacity onPress={openPaymentSheet} disabled={loading}>
-        <ThemedText>Finalizar Pedido</ThemedText>
-      </TouchableOpacity>
+      <ThemedView style={styles.footer}>
+        <ThemedText style={styles.amount}>
+          Total: {formatBRL(quantia)}
+        </ThemedText>
+        <TouchableOpacity
+          onPress={openPaymentSheet}
+          disabled={loading}
+          style={styles.checkoutButton}
+        >
+          <ThemedText>Finalizar Pedido</ThemedText>
+        </TouchableOpacity>
+      </ThemedView>
     </ThemedView>
   );
 }
