@@ -77,8 +77,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       setSession({} as SessionStorageDto);
       await AsyncStorage.removeItem(USER_STORAGE);
     } finally {
-      router.replace("/login");
       stopLoading();
+      router.replace("/login");
     }
   }
 
