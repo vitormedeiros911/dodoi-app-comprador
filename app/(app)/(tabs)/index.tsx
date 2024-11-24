@@ -1,6 +1,6 @@
 import Card from "@/components/Card";
+import CardSecondary from "@/components/CardSecondary";
 import HorizontalList from "@/components/HorizontalList";
-import ListItem from "@/components/ListItem";
 import ScrollView from "@/components/ScrollView";
 import SearchInput from "@/components/SearchInput";
 import { Categorias } from "@/constants/Categorias";
@@ -26,7 +26,7 @@ interface IFarmacia {
 }
 
 const MemoizedCard = React.memo(Card);
-const MemoizedListItem = React.memo(ListItem);
+const MemoizedCardSecondary = React.memo(CardSecondary);
 
 export default function home() {
   const { setHeaderContent } = useHeader();
@@ -43,9 +43,15 @@ export default function home() {
   const [refreshing, setRefreshing] = useState(false);
 
   const getProdutos = async (search?: string, page: number = 1) => {
-    const params: { limit: number; skip: number; nome?: string } = {
+    const params: {
+      limit: number;
+      skip: number;
+      nome?: string;
+      status?: string;
+    } = {
       limit: 10,
       skip: (page - 1) * 10,
+      status: "ATIVO",
     };
 
     if (search) params.nome = search;
@@ -175,7 +181,7 @@ export default function home() {
         data={Categorias}
         title="Categorias"
         renderItem={({ item }) => (
-          <MemoizedListItem imageSource={item.imagem} title={item.nome} />
+          <MemoizedCardSecondary imageSource={item.imagem} title={item.nome} />
         )}
       />
       <HorizontalList
@@ -199,7 +205,7 @@ export default function home() {
         data={farmacias}
         title="Farmácias"
         renderItem={({ item }) => (
-          <MemoizedListItem imageUrl={item.urlImagem} title={item.nome} />
+          <MemoizedCardSecondary imageUrl={item.urlImagem} title={item.nome} />
         )}
         onEndReached={handleFarmaciasEndReached}
         onEndReachedThreshold={0.5}

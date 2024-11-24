@@ -1,36 +1,21 @@
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, useColorScheme } from "react-native";
 
-import ImageWithFallback from "../ImageWithFallback";
-import { ThemedText } from "../ThemedText";
-import { styles } from "./styles";
+import { ThemedView } from "../ThemedView";
+import { createStyles } from "./styles";
 
 type ListItemProps = {
-  imageUrl?: string;
-  title: string;
-  imageSource?: any;
+  onPress: () => void;
+  children: React.ReactNode;
+  style: any;
 };
 
-export default function ListItem({
-  imageUrl,
-  imageSource,
-  title,
-}: ListItemProps) {
+export default function ListItem({ onPress, children, style }: ListItemProps) {
+  const colorScheme = useColorScheme();
+  const styles = createStyles(colorScheme);
+
   return (
-    <TouchableOpacity style={styles.container}>
-      <ImageWithFallback
-        style={styles.img}
-        source={
-          imageSource
-            ? imageSource
-            : {
-                uri: imageUrl,
-              }
-        }
-        fallbackSource={require("@/assets/images/imgNotFound.jpg")}
-      />
-      <ThemedText style={styles.title} numberOfLines={1} ellipsizeMode="tail">
-        {title}
-      </ThemedText>
+    <TouchableOpacity style={[styles.container, style]} onPress={onPress}>
+      {children}
     </TouchableOpacity>
   );
 }

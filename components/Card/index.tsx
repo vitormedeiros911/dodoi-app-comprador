@@ -20,25 +20,23 @@ const Card = memo(
     const styles = createStyles(colorScheme);
 
     return (
-      <TouchableOpacity onPress={onPress}>
-        <ThemedView style={styles.card} darkColor="#282828">
-          <ThemedView style={styles.imageContainer}>
-            <ImageWithFallback
-              source={{ uri: image }}
-              fallbackSource={defaultSource}
-              style={styles.image}
-            />
-          </ThemedView>
-          <ThemedView style={styles.textContainer}>
-            <ThemedText
-              style={styles.title}
-              numberOfLines={1}
-              ellipsizeMode="tail"
-            >
-              {title}
-            </ThemedText>
-            <ThemedText style={styles.price}>R$ {price}</ThemedText>
-          </ThemedView>
+      <TouchableOpacity onPress={onPress} style={styles.card}>
+        <ThemedView style={styles.imageContainer}>
+          <ImageWithFallback
+            source={{ uri: image }}
+            fallbackSource={defaultSource}
+            style={styles.image}
+          />
+        </ThemedView>
+        <ThemedView style={styles.textContainer}>
+          <ThemedText
+            style={styles.title}
+            numberOfLines={1}
+            ellipsizeMode="tail"
+          >
+            {title}
+          </ThemedText>
+          <ThemedText style={styles.price}>R$ {price}</ThemedText>
         </ThemedView>
       </TouchableOpacity>
     );

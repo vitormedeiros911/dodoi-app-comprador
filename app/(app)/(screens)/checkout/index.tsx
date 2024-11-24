@@ -98,7 +98,7 @@ export default function Checkout() {
     else {
       limparCarrinho();
       setLoading(false);
-      router.back();
+      router.replace("/(app)/(tabs)/pedidos");
 
       Alert.alert("Sucesso", "Pedido feito com sucesso!");
     }

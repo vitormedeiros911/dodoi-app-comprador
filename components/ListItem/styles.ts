@@ -1,20 +1,12 @@
-import { StyleSheet } from "react-native";
+import { Colors } from "@/constants/Colors";
+import { ColorSchemeName, StyleSheet } from "react-native";
 
-export const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: "center",
-    margin: 6,
-    width: 120,
-  },
-  img: {
-    width: 80,
-    height: 80,
-    borderRadius: 50,
-    marginRight: 10,
-    marginBottom: 10,
-  },
-  title: {
-    fontSize: 14,
-  },
-});
+export const createStyles = (colorScheme: ColorSchemeName) =>
+  StyleSheet.create({
+    container: {
+      flex: 1,
+      padding: 10,
+      backgroundColor: Colors[colorScheme ?? "light"].backgroundSecondary,
+      borderRadius: 10,
+    },
+  });

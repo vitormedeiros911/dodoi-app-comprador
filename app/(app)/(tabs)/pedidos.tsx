@@ -1,15 +1,18 @@
+import ListItem from "@/components/ListItem";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/useAuth";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
-import { useEffect, useState } from "react";
+import { formatBRLFromCents } from "@/utils/formatBRL";
+import { formatDateTime } from "@/utils/formatDate";
+import React, { useEffect, useState } from "react";
 import {
+  ActivityIndicator,
   ColorSchemeName,
   FlatList,
   StyleSheet,
-  Text,
   useColorScheme,
 } from "react-native";
 
@@ -17,28 +20,61 @@ interface IPedido {
   id: string;
   status: string;
   total: number;
+  createdAt: Date;
 }
+
+const MemoizedListItem = React.memo(ListItem);
 
 export default function Pedidos() {
   const [refreshing, setRefreshing] = useState(false);
-  const [pedidos, setPedidos] = useState<IPedido[]>([] as IPedido[]);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [pedidos, setPedidos] = useState<IPedido[]>([]);
+  const [page, setPage] = useState(0);
+  const [total, setTotal] = useState(0);
+  const limit = 10;
+
   const colorScheme = useColorScheme();
   const styles = createColorScheme(colorScheme);
   const { startLoading, stopLoading } = useLoading();
   const { session } = useAuth();
 
-  const getPedidos = async () => {
+  const getPedidos = async (page: number = 0, append: boolean = false) => {
     try {
       const response = await api.get("pedido", {
         params: {
           idComprador: session.user.id,
-          limit: 10,
+          limit,
+          skip: page * limit,
+          orderBy: "createdAt",
+          order: "DESC",
         },
       });
-      setPedidos(response.data.pedidos);
-    } catch (error) {
-      console.error(error);
+
+      const { pedidos: newPedidos, total: totalRecords } = response.data;
+
+      setTotal(totalRecords);
+      setPedidos((prevPedidos) =>
+        append ? [...prevPedidos, ...newPedidos] : newPedidos
+      );
+    } catch (error: any) {
+      console.error(error.response.data);
     }
+  };
+
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await getPedidos(0);
+    setPage(0);
+    setRefreshing(false);
+  };
+
+  const loadMore = async () => {
+    if (loadingMore || pedidos.length >= total) return;
+    setLoadingMore(true);
+    const nextPage = page + 1;
+    await getPedidos(nextPage, true);
+    setPage(nextPage);
+    setLoadingMore(false);
   };
 
   useEffect(() => {
@@ -51,12 +87,6 @@ export default function Pedidos() {
     fetchData();
   }, []);
 
-  const handleRefresh = async () => {
-    setRefreshing(true);
-    await getPedidos();
-    setRefreshing(false);
-  };
-
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.title}>Meus pedidos</ThemedText>
@@ -65,9 +95,32 @@ export default function Pedidos() {
         keyExtractor={(item) => item.id}
         onRefresh={handleRefresh}
         refreshing={refreshing}
+        onEndReached={loadMore}
+        onEndReachedThreshold={0.1}
         style={styles.list}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => <ThemedText>{item.total}</ThemedText>}
+        renderItem={({ item }) => (
+          <MemoizedListItem onPress={() => {}} style={styles.listItem}>
+            <ThemedText style={styles.detailsTitle}>
+              #12345 - {formatDateTime(item.createdAt, true)}
+            </ThemedText>
+            <ThemedText style={styles.detailsText}>
+              Situação: {item.status}
+            </ThemedText>
+            <ThemedText style={styles.detailsText}>
+              {formatBRLFromCents(item.total)}
+            </ThemedText>
+          </MemoizedListItem>
+        )}
+        ListFooterComponent={
+          loadingMore ? (
+            <ActivityIndicator
+              size="small"
+              color={Colors[colorScheme ?? "light"].text}
+              style={styles.loadingIndicator}
+            />
+          ) : null
+        }
       />
     </ThemedView>
   );
@@ -86,10 +139,27 @@ const createColorScheme = (colorScheme: ColorSchemeName) =>
       paddingBottom: 20,
     },
 
+    listItem: {
+      marginBottom: 16,
+    },
+
     title: {
       fontSize: 24,
       fontWeight: "bold",
       marginVertical: 20,
       marginLeft: 20,
+    },
+
+    detailsTitle: {
+      fontSize: 16,
+      fontWeight: "bold",
+    },
+
+    detailsText: {
+      fontSize: 14,
+    },
+
+    loadingIndicator: {
+      marginVertical: 10,
     },
   });

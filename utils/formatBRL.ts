@@ -4,3 +4,7 @@ export const formatBRL = (preco: number) => {
     currency: "BRL",
   }).format(preco);
 };
+
+export const formatBRLFromCents = (preco: number) => {
+  return formatBRL(preco / 100);
+};
