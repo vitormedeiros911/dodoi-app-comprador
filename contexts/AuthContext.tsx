@@ -1,5 +1,6 @@
 import { SessionStorageDto } from "@/dto/SessionStorageDto";
 import { useLoading } from "@/hooks/useLoading";
+import { configureAuthInterceptor } from "@/interceptors/authInterceptor";
 import { api } from "@/services/api";
 import { USER_STORAGE } from "@/storage/storageConfig";
 import { storageUserGet, storageUserSave } from "@/storage/storageUser";
@@ -32,52 +33,68 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   const { startLoading, stopLoading } = useLoading();
 
+  const updateSession = async (newSession: SessionStorageDto) => {
+    setSession(newSession);
+    await storageUserSave(newSession.user, newSession.token);
+    api.defaults.headers.token = newSession.token;
+  };
+
   async function signIn() {
     try {
       const googleResponse = await GoogleSignin.signIn();
 
-      const idToken = googleResponse.data?.idToken;
+      if (!googleResponse?.data?.idToken)
+        throw new Error("Erro ao recuperar o token do Google.");
 
-      if (idToken) {
-        const response = await api.post("/auth/login", { idToken });
+      const idToken = googleResponse.data.idToken;
+      const response = await api.post("/auth/login", { idToken });
 
-        if (response.data) {
-          const user = {
-            id: response.data.usuario.id,
-            nome: response.data.usuario.nome,
-            email: response.data.usuario.email,
-            avatar: response.data.usuario.urlImagem,
-          };
+      if (response.data) {
+        const user = {
+          id: response.data.usuario.id,
+          nome: response.data.usuario.nome,
+          email: response.data.usuario.email,
+          avatar: response.data.usuario.urlImagem,
+        };
 
-          setSession({ user, token: response.data.access_token });
-          storageUserSave(user, response.data.access_token);
-        }
+        await updateSession({
+          user,
+          token: response.data.access_token,
+        });
       }
     } catch (error) {
-      if (axios.isAxiosError(error))
-        if (error.response?.data?.message)
-          Alert.alert(error.response.data.message);
-        else Alert.alert("Não foi possível realizar o login.");
+      if (axios.isAxiosError(error)) {
+        const errorMessage =
+          error.response?.data?.message || "Não foi possível realizar o login.";
+        Alert.alert(errorMessage);
+      } else Alert.alert("Erro inesperado. Tente novamente.");
     }
   }
 
   async function signOut() {
-    startLoading();
-    setSession({} as SessionStorageDto);
-    await AsyncStorage.removeItem(USER_STORAGE);
-
-    stopLoading();
-    router.replace("/login");
+    try {
+      startLoading();
+      setSession({} as SessionStorageDto);
+      await AsyncStorage.removeItem(USER_STORAGE);
+    } finally {
+      router.replace("/login");
+      stopLoading();
+    }
   }
 
   async function loadUserData() {
     const userLogged = await storageUserGet();
 
-    if (userLogged) setSession(userLogged);
+    if (userLogged?.token && userLogged?.user?.id) setSession(userLogged);
+    else {
+      setSession({} as SessionStorageDto);
+      await AsyncStorage.removeItem(USER_STORAGE);
+    }
   }
 
   useEffect(() => {
     loadUserData();
+    configureAuthInterceptor(signOut);
   }, []);
 
   return (

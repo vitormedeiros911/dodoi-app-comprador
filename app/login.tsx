@@ -15,7 +15,7 @@ GoogleSignin.configure({
 });
 
 export default function Login() {
-  const [isAuthenticating, setIsAuthenticating] = useState<boolean>();
+  const [isAuthenticating, setIsAuthenticating] = useState<boolean>(false);
   const { signIn } = useAuth();
 
   const handleGoogleSignIn = async () => {

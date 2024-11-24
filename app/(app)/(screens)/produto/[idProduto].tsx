@@ -45,15 +45,12 @@ export default function Produto() {
   const { setBackIndicator } = useHeader();
 
   const getProduto = async () => {
-    startLoading();
     try {
       const response = await api.get(`/produto/${idProduto}`);
       setProduto(response.data);
       setIsFavorited(response.data.isFavorito);
     } catch (error) {
       console.log(error);
-    } finally {
-      stopLoading();
     }
   };
 
@@ -108,7 +105,13 @@ export default function Produto() {
   };
 
   useEffect(() => {
-    getProduto();
+    const fetchData = async () => {
+      startLoading();
+      await getProduto();
+      stopLoading();
+    };
+
+    fetchData();
   }, []);
 
   useFocusEffect(

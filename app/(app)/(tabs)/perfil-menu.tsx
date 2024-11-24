@@ -3,6 +3,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/useAuth";
 import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 import {
   ColorSchemeName,
   StyleSheet,
@@ -17,7 +18,10 @@ export default function MenuPerfil() {
 
   return (
     <ThemedView style={styles.container}>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.navigate("/meus-dados")}
+      >
         <Ionicons
           name="person-outline"
           size={24}
