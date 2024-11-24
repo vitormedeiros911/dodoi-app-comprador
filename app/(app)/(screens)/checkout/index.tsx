@@ -50,7 +50,7 @@ export default function Checkout() {
       emailComprador: user.email,
       quantia: Math.round(quantia * 100),
       itens: carrinho.map((item) => ({
-        id: item.idProduto,
+        idProduto: item.idProduto,
         precoUnitario: item.precoUnitario,
         quantidade: item.quantidade,
       })),
@@ -97,6 +97,7 @@ export default function Checkout() {
       );
     else {
       limparCarrinho();
+      setLoading(false);
       router.back();
 
       Alert.alert("Sucesso", "Pedido feito com sucesso!");
