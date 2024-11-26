@@ -18,7 +18,6 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
       flexDirection: "row",
       alignItems: "center",
       justifyContent: "space-between",
-      marginBottom: 10,
     },
 
     inputContainer: {
@@ -43,9 +42,15 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
       alignItems: "center",
       justifyContent: "center",
       alignSelf: "flex-end",
-      marginBottom: 20,
+      marginVertical: 20,
       backgroundColor: Colors.mainColor,
       paddingHorizontal: 12,
       borderRadius: 6,
+    },
+
+    error: {
+      color: Colors.error,
+      fontSize: 12,
+      marginBottom: 5,
     },
   });

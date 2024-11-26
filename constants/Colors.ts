@@ -5,6 +5,7 @@ const mainColor = "#39D320";
 
 export const Colors = {
   mainColor,
+  error: "#f44336",
   light: {
     text: "#11181C",
     lightText: "#7A7F83",

@@ -5,7 +5,7 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
   StyleSheet.create({
     container: {
       flex: 1,
-      marginBottom: 20,
+      marginBottom: 10,
       flexDirection: "row",
       alignItems: "center",
       borderRadius: 6,

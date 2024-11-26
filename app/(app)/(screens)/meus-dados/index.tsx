@@ -5,14 +5,16 @@ import { ThemedView } from "@/components/ThemedView";
 import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
-import { useFocusEffect } from "@react-navigation/native";
-import { useCallback, useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
-import { Alert, TouchableOpacity, useColorScheme } from "react-native";
-
-import { formatEndereco } from "../../../../utils/formatEndereco";
-import { createStyles } from "./styles";
+import { formatEndereco } from "@/utils/formatEndereco";
 import { showToast } from "@/utils/showToast";
+import { useFocusEffect } from "@react-navigation/native";
+import { router } from "expo-router";
+import { forwardRef, useCallback, useEffect, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
+import { TouchableOpacity, useColorScheme } from "react-native";
+import { TextInputMask } from "react-native-masked-text";
+
+import { createStyles } from "./styles";
 
 type FormDataProps = {
   nome: string;
@@ -49,10 +51,16 @@ interface IUsuario {
 
 export default function MeusDados() {
   const { setBackIndicator } = useHeader();
-  const { control, setValue, handleSubmit } = useForm<FormDataProps>();
+  const {
+    control,
+    setValue,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<FormDataProps>();
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
   const { startLoading, stopLoading } = useLoading();
+  const [refreshing, setRefreshing] = useState(false);
 
   const getUsuario = async () => {
     try {
@@ -82,19 +90,27 @@ export default function MeusDados() {
   const onSubmit = async (data: FormDataProps) => {
     const endereco = formatEndereco(data);
 
-    startLoading();
-    await api.put("/usuario", {
-      nome: data.nome,
-      cpf: data.cpf,
-      email: data.email,
-      telefone: data.telefone,
-      dataNascimento: data.dataNascimento,
-      endereco,
-    });
+    console.log(data);
 
-    Alert.alert("Sucesso", "Usuário atualizado com sucesso");
+    try {
+      startLoading();
+      await api.put("/usuario", {
+        nome: data.nome,
+        cpf: data.cpf,
+        email: data.email,
+        telefone: data.telefone,
+        dataNascimento: data.dataNascimento,
+        endereco,
+      });
 
-    stopLoading();
+      router.replace("/meus-dados");
+
+      showToast("Dados atualizados com sucesso!", "success");
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
+    } finally {
+      stopLoading();
+    }
   };
 
   useEffect(() => {
@@ -107,6 +123,12 @@ export default function MeusDados() {
     fetchUsuario();
   }, []);
 
+  const handleRefresh = async () => {
+    setRefreshing(true);
+    await getUsuario();
+    setRefreshing(false);
+  };
+
   useFocusEffect(
     useCallback(() => {
       setBackIndicator(true);
@@ -118,7 +140,11 @@ export default function MeusDados() {
   );
 
   return (
-    <ScrollView style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      refreshing={refreshing}
+      onRefresh={handleRefresh}
+    >
       <ThemedView style={styles.form}>
         <ThemedText style={styles.title}>Meus Dados</ThemedText>
 
@@ -140,14 +166,21 @@ export default function MeusDados() {
           render={({ field: { onChange, value } }) => (
             <ThemedView>
               <ThemedText style={styles.label}>CPF*</ThemedText>
-              <ThemedInput
-                placeholder="***.***.***-**"
+              <TextInputMask
+                type="cpf"
+                placeholder="Digite o seu CPF"
+                keyboardType="number-pad"
                 value={value}
                 onChangeText={onChange}
+                customTextInput={ThemedInput}
               />
             </ThemedView>
           )}
         />
+        {errors.cpf && (
+          <ThemedText style={styles.error}>{errors.cpf.message}</ThemedText>
+        )}
+
         <Controller
           control={control}
           name="email"
@@ -155,7 +188,12 @@ export default function MeusDados() {
           render={({ field: { onChange, value } }) => (
             <ThemedView>
               <ThemedText style={styles.label}>E-mail*</ThemedText>
-              <ThemedInput value={value} onChangeText={onChange} />
+              <ThemedInput
+                value={value}
+                onChangeText={onChange}
+                style={{ opacity: 0.5 }}
+                editable={false}
+              />
             </ThemedView>
           )}
         />
@@ -166,10 +204,17 @@ export default function MeusDados() {
           render={({ field: { onChange, value } }) => (
             <ThemedView>
               <ThemedText style={styles.label}>Telefone</ThemedText>
-              <ThemedInput
-                placeholder="(XX) XXXXX-XXXX"
+              <TextInputMask
+                placeholder="Digite o telefone"
                 value={value}
                 onChangeText={onChange}
+                type={"cel-phone"}
+                options={{
+                  maskType: "BRL",
+                  withDDD: true,
+                  dddMask: "(99) ",
+                }}
+                customTextInput={ThemedInput}
               />
             </ThemedView>
           )}
@@ -180,10 +225,15 @@ export default function MeusDados() {
           render={({ field: { onChange, value } }) => (
             <ThemedView>
               <ThemedText style={styles.label}>Data de nascimento</ThemedText>
-              <ThemedInput
+              <TextInputMask
                 placeholder="DD/MM/AAAA"
                 value={value}
                 onChangeText={onChange}
+                type={"datetime"}
+                options={{
+                  format: "DD/MM/YYYY",
+                }}
+                customTextInput={ThemedInput}
               />
             </ThemedView>
           )}
@@ -192,18 +242,28 @@ export default function MeusDados() {
         <Controller
           control={control}
           name="cep"
-          rules={{ required: "CEP é obrigatório." }}
+          rules={{ required: "CEP é obrigatório.", minLength: 8 }}
           render={({ field: { onChange, value } }) => (
             <ThemedView>
               <ThemedText style={styles.label}>CEP*</ThemedText>
-              <ThemedInput
-                placeholder="CEP"
+              <TextInputMask
+                placeholder="Digite o CEP"
                 value={value}
                 onChangeText={onChange}
+                type={"custom"}
+                options={{
+                  mask: "99999-999",
+                }}
+                customTextInput={ThemedInput}
               />
             </ThemedView>
           )}
         />
+
+        {errors.cep && (
+          <ThemedText style={styles.error}>{errors.cep.message}</ThemedText>
+        )}
+
         <ThemedView style={styles.row}>
           <ThemedView style={styles.inputContainer}>
             <Controller
@@ -241,6 +301,13 @@ export default function MeusDados() {
             />
           </ThemedView>
         </ThemedView>
+
+        {errors.estado || errors.cidade ? (
+          <ThemedText style={styles.error}>
+            {errors.estado?.message || errors.cidade?.message}
+          </ThemedText>
+        ) : null}
+
         <Controller
           control={control}
           name="logradouro"
@@ -256,6 +323,11 @@ export default function MeusDados() {
             </ThemedView>
           )}
         />
+        {errors.logradouro && (
+          <ThemedText style={styles.error}>
+            {errors.logradouro.message}
+          </ThemedText>
+        )}
         <Controller
           control={control}
           name="numero"
@@ -271,20 +343,9 @@ export default function MeusDados() {
             </ThemedView>
           )}
         />
-        <Controller
-          control={control}
-          name="complemento"
-          render={({ field: { onChange, value } }) => (
-            <ThemedView>
-              <ThemedText style={styles.label}>Complemento</ThemedText>
-              <ThemedInput
-                placeholder="Digite o complemento"
-                value={value}
-                onChangeText={onChange}
-              />
-            </ThemedView>
-          )}
-        />
+        {errors.numero && (
+          <ThemedText style={styles.error}>{errors.numero.message}</ThemedText>
+        )}
         <Controller
           control={control}
           name="bairro"
@@ -300,6 +361,29 @@ export default function MeusDados() {
             </ThemedView>
           )}
         />
+        {errors.bairro && (
+          <ThemedText style={styles.error}>{errors.bairro.message}</ThemedText>
+        )}
+        <Controller
+          control={control}
+          name="complemento"
+          render={({ field: { onChange, value } }) => (
+            <ThemedView>
+              <ThemedText style={styles.label}>Complemento</ThemedText>
+              <ThemedInput
+                placeholder="Digite o complemento"
+                value={value}
+                onChangeText={onChange}
+                maxLength={100}
+              />
+            </ThemedView>
+          )}
+        />
+        {errors.complemento && (
+          <ThemedText style={styles.error}>
+            {errors.complemento.message}
+          </ThemedText>
+        )}
 
         <TouchableOpacity
           onPress={handleSubmit(onSubmit)}
