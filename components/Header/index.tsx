@@ -5,19 +5,14 @@ import { useCarrinho } from "@/hooks/useCarrinho";
 import { useHeader } from "@/hooks/useHeader";
 import getFirstName from "@/utils/getFirstName";
 import { Ionicons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
 import React, { useEffect, useMemo, useRef } from "react";
-import {
-  Animated,
-  Image,
-  TouchableOpacity,
-  useColorScheme,
-} from "react-native";
+import { Animated, TouchableOpacity, useColorScheme } from "react-native";
 
+import ImageWithFallback from "../ImageWithFallback";
 import { ThemedText } from "../ThemedText";
 import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
-import ImageWithFallback from "../ImageWithFallback";
-import { useRouter } from "expo-router";
 
 type HeaderProps = {
   user: UserDto;
@@ -63,11 +58,13 @@ export default function Header({ user }: HeaderProps) {
           </TouchableOpacity>
         ) : (
           <ThemedView style={styles.userInfoContainer}>
-            <ImageWithFallback
-              source={{ uri: user.avatar }}
-              fallbackSource={defaultUserImg}
-              style={styles.userImg}
-            />
+            <TouchableOpacity onPress={() => router.navigate("/perfil-menu")}>
+              <ImageWithFallback
+                source={{ uri: user.avatar }}
+                fallbackSource={defaultUserImg}
+                style={styles.userImg}
+              />
+            </TouchableOpacity>
             <ThemedText style={styles.userName}>
               Olá, {getFirstName(user.nome)}
             </ThemedText>

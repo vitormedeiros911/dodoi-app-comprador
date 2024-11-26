@@ -95,6 +95,11 @@ export default function Favoritos() {
         style={styles.list}
         showsVerticalScrollIndicator={false}
         renderItem={({ item }) => <MemoizedItemProduto item={item.produto} />}
+        ListEmptyComponent={
+          <ThemedText>
+            Você ainda não adicionou nenhum produto aos favoritos.
+          </ThemedText>
+        }
         ListFooterComponent={
           loadingMore ? (
             <ActivityIndicator
@@ -116,17 +121,17 @@ const createColorScheme = (colorScheme: ColorSchemeName) =>
       backgroundColor: Colors[colorScheme ?? "light"].background,
     },
 
-    list: {
-      flex: 1,
-      paddingHorizontal: 20,
-      paddingBottom: 20,
-    },
-
     title: {
       fontSize: 24,
       fontWeight: "bold",
       marginVertical: 20,
       marginLeft: 20,
+    },
+
+    list: {
+      flex: 1,
+      paddingHorizontal: 20,
+      paddingBottom: 20,
     },
 
     loadingIndicator: {

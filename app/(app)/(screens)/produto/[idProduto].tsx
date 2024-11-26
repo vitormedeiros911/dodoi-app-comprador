@@ -80,7 +80,7 @@ export default function Produto() {
 
   const removeFavorito = async () => {
     try {
-      await api.delete(`/produto/${produto?.id}/favorito`);
+      await api.delete(`/produto/${idProduto}/favorito`);
       setIsFavorited(false);
     } catch (error) {
       console.log("Erro ao remover dos favoritos:", error);

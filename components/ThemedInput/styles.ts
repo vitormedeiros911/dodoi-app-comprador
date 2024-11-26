@@ -1,10 +1,11 @@
 import { Colors } from "@/constants/Colors";
 import { ColorSchemeName, StyleSheet } from "react-native";
 
-export const createStyles = (colorScheme: ColorSchemeName) => {
-  return StyleSheet.create({
+export const createStyles = (colorScheme: ColorSchemeName) =>
+  StyleSheet.create({
     container: {
-      marginTop: 20,
+      flex: 1,
+      marginBottom: 20,
       flexDirection: "row",
       alignItems: "center",
       borderRadius: 6,
@@ -20,15 +21,6 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       flex: 1,
       color: colorScheme === "light" ? "#000" : "#fff",
       fontSize: 14,
-    },
-    separator: {
-      height: "100%",
-      width: 1,
-      backgroundColor: colorScheme === "light" ? "#D3D3D3" : "#3f3f3f",
-      marginHorizontal: 10,
-    },
-    icon: {
-      marginRight: 10,
+      overflow: "hidden",
     },
   });
-};

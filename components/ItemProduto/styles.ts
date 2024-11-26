@@ -1,4 +1,5 @@
 import { ColorSchemeName, StyleSheet } from "react-native";
+import { Colors } from "react-native/Libraries/NewAppScreen";
 
 export const createStyles = (colorScheme: ColorSchemeName) =>
   StyleSheet.create({
@@ -7,10 +8,10 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
       justifyContent: "space-between",
       paddingVertical: 20,
       paddingHorizontal: 16,
-      borderBottomWidth: 1,
-      borderBottomColor: "#ccc",
+      borderTopWidth: 1,
+      borderTopColor: "#ccc",
       alignItems: "center",
-      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      backgroundColor: Colors[colorScheme ?? "light"].background,
     },
     itemImage: {
       width: 60,
@@ -20,7 +21,7 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
     },
     itemDetails: {
       flex: 1,
-      backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
+      backgroundColor: Colors[colorScheme ?? "light"].background,
     },
     itemName: {
       fontSize: 18,
