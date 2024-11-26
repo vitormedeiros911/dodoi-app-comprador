@@ -8,6 +8,7 @@ import { Colors } from "@/constants/Colors";
 import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
+import { showToast } from "@/utils/showToast";
 import { router, useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useColorScheme } from "react-native";
@@ -71,8 +72,8 @@ export default function home() {
 
       if (page === 1) setProdutos(response.data.produtos);
       else setProdutos((prev) => [...prev, ...response.data.produtos]);
-    } catch (error) {
-      console.log("Erro em getProdutos:", error);
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
     }
   };
 
@@ -99,8 +100,8 @@ export default function home() {
 
       if (page === 1) setFarmacias(response.data.farmacias);
       else setFarmacias((prev) => [...prev, ...response.data.farmacias]);
-    } catch (error) {
-      console.log("Erro em getFarmacias:", error);
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
     }
   };
 

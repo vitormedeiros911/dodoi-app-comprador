@@ -7,6 +7,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { formatBRLFromCents } from "@/utils/formatBRL";
 import { formatDateTime } from "@/utils/formatDate";
+import { showToast } from "@/utils/showToast";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -57,7 +58,7 @@ export default function Pedidos() {
         append ? [...prevPedidos, ...newPedidos] : newPedidos
       );
     } catch (error: any) {
-      console.error(error.response.data);
+      showToast(error.response.data.message, "error");
     }
   };
 

@@ -9,8 +9,9 @@ import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { formatBRL } from "@/utils/formatBRL";
+import { showToast } from "@/utils/showToast";
 import { Ionicons } from "@expo/vector-icons";
-import { useFocusEffect, useLocalSearchParams } from "expo-router";
+import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import { memo, useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 
@@ -49,8 +50,9 @@ export default function Produto() {
       const response = await api.get(`/produto/${idProduto}`);
       setProduto(response.data);
       setIsFavorited(response.data.isFavorito);
-    } catch (error) {
-      console.log(error);
+    } catch (error: any) {
+      router.back();
+      showToast(error.response.data.message, "error");
     }
   };
 
@@ -74,7 +76,7 @@ export default function Produto() {
       await api.post(`/produto/favorito`, { idProduto: produto?.id });
       setIsFavorited(true);
     } catch (error) {
-      console.log("Erro ao adicionar aos favoritos:", error);
+      showToast("Erro ao adicionar aos favoritos.");
     }
   };
 

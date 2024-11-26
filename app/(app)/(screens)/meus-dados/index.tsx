@@ -12,6 +12,7 @@ import { Alert, TouchableOpacity, useColorScheme } from "react-native";
 
 import { formatEndereco } from "../../../../utils/formatEndereco";
 import { createStyles } from "./styles";
+import { showToast } from "@/utils/showToast";
 
 type FormDataProps = {
   nome: string;
@@ -73,33 +74,27 @@ export default function MeusDados() {
         setValue("cidade", usuarioData.endereco.cidade);
         setValue("estado", usuarioData.endereco.estado);
       }
-    } catch (error) {
-      Alert.alert("Erro", "Erro ao buscar usuário");
-      console.log(error);
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
     }
   };
 
   const onSubmit = async (data: FormDataProps) => {
     const endereco = formatEndereco(data);
 
-    try {
-      startLoading();
-      await api.put("/usuario", {
-        nome: data.nome,
-        cpf: data.cpf,
-        email: data.email,
-        telefone: data.telefone,
-        dataNascimento: data.dataNascimento,
-        endereco,
-      });
+    startLoading();
+    await api.put("/usuario", {
+      nome: data.nome,
+      cpf: data.cpf,
+      email: data.email,
+      telefone: data.telefone,
+      dataNascimento: data.dataNascimento,
+      endereco,
+    });
 
-      Alert.alert("Sucesso", "Usuário atualizado com sucesso");
-    } catch (error) {
-      Alert.alert("Erro", "Erro ao atualizar usuário");
-      console.log(error);
-    } finally {
-      stopLoading();
-    }
+    Alert.alert("Sucesso", "Usuário atualizado com sucesso");
+
+    stopLoading();
   };
 
   useEffect(() => {

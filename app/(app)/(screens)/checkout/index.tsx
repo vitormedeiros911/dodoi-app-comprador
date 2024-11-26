@@ -20,6 +20,7 @@ import {
 } from "react-native";
 
 import { createStyles } from "./styles";
+import { showToast } from "@/utils/showToast";
 
 export default function Checkout() {
   const [quantia, setQuantia] = useState(600);
@@ -90,17 +91,18 @@ export default function Checkout() {
 
     const { error } = await presentPaymentSheet();
 
-    if (error)
+    setLoading(false);
+
+    if (error) {
       Alert.alert(
         `Erro: ${error.code}`,
         "Não foi possível finalizar o pedido."
       );
-    else {
+    } else {
       limparCarrinho();
-      setLoading(false);
       router.replace("/(app)/(tabs)/pedidos");
 
-      Alert.alert("Sucesso", "Pedido feito com sucesso!");
+      showToast("Pedido realizado com sucesso!", "success");
     }
   };
 

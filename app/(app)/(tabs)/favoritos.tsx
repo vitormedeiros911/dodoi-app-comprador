@@ -12,6 +12,7 @@ import { ThemedView } from "@/components/ThemedView";
 import { Colors } from "@/constants/Colors";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
+import { showToast } from "@/utils/showToast";
 
 interface IFavorito {
   id: string;
@@ -51,8 +52,8 @@ export default function Favoritos() {
       setFavoritos((prevFavoritos) =>
         append ? [...prevFavoritos, ...newFavoritos] : newFavoritos
       );
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
     }
   };
 

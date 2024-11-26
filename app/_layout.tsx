@@ -2,21 +2,21 @@ import CarrinhoOverlay from "@/components/CarrinhoOverlay";
 import Loading from "@/components/Loading";
 import LoadingOverlay from "@/components/LoadingOverlay";
 import { AuthContextProvider } from "@/contexts/AuthContext";
+import { CarrinhoProvider } from "@/contexts/CarrinhoContext";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import { api } from "@/services/api";
 import {
   DarkTheme,
   DefaultTheme,
   ThemeProvider,
 } from "@react-navigation/native";
+import { StripeProvider } from "@stripe/stripe-react-native";
 import { useFonts } from "expo-font";
 import { Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
-
-import { CarrinhoProvider } from "../contexts/CarrinhoContext";
-import { StripeProvider } from "@stripe/stripe-react-native";
-import { api } from "@/services/api";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -45,17 +45,19 @@ export default function RootLayout() {
 
   return (
     <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <LoadingProvider>
-        <AuthContextProvider>
-          <LoadingOverlay />
-          <CarrinhoProvider>
-            <StripeProvider publishableKey={publishableKey}>
-              <Slot />
-            </StripeProvider>
-            <CarrinhoOverlay />
-          </CarrinhoProvider>
-        </AuthContextProvider>
-      </LoadingProvider>
+      <RootSiblingParent>
+        <LoadingProvider>
+          <AuthContextProvider>
+            <LoadingOverlay />
+            <CarrinhoProvider>
+              <StripeProvider publishableKey={publishableKey}>
+                <Slot />
+              </StripeProvider>
+              <CarrinhoOverlay />
+            </CarrinhoProvider>
+          </AuthContextProvider>
+        </LoadingProvider>
+      </RootSiblingParent>
     </ThemeProvider>
   );
 }
