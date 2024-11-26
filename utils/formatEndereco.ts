@@ -4,7 +4,7 @@ interface Endereco {
   complemento: string;
   bairro: string;
   cidade: string;
-  estado: string;
+  uf: string;
   cep: string;
 }
 
@@ -15,7 +15,7 @@ export const formatEndereco = (endereco: Endereco) => {
     complemento: endereco.complemento,
     bairro: endereco.bairro,
     cidade: endereco.cidade,
-    estado: endereco.estado,
+    uf: endereco.uf,
     cep: endereco.cep,
   };
 };

@@ -8,7 +8,6 @@ import { api } from "@/services/api";
 import { formatEndereco } from "@/utils/formatEndereco";
 import { showToast } from "@/utils/showToast";
 import { useFocusEffect } from "@react-navigation/native";
-import { router } from "expo-router";
 import { forwardRef, useCallback, useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { TouchableOpacity, useColorScheme } from "react-native";
@@ -28,7 +27,7 @@ type FormDataProps = {
   complemento: string;
   bairro: string;
   cidade: string;
-  estado: string;
+  uf: string;
 };
 
 interface IUsuario {
@@ -45,7 +44,7 @@ interface IUsuario {
     complemento: string;
     bairro: string;
     cidade: string;
-    estado: string;
+    uf: string;
   };
 }
 
@@ -80,7 +79,7 @@ export default function MeusDados() {
         setValue("complemento", usuarioData.endereco.complemento);
         setValue("bairro", usuarioData.endereco.bairro);
         setValue("cidade", usuarioData.endereco.cidade);
-        setValue("estado", usuarioData.endereco.estado);
+        setValue("uf", usuarioData.endereco.uf);
       }
     } catch (error: any) {
       showToast(error.response.data.message, "error");
@@ -102,8 +101,6 @@ export default function MeusDados() {
         dataNascimento: data.dataNascimento,
         endereco,
       });
-
-      router.replace("/meus-dados");
 
       showToast("Dados atualizados com sucesso!", "success");
     } catch (error: any) {
@@ -268,13 +265,13 @@ export default function MeusDados() {
           <ThemedView style={styles.inputContainer}>
             <Controller
               control={control}
-              name="estado"
-              rules={{ required: "Estado é obrigatório." }}
+              name="uf"
+              rules={{ required: "UF é obrigatório." }}
               render={({ field: { onChange, value } }) => (
                 <ThemedView>
                   <ThemedText style={styles.label}>Estado*</ThemedText>
                   <ThemedInput
-                    placeholder="Selecione o estado"
+                    placeholder="Selecione a UF"
                     value={value}
                     onChangeText={onChange}
                   />
@@ -302,9 +299,9 @@ export default function MeusDados() {
           </ThemedView>
         </ThemedView>
 
-        {errors.estado || errors.cidade ? (
+        {errors.uf || errors.cidade ? (
           <ThemedText style={styles.error}>
-            {errors.estado?.message || errors.cidade?.message}
+            {errors.uf?.message || errors.cidade?.message}
           </ThemedText>
         ) : null}
 
