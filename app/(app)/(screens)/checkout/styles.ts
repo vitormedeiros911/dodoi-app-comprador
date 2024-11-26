@@ -23,7 +23,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
 
     address: {
-      fontSize: 16,
+      fontSize: 14,
       marginBottom: 20,
       color: Colors[colorScheme ?? "light"].lightText,
     },

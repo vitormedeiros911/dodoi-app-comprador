@@ -4,8 +4,11 @@ import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/useAuth";
 import { useCarrinho } from "@/hooks/useCarrinho";
 import { useHeader } from "@/hooks/useHeader";
+import { useLoading } from "@/hooks/useLoading";
+import { IUsuario } from "@/interfaces/usuario.interface";
 import { api } from "@/services/api";
 import { formatBRL } from "@/utils/formatBRL";
+import { showToast } from "@/utils/showToast";
 import {
   initPaymentSheet,
   presentPaymentSheet,
@@ -20,18 +23,19 @@ import {
 } from "react-native";
 
 import { createStyles } from "./styles";
-import { showToast } from "@/utils/showToast";
 
 export default function Checkout() {
+  const [usuario, setUsuario] = useState<IUsuario>({} as IUsuario);
   const [quantia, setQuantia] = useState(600);
   const [loading, setLoading] = useState(false);
   const [voucher, setVoucher] = useState("");
   const { setBackIndicator } = useHeader();
   const { carrinho, limparCarrinho } = useCarrinho();
+  const { startLoading, stopLoading } = useLoading();
   const { session } = useAuth();
   const colorScheme = useColorScheme();
-  const styles = createStyles(colorScheme);
 
+  const styles = createStyles(colorScheme);
   const user = session.user;
 
   const calcularPrecoTotal = () => {
@@ -41,9 +45,15 @@ export default function Checkout() {
     );
   };
 
-  useEffect(() => {
-    setQuantia(calcularPrecoTotal());
-  }, [carrinho]);
+  const getUsuario = async () => {
+    try {
+      const response = await api.get("/usuario/perfil");
+
+      setUsuario(response.data);
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
+    }
+  };
 
   const fetchPaymentSheetParams = async () => {
     const response = await api.post("/pagamento", {
@@ -54,6 +64,7 @@ export default function Checkout() {
         idProduto: item.idProduto,
         precoUnitario: item.precoUnitario,
         quantidade: item.quantidade,
+        endereco: usuario.endereco,
       })),
     });
     const { paymentIntent, ephemeralKey, customer } = response.data;
@@ -87,6 +98,24 @@ export default function Checkout() {
   };
 
   const openPaymentSheet = async () => {
+    if (!usuario || !usuario.endereco || !usuario.cpf) {
+      Alert.alert(
+        "Erro",
+        "Você precisa concluir seu cadastro antes de finalizar o pedido.",
+        [
+          {
+            text: "Cancelar",
+            onPress: () => {},
+          },
+          {
+            text: "Concluir cadastro",
+            onPress: () => router.replace("/meus-dados"),
+          },
+        ]
+      );
+      return;
+    }
+
     await initializePaymentSheet();
 
     const { error } = await presentPaymentSheet();
@@ -106,6 +135,17 @@ export default function Checkout() {
     }
   };
 
+  useEffect(() => {
+    const fetchUsuario = async () => {
+      startLoading();
+      await getUsuario();
+      stopLoading();
+    };
+
+    fetchUsuario();
+    setQuantia(calcularPrecoTotal());
+  }, [carrinho]);
+
   useFocusEffect(
     useCallback(() => {
       setBackIndicator(true);
@@ -121,7 +161,15 @@ export default function Checkout() {
       <ThemedText style={styles.title}>Realizar Pedido</ThemedText>
 
       <ThemedText style={styles.label}>Endereço</ThemedText>
-      <ThemedText style={styles.address}>Endereço qualquer XXX</ThemedText>
+      {usuario.endereco ? (
+        <ThemedText style={styles.address}>
+          {usuario.endereco.logradouro} {usuario.endereco.numero}{" "}
+          {usuario.endereco.bairro}, {usuario.endereco.cidade} -{" "}
+          {usuario.endereco.uf}
+        </ThemedText>
+      ) : (
+        <ThemedText style={styles.address}>Endereço não cadastrado</ThemedText>
+      )}
 
       <ThemedText style={styles.label}>Cupom</ThemedText>
       <TextInput

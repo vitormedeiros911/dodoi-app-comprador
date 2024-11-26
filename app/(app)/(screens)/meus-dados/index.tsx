@@ -4,6 +4,7 @@ import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
+import { IUsuario } from "@/interfaces/usuario.interface";
 import { api } from "@/services/api";
 import { formatEndereco } from "@/utils/formatEndereco";
 import { showToast } from "@/utils/showToast";
@@ -29,24 +30,6 @@ type FormDataProps = {
   cidade: string;
   uf: string;
 };
-
-interface IUsuario {
-  id: number;
-  nome: string;
-  cpf: string;
-  email: string;
-  telefone: string;
-  dataNascimento: string;
-  endereco: {
-    cep: string;
-    logradouro: string;
-    numero: string;
-    complemento: string;
-    bairro: string;
-    cidade: string;
-    uf: string;
-  };
-}
 
 export default function MeusDados() {
   const { setBackIndicator } = useHeader();

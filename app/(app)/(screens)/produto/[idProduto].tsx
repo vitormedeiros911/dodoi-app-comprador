@@ -75,8 +75,8 @@ export default function Produto() {
     try {
       await api.post(`/produto/favorito`, { idProduto: produto?.id });
       setIsFavorited(true);
-    } catch (error) {
-      showToast("Erro ao adicionar aos favoritos.");
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
     }
   };
 
@@ -84,8 +84,8 @@ export default function Produto() {
     try {
       await api.delete(`/produto/${idProduto}/favorito`);
       setIsFavorited(false);
-    } catch (error) {
-      console.log("Erro ao remover dos favoritos:", error);
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
     }
   };
 
@@ -126,7 +126,20 @@ export default function Produto() {
     }, [setBackIndicator])
   );
 
-  if (!produto) return null;
+  if (!produto)
+    return (
+      <ThemedView
+        style={[
+          styles.container,
+          {
+            justifyContent: "center",
+            alignItems: "center",
+          },
+        ]}
+      >
+        <ThemedText>Carregando...</ThemedText>
+      </ThemedView>
+    );
 
   return (
     <ThemedView style={styles.container}>
