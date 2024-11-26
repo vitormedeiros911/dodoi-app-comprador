@@ -24,6 +24,7 @@ const isTokenExpired = (token: string): boolean => {
 
 const loadToken = async () => {
   const session = await storageUserGet();
+
   if (session && !isTokenExpired(session.token)) {
     tokenInMemory = session.token;
     api.defaults.headers.token = session.token;

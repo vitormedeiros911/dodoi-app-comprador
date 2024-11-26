@@ -6,7 +6,14 @@ import { useAuth } from "@/hooks/useAuth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
 import { router } from "expo-router";
 import React, { useState } from "react";
-import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
+import {
+  Alert,
+  Image,
+  ImageBackground,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 GoogleSignin.configure({
   scopes: ["email", "profile"],
@@ -22,8 +29,25 @@ export default function Login() {
     setIsAuthenticating(true);
 
     try {
-      await signIn();
-      router.navigate("/(app)/(tabs)");
+      const { primeiroAcesso } = await signIn();
+
+      if (primeiroAcesso) {
+        router.navigate("/meus-dados");
+        Alert.alert(
+          "Bem-vindo ao Dodoi!",
+          "Como é a primeira vez conosco, precisamos que você complete seu cadastro antes de realizar qualquer pedido.",
+          [
+            {
+              text: "OK",
+              onPress: () => {},
+            },
+            {
+              text: "Completar depois",
+              onPress: () => router.navigate("/(app)/(tabs)"),
+            },
+          ]
+        );
+      } else router.navigate("/(app)/(tabs)");
     } finally {
       setIsAuthenticating(false);
     }

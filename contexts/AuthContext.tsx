@@ -13,7 +13,9 @@ import { Alert } from "react-native";
 
 export type AuthContextDataProps = {
   session: SessionStorageDto;
-  signIn: () => Promise<void>;
+  signIn: () => Promise<{
+    primeiroAcesso: boolean;
+  }>;
   signOut: () => void;
 };
 
@@ -36,7 +38,6 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   const updateSession = async (newSession: SessionStorageDto) => {
     setSession(newSession);
     await storageUserSave(newSession.user, newSession.token);
-    api.defaults.headers.token = newSession.token;
   };
 
   async function signIn() {
@@ -49,19 +50,19 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const idToken = googleResponse.data.idToken;
       const response = await api.post("/auth/login", { idToken });
 
-      if (response.data) {
-        const user = {
-          id: response.data.usuario.id,
-          nome: response.data.usuario.nome,
-          email: response.data.usuario.email,
-          avatar: response.data.usuario.urlImagem,
-        };
+      const user = {
+        id: response.data.usuario.id,
+        nome: response.data.usuario.nome,
+        email: response.data.usuario.email,
+        avatar: response.data.usuario.urlImagem,
+      };
 
-        await updateSession({
-          user,
-          token: response.data.access_token,
-        });
-      }
+      await updateSession({
+        user,
+        token: response.data.access_token,
+      });
+
+      return { primeiroAcesso: response.data.primeiroAcesso };
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage =
@@ -69,12 +70,15 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         Alert.alert(errorMessage);
       } else Alert.alert("Erro inesperado. Tente novamente.");
     }
+
+    return { primeiroAcesso: false };
   }
 
   async function signOut() {
     try {
       startLoading();
       setSession({} as SessionStorageDto);
+      delete api.defaults.headers.token;
       await AsyncStorage.removeItem(USER_STORAGE);
     } finally {
       stopLoading();

@@ -1,5 +1,6 @@
 import { ItemCarrinhoDto } from "@/dto/ItemCarrinhoDto";
 import { CARRINHO_STORAGE } from "@/storage/storageConfig";
+import { showToast } from "@/utils/showToast";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import React, { createContext, useEffect, useState } from "react";
 
@@ -37,7 +38,7 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
         setCarrinho(JSON.parse(carrinhoSalvo));
       }
     } catch (error) {
-      console.log("Erro ao carregar o carrinho:", error);
+      showToast(`Erro ao carregar o carrinho: ${error}`, "error");
     }
   };
 
@@ -48,7 +49,7 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
         JSON.stringify(novoCarrinho)
       );
     } catch (error) {
-      console.log("Erro ao salvar o carrinho:", error);
+      showToast(`Erro ao salvar o carrinho: ${error}`, "error");
     }
   };
 

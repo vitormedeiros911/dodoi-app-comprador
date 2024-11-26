@@ -113,6 +113,7 @@ export default function Pedidos() {
             </ThemedText>
           </MemoizedListItem>
         )}
+        ListEmptyComponent={<ThemedText>Nenhum pedido encontrado</ThemedText>}
         ListFooterComponent={
           loadingMore ? (
             <ActivityIndicator
