@@ -11,7 +11,6 @@ export const styles = StyleSheet.create({
     width: 80,
     height: 80,
     borderRadius: 50,
-    marginRight: 10,
     marginBottom: 10,
   },
   title: {

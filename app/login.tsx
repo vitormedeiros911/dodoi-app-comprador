@@ -28,29 +28,9 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     setIsAuthenticating(true);
 
-    try {
-      const { primeiroAcesso } = await signIn();
+    await signIn();
 
-      if (primeiroAcesso) {
-        router.navigate("/meus-dados");
-        Alert.alert(
-          "Bem-vindo ao Dodoi!",
-          "Como é a primeira vez conosco, precisamos que você complete seu cadastro antes de realizar qualquer pedido.",
-          [
-            {
-              text: "OK",
-              onPress: () => {},
-            },
-            {
-              text: "Completar depois",
-              onPress: () => router.navigate("/(app)/(tabs)"),
-            },
-          ]
-        );
-      } else router.navigate("/(app)/(tabs)");
-    } finally {
-      setIsAuthenticating(false);
-    }
+    setIsAuthenticating(false);
   };
 
   return (

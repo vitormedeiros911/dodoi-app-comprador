@@ -39,16 +39,14 @@ const loadToken = async () => {
 })();
 
 api.interceptors.request.use(async (config) => {
-  if (!tokenInMemory || isTokenExpired(tokenInMemory)) {
-    const session = await storageUserGet();
+  const session = await storageUserGet();
 
-    if (session && !isTokenExpired(session.token)) {
-      tokenInMemory = session.token;
-      api.defaults.headers.token = session.token;
-    } else {
-      await AsyncStorage.removeItem(USER_STORAGE);
-      tokenInMemory = null;
-    }
+  if (session && !isTokenExpired(session.token)) {
+    tokenInMemory = session.token;
+    api.defaults.headers.token = session.token;
+  } else {
+    await AsyncStorage.removeItem(USER_STORAGE);
+    tokenInMemory = null;
   }
 
   if (tokenInMemory) config.headers.token = tokenInMemory;

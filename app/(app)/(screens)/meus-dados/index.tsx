@@ -38,6 +38,7 @@ export default function MeusDados() {
     setValue,
     handleSubmit,
     formState: { errors },
+    clearErrors,
   } = useForm<FormDataProps>();
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
@@ -104,6 +105,7 @@ export default function MeusDados() {
   const handleRefresh = async () => {
     setRefreshing(true);
     await getUsuario();
+    clearErrors();
     setRefreshing(false);
   };
 

@@ -13,9 +13,7 @@ import { Alert } from "react-native";
 
 export type AuthContextDataProps = {
   session: SessionStorageDto;
-  signIn: () => Promise<{
-    primeiroAcesso: boolean;
-  }>;
+  signIn: () => void;
   signOut: () => void;
 };
 
@@ -28,10 +26,9 @@ export const AuthContext = createContext<AuthContextDataProps>(
 );
 
 export function AuthContextProvider({ children }: AuthContextProviderProps) {
-  const [session, setSession] = useState<SessionStorageDto>({
-    user: {},
-    token: "",
-  } as SessionStorageDto);
+  const [session, setSession] = useState<SessionStorageDto>(
+    {} as SessionStorageDto
+  );
 
   const { startLoading, stopLoading } = useLoading();
 
@@ -42,6 +39,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
   async function signIn() {
     try {
+      startLoading();
+
       const googleResponse = await GoogleSignin.signIn();
 
       if (!googleResponse?.data?.idToken)
@@ -50,28 +49,70 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       const idToken = googleResponse.data.idToken;
       const response = await api.post("/auth/login", { idToken });
 
+      const { usuario, access_token, primeiroAcesso } = response.data;
+
+      if (usuario.status === "INATIVO") {
+        const reativarPerfil = async () => {
+          await api.patch("/usuario/ativar", { idToken });
+
+          await signIn();
+        };
+
+        Alert.alert(
+          "Perfil inativo",
+          "Seu perfil está inativo. Deseja reativá-lo?",
+          [
+            { text: "Cancelar", style: "cancel" },
+            {
+              text: "Reativar",
+              onPress: async () => {
+                await reativarPerfil();
+              },
+            },
+          ]
+        );
+
+        stopLoading();
+      }
+
       const user = {
-        id: response.data.usuario.id,
-        nome: response.data.usuario.nome,
-        email: response.data.usuario.email,
-        avatar: response.data.usuario.urlImagem,
+        id: usuario.id,
+        nome: usuario.nome,
+        email: usuario.email,
+        avatar: usuario.urlImagem,
       };
 
       await updateSession({
         user,
-        token: response.data.access_token,
+        token: access_token,
       });
 
-      return { primeiroAcesso: response.data.primeiroAcesso };
+      if (primeiroAcesso) {
+        router.navigate("/meus-dados");
+        Alert.alert(
+          "Bem-vindo ao Dodoi!",
+          "Como é a primeira vez conosco, precisamos que você complete seu cadastro antes de realizar qualquer pedido.",
+          [
+            {
+              text: "OK",
+              onPress: () => {},
+            },
+            {
+              text: "Completar depois",
+              onPress: () => router.navigate("/(app)/(tabs)"),
+            },
+          ]
+        );
+      } else if (access_token) router.navigate("/(app)/(tabs)");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage =
           error.response?.data?.message || "Não foi possível realizar o login.";
         Alert.alert(errorMessage);
       } else Alert.alert("Erro inesperado. Tente novamente.");
+    } finally {
+      stopLoading();
     }
-
-    return { primeiroAcesso: false };
   }
 
   async function signOut() {

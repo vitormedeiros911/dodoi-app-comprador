@@ -67,6 +67,7 @@ export default function Checkout() {
         endereco: usuario.endereco,
       })),
     });
+
     const { paymentIntent, ephemeralKey, customer } = response.data;
 
     return {
@@ -100,7 +101,7 @@ export default function Checkout() {
   const openPaymentSheet = async () => {
     if (!usuario || !usuario.endereco || !usuario.cpf) {
       Alert.alert(
-        "Erro",
+        "Cadastro incompleto",
         "Você precisa concluir seu cadastro antes de finalizar o pedido.",
         [
           {

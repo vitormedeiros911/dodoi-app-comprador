@@ -53,7 +53,7 @@ export default function Header({ user }: HeaderProps) {
     <ThemedView style={styles.container}>
       <ThemedView style={styles.firstRow}>
         {backIndicator ? (
-          <TouchableOpacity onPress={() => router.back()}>
+          <TouchableOpacity onPress={() => router.replace("/(app)/(tabs)/")}>
             <Ionicons name="arrow-back" size={24} color={Colors.mainColor} />
           </TouchableOpacity>
         ) : (
