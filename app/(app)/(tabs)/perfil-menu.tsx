@@ -49,20 +49,12 @@ export default function MenuPerfil() {
         />
         <ThemedText style={styles.menuText}>Cobrança</ThemedText>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem} onPress={() => signOut()}>
-        <Ionicons
-          name="log-out-outline"
-          size={24}
-          color={Colors[colorScheme ?? "light"].text}
-        />
-        <ThemedText style={styles.menuText}>Sair</ThemedText>
-      </TouchableOpacity>
       <TouchableOpacity
         style={styles.menuItem}
         onPress={() => setModalVisible(true)}
       >
         <Ionicons
-          name="close-circle-outline"
+          name="lock-closed-outline"
           size={24}
           color={Colors[colorScheme ?? "light"].text}
         />
@@ -102,6 +94,14 @@ export default function MenuPerfil() {
           </View>
         </View>
       </Modal>
+      <TouchableOpacity style={styles.menuItem} onPress={() => signOut()}>
+        <Ionicons
+          name="log-out-outline"
+          size={24}
+          color={Colors[colorScheme ?? "light"].text}
+        />
+        <ThemedText style={styles.menuText}>Sair</ThemedText>
+      </TouchableOpacity>
     </ThemedView>
   );
 }

@@ -43,14 +43,7 @@
         {
           "iosUrlScheme": "com.googleusercontent.apps.736069001392-fpre8osbg7lqedtv49fr51a2036g008p"
         }
-      ],
-      [
-        "expo-secure-store",
-        {
-          "faceIDPermission": "Allow $(PRODUCT_NAME) to access your Face ID biometric data."
-        }
-      ],
-      "expo-secure-store"
+      ]
     ],
     "experiments": {
       "typedRoutes": true
