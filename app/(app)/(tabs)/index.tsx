@@ -10,6 +10,7 @@ import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { showToast } from "@/utils/showToast";
 import { router, useFocusEffect } from "expo-router";
+import { debounce } from "lodash";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useColorScheme } from "react-native";
 
@@ -105,27 +106,22 @@ export default function home() {
     }
   };
 
-  useEffect(() => {
-    if (abortControllerRef.current) abortControllerRef.current.abort();
-
+  const debounceFetchData = debounce(async (search: string) => {
     produtosPageRef.current = 1;
     farmaciasPageRef.current = 1;
 
-    const fetchData = async () => {
-      startLoading();
-      try {
-        if (busca === "") await Promise.all([getProdutos(), getFarmacias()]);
-        else await Promise.all([getProdutos(busca, 1), getFarmacias(busca, 1)]);
-      } finally {
-        stopLoading();
-      }
-    };
+    startLoading();
+    try {
+      if (search === "") await Promise.all([getProdutos(), getFarmacias()]);
+      else await Promise.all([getProdutos(search, 1), getFarmacias(search, 1)]);
+    } finally {
+      stopLoading();
+    }
+  }, 500);
 
-    fetchData();
-
-    return () => {
-      if (abortControllerRef.current) abortControllerRef.current.abort();
-    };
+  useEffect(() => {
+    debounceFetchData(busca);
+    return debounceFetchData.cancel;
   }, [busca]);
 
   useFocusEffect(
