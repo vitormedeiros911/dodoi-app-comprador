@@ -21,7 +21,7 @@ export default function ImageWithFallback({
 
   return (
     <Image
-      source={imageSource || fallbackSource}
+      source={imageSource.uri ? imageSource : fallbackSource}
       style={style}
       onError={() => {
         setImageSource(fallbackSource);
