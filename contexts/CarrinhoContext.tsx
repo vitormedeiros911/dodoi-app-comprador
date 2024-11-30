@@ -65,11 +65,20 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
       setCarrinho(carrinhoAtualizado);
       salvarCarrinho(carrinhoAtualizado);
     } else {
+      if (carrinho.length > 0 && carrinho[0].idFarmacia !== item.idFarmacia) {
+        showToast(
+          "Você só realizar o pedido de produtos de uma farmácia por vez",
+          "error"
+        );
+        return;
+      }
+
       const carrinhoAtualizado = [...carrinho, item];
       setCarrinho(carrinhoAtualizado);
       salvarCarrinho(carrinhoAtualizado);
     }
   };
+
   const incrementarQuantidade = (itemId: string) => {
     const carrinhoAtualizado = carrinho.map((item) =>
       item.idProduto === itemId
@@ -79,6 +88,7 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     setCarrinho(carrinhoAtualizado);
     salvarCarrinho(carrinhoAtualizado);
   };
+
   const decrementarQuantidade = (itemId: string) => {
     const carrinhoAtualizado = carrinho.reduce((acc, item) => {
       if (item.idProduto === itemId) {

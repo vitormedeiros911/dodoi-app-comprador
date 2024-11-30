@@ -60,6 +60,7 @@ export default function Checkout() {
       nomeComprador: user.nome,
       emailComprador: user.email,
       quantia: Math.round(quantia * 100),
+      idFarmacia: carrinho[0].idFarmacia,
       itens: carrinho.map((item) => ({
         idProduto: item.idProduto,
         precoUnitario: item.precoUnitario,

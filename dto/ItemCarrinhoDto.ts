@@ -4,4 +4,5 @@ export type ItemCarrinhoDto = {
   precoUnitario: number;
   nomeProduto: string;
   urlImagem: string;
+  idFarmacia: string;
 };

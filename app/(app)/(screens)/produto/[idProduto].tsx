@@ -24,6 +24,7 @@ interface IProduto {
   precoUnitario: number;
   descricao: string;
   isFavorito: boolean;
+  idFarmacia: string;
   farmacia: {
     id: string;
     nome: string;
@@ -64,6 +65,7 @@ export default function Produto() {
         precoUnitario: produto.precoUnitario,
         quantidade,
         urlImagem: produto.urlImagem,
+        idFarmacia: produto.idFarmacia,
       };
 
       adicionarAoCarrinho(produtoParaCarrinho);
