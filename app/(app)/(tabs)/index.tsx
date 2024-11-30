@@ -190,15 +190,13 @@ export default function home() {
           offset: totalProdutos * index,
           index,
         })}
-        renderItem={({ item }) => (
+        renderItem={({ item: produto }) => (
           <MemoizedCard
-            image={item.urlImagem}
+            image={produto.urlImagem}
             defaultSource={require("@/assets/images/remedioGenericoImg.jpg")}
-            title={item.nome}
-            price={item.precoUnitario}
-            onPress={() => {
-              router.push(`/produto/${item.id}`);
-            }}
+            title={produto.nome}
+            price={produto.precoUnitario}
+            onPress={() => router.push(`/produto/${produto.id}`)}
           />
         )}
         onEndReached={handleProdutosEndReached}
@@ -213,8 +211,12 @@ export default function home() {
           offset: totalFarmacias * index,
           index,
         })}
-        renderItem={({ item }) => (
-          <MemoizedCardSecondary imageUrl={item.urlImagem} title={item.nome} />
+        renderItem={({ item: farmacia }) => (
+          <MemoizedCardSecondary
+            imageUrl={farmacia.urlImagem}
+            title={farmacia.nome}
+            onPress={() => router.push(`/farmacia/${farmacia.id}`)}
+          />
         )}
         onEndReached={handleFarmaciasEndReached}
         onEndReachedThreshold={0.5}

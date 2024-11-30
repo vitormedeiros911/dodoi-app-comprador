@@ -11,17 +11,18 @@ interface ICardProps {
   price: number;
   defaultSource: any;
   onPress?: () => void;
+  style?: any;
 }
 
 const Card = memo(
-  ({ image, price, title, defaultSource, onPress }: ICardProps) => {
+  ({ image, price, title, defaultSource, onPress, style }: ICardProps) => {
     const colorScheme = useColorScheme();
     const styles = createStyles(colorScheme);
 
     const imageSource = image ? { uri: image } : defaultSource;
 
     return (
-      <TouchableOpacity onPress={onPress} style={styles.card}>
+      <TouchableOpacity onPress={onPress} style={[styles.card, style]}>
         <ImageWithFallback
           source={imageSource}
           fallbackSource={defaultSource}

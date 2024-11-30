@@ -7,6 +7,7 @@ import { ItemCarrinhoDto } from "@/dto/ItemCarrinhoDto";
 import { useCarrinho } from "@/hooks/useCarrinho";
 import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
+import { IProduto } from "@/interfaces/produto.interface";
 import { api } from "@/services/api";
 import { formatBRL } from "@/utils/formatBRL";
 import { showToast } from "@/utils/showToast";
@@ -16,21 +17,6 @@ import { memo, useCallback, useEffect, useState } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 
 import { createStyles } from "./styles";
-
-interface IProduto {
-  id: string;
-  nome: string;
-  urlImagem: string;
-  precoUnitario: number;
-  descricao: string;
-  isFavorito: boolean;
-  idFarmacia: string;
-  farmacia: {
-    id: string;
-    nome: string;
-    urlImagem: string;
-  };
-}
 
 const MemoizedImage = memo(ImageWithFallback);
 

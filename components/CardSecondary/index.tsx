@@ -8,15 +8,17 @@ type CardSecondaryProps = {
   imageUrl?: string;
   title: string;
   imageSource?: any;
+  onPress?: () => void;
 };
 
 export default function CardSecondary({
   imageUrl,
   imageSource,
   title,
+  onPress,
 }: CardSecondaryProps) {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <ImageWithFallback
         style={styles.img}
         source={

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Image } from "react-native";
 
 type ImageWithFallbackProps = {
@@ -12,20 +12,13 @@ const ImageWithFallback = React.memo(function ({
   fallbackSource,
   style,
 }: ImageWithFallbackProps) {
-  const [imageSource, setImageSource] = useState(source);
+  const [imageSource, setImageSource] = useState(fallbackSource);
 
   useEffect(() => {
     if (typeof source === "object" && source.uri) {
-      if (!source.uri.trim()) {
-        setImageSource(fallbackSource);
-      } else {
-        setImageSource(source);
-      }
-    } else if (typeof source === "number") {
-      setImageSource(source);
-    } else {
-      setImageSource(fallbackSource);
-    }
+      if (!source.uri.trim()) setImageSource(fallbackSource);
+      else setImageSource(source);
+    } else if (typeof source === "number") setImageSource(source);
   }, [source, fallbackSource]);
 
   return (
