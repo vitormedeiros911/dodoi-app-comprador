@@ -184,6 +184,12 @@ export default function home() {
       <HorizontalList
         data={produtos}
         title="Produtos"
+        keyExtractor={(item) => item.id}
+        getItemLayout={(_, index) => ({
+          length: totalProdutos,
+          offset: totalProdutos * index,
+          index,
+        })}
         renderItem={({ item }) => (
           <MemoizedCard
             image={item.urlImagem}
@@ -201,6 +207,12 @@ export default function home() {
       <HorizontalList
         data={farmacias}
         title="Farmácias"
+        keyExtractor={(item) => item.id}
+        getItemLayout={(_, index) => ({
+          length: totalFarmacias,
+          offset: totalFarmacias * index,
+          index,
+        })}
         renderItem={({ item }) => (
           <MemoizedCardSecondary imageUrl={item.urlImagem} title={item.nome} />
         )}

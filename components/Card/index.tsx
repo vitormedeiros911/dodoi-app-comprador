@@ -18,10 +18,12 @@ const Card = memo(
     const colorScheme = useColorScheme();
     const styles = createStyles(colorScheme);
 
+    const imageSource = image ? { uri: image } : defaultSource;
+
     return (
       <TouchableOpacity onPress={onPress} style={styles.card}>
         <ImageWithFallback
-          source={{ uri: image }}
+          source={imageSource}
           fallbackSource={defaultSource}
           style={styles.image}
         />
