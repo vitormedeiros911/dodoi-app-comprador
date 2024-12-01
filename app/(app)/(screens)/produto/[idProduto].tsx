@@ -152,7 +152,7 @@ export default function Produto() {
 
         <ThemedView style={styles.card}>
           <ThemedView style={styles.firstRow}>
-            <ThemedText style={styles.title} numberOfLines={1}>
+            <ThemedText style={styles.title} numberOfLines={3}>
               {produto.nome}
             </ThemedText>
             <TouchableOpacity onPress={toggleFavorited}>
@@ -168,7 +168,7 @@ export default function Produto() {
             </TouchableOpacity>
           </ThemedView>
           <ThemedText style={styles.price}>
-            R$ {produto.precoUnitario}
+            {formatBRL(produto.precoUnitario)}
           </ThemedText>
           <ThemedView style={styles.farmaciaContainer}>
             <ImageWithFallback
@@ -187,7 +187,7 @@ export default function Produto() {
             {produto.descricao}
           </ThemedText>
 
-          {produto.descricao.length > 100 && (
+          {produto.descricao?.length > 100 && (
             <TouchableOpacity onPress={toggleDescription}>
               <ThemedText style={styles.descriptionLink}>
                 {isDescriptionExpanded ? "Ver menos" : "Ver mais"}

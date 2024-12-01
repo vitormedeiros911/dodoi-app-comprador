@@ -24,13 +24,15 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     },
 
     title: {
+      width: "80%",
       fontSize: 18,
       fontWeight: "500",
     },
 
     image: {
       width: "100%",
-      height: 240,
+      height: 250,
+      resizeMode: "stretch",
     },
 
     price: {
