@@ -7,21 +7,25 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       marginHorizontal: 10,
       borderRadius: 6,
       overflow: "hidden",
+      width: 120,
+      height: 200,
     },
 
     image: {
-      width: 100,
-      height: 100,
+      width: 120,
+      height: 120,
       borderRadius: 10,
     },
 
     title: {
-      fontSize: 14,
-      fontWeight: "bold",
+      fontSize: 12,
+      lineHeight: 16,
     },
 
     price: {
+      marginTop: 8,
       fontSize: 12,
+      fontWeight: "bold",
     },
   });
 };

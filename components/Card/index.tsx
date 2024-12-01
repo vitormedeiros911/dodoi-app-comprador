@@ -1,6 +1,7 @@
 import React, { memo } from "react";
 import { TouchableOpacity, useColorScheme } from "react-native";
 
+import { formatBRL } from "@/utils/formatBRL";
 import ImageWithFallback from "../ImageWithFallback";
 import { ThemedText } from "../ThemedText";
 import { createStyles } from "./styles";
@@ -29,10 +30,10 @@ const Card = memo(
           style={styles.image}
         />
 
-        <ThemedText style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+        <ThemedText style={styles.price}>{formatBRL(price)}</ThemedText>
+        <ThemedText style={styles.title} numberOfLines={2} ellipsizeMode="tail">
           {title}
         </ThemedText>
-        <ThemedText style={styles.price}>R$ {price}</ThemedText>
       </TouchableOpacity>
     );
   }
