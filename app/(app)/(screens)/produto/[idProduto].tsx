@@ -25,8 +25,10 @@ export default function Produto() {
   const [isFavorited, setIsFavorited] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [quantidade, setQuantidade] = useState(1);
+
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
+
   const { idProduto } = useLocalSearchParams();
   const { startLoading, stopLoading } = useLoading();
   const { adicionarAoCarrinho } = useCarrinho();
@@ -44,7 +46,11 @@ export default function Produto() {
   };
 
   const handleAdicionarAoCarrinho = useCallback(() => {
-    if (produto) {
+    if (
+      produto &&
+      produto.quantidadeDisponivel > 0 &&
+      quantidade <= produto.quantidadeDisponivel
+    ) {
       const produtoParaCarrinho: ItemCarrinhoDto = {
         idProduto: produto.id,
         nomeProduto: produto.nome,
@@ -52,10 +58,13 @@ export default function Produto() {
         quantidade,
         urlImagem: produto.urlImagem,
         idFarmacia: produto.idFarmacia,
+        quantidadeDisponivel: produto.quantidadeDisponivel,
       };
 
       adicionarAoCarrinho(produtoParaCarrinho);
       setQuantidade(1);
+    } else {
+      showToast("Quantidade não disponível em estoque.", "error");
     }
   }, [produto, quantidade, adicionarAoCarrinho]);
 
@@ -87,7 +96,8 @@ export default function Produto() {
   }, []);
 
   const aumentarQuantidade = () => {
-    setQuantidade((prev) => prev + 1);
+    if (produto && quantidade < produto.quantidadeDisponivel)
+      setQuantidade((prev) => prev + 1);
   };
 
   const diminuirQuantidade = () => {
@@ -119,10 +129,7 @@ export default function Produto() {
       <ThemedView
         style={[
           styles.container,
-          {
-            justifyContent: "center",
-            alignItems: "center",
-          },
+          { justifyContent: "center", alignItems: "center" },
         ]}
       >
         <ThemedText>Carregando...</ThemedText>
@@ -211,6 +218,7 @@ export default function Produto() {
           <TouchableOpacity
             onPress={aumentarQuantidade}
             style={styles.quantityButton}
+            disabled={quantidade >= (produto?.quantidadeDisponivel ?? 0)}
           >
             <Ionicons
               name="add"
@@ -221,7 +229,11 @@ export default function Produto() {
         </ThemedView>
         <TouchableOpacity
           onPress={handleAdicionarAoCarrinho}
-          style={styles.buyButton}
+          style={[
+            styles.buyButton,
+            { opacity: produto.quantidadeDisponivel <= 0 ? 0.5 : 1 },
+          ]}
+          disabled={produto.quantidadeDisponivel <= 0}
         >
           <ThemedText style={styles.buyText}>Adicionar</ThemedText>
           <ThemedText style={styles.buyText}>

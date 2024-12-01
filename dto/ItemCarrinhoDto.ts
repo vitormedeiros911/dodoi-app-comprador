@@ -5,4 +5,5 @@ export type ItemCarrinhoDto = {
   nomeProduto: string;
   urlImagem: string;
   idFarmacia: string;
+  quantidadeDisponivel: number;
 };

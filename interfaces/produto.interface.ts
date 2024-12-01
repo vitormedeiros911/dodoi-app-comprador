@@ -4,8 +4,9 @@ export interface IProduto {
   urlImagem: string;
   precoUnitario: number;
   descricao: string;
-  isFavorito: boolean;
+  isFavorito?: boolean;
   idFarmacia: string;
+  quantidadeDisponivel: number;
   farmacia: {
     id: string;
     nome: string;

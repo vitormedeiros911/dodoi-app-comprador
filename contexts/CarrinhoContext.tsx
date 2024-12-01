@@ -54,9 +54,30 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
   };
 
   const adicionarAoCarrinho = (item: ItemCarrinhoDto) => {
+    // Verifica se a quantidade a ser adicionada não excede a disponível
+    if (item.quantidade > item.quantidadeDisponivel) {
+      showToast(
+        "Quantidade solicitada excede a quantidade disponível",
+        "error"
+      );
+      return;
+    }
+
     const itemExistente = carrinho.find((i) => i.idProduto === item.idProduto);
 
     if (itemExistente) {
+      // Verifica se a quantidade total não excede a disponível
+      if (
+        itemExistente.quantidade + item.quantidade >
+        itemExistente.quantidadeDisponivel
+      ) {
+        showToast(
+          "Quantidade no carrinho excede a quantidade disponível",
+          "error"
+        );
+        return;
+      }
+
       const carrinhoAtualizado = carrinho.map((i) =>
         i.idProduto === item.idProduto
           ? { ...i, quantidade: i.quantidade + item.quantidade }
@@ -67,7 +88,7 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
     } else {
       if (carrinho.length > 0 && carrinho[0].idFarmacia !== item.idFarmacia) {
         showToast(
-          "Você só realizar o pedido de produtos de uma farmácia por vez",
+          "Você só pode realizar o pedido de produtos de uma farmácia por vez",
           "error"
         );
         return;
@@ -80,28 +101,29 @@ export function CarrinhoProvider({ children }: CarrinhoContextProviderProps) {
   };
 
   const incrementarQuantidade = (itemId: string) => {
-    const carrinhoAtualizado = carrinho.map((item) =>
-      item.idProduto === itemId
-        ? { ...item, quantidade: item.quantidade + 1 }
-        : item
-    );
-    setCarrinho(carrinhoAtualizado);
-    salvarCarrinho(carrinhoAtualizado);
+    const item = carrinho.find((item) => item.idProduto === itemId);
+    if (item && item.quantidade < item.quantidadeDisponivel) {
+      const carrinhoAtualizado = carrinho.map((i) =>
+        i.idProduto === itemId ? { ...i, quantidade: i.quantidade + 1 } : i
+      );
+      setCarrinho(carrinhoAtualizado);
+      salvarCarrinho(carrinhoAtualizado);
+    } else {
+      showToast("Não é possível aumentar a quantidade", "error");
+    }
   };
 
   const decrementarQuantidade = (itemId: string) => {
-    const carrinhoAtualizado = carrinho.reduce((acc, item) => {
-      if (item.idProduto === itemId) {
-        if (item.quantidade > 1)
-          acc.push({ ...item, quantidade: item.quantidade - 1 });
-      } else {
-        acc.push(item);
-      }
-      return acc;
-    }, [] as typeof carrinho);
-
-    setCarrinho(carrinhoAtualizado);
-    salvarCarrinho(carrinhoAtualizado);
+    const item = carrinho.find((item) => item.idProduto === itemId);
+    if (item && item.quantidade > 1) {
+      const carrinhoAtualizado = carrinho.map((i) =>
+        i.idProduto === itemId ? { ...i, quantidade: i.quantidade - 1 } : i
+      );
+      setCarrinho(carrinhoAtualizado);
+      salvarCarrinho(carrinhoAtualizado);
+    } else {
+      showToast("A quantidade não pode ser menor que 1", "error");
+    }
   };
 
   const removerDoCarrinho = (itemId: string) => {
