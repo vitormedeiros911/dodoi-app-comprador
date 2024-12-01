@@ -56,28 +56,36 @@ export default function Checkout() {
   };
 
   const fetchPaymentSheetParams = async () => {
-    const response = await api.post("/pagamento", {
-      nomeComprador: user.nome,
-      emailComprador: user.email,
-      quantia: Math.round(quantia * 100),
-      idFarmacia: carrinho[0].idFarmacia,
-      endereco: usuario.endereco,
-      itens: carrinho.map((item) => ({
-        id: item.idProduto,
-        nome: item.nomeProduto,
-        precoUnitario: item.precoUnitario,
-        quantidade: item.quantidade,
-        urlImagem: item.urlImagem,
-      })),
-    });
+    try {
+      startLoading();
+      const response = await api.post("/pagamento", {
+        nomeComprador: user.nome,
+        emailComprador: user.email,
+        quantia: Math.round(quantia * 100),
+        idFarmacia: carrinho[0].idFarmacia,
+        endereco: usuario.endereco,
+        itens: carrinho.map((item) => ({
+          idProduto: item.idProduto,
+          nomeProduto: item.nomeProduto,
+          precoUnitario: item.precoUnitario,
+          quantidade: item.quantidade,
+          urlImagem: item.urlImagem,
+        })),
+      });
 
-    const { paymentIntent, ephemeralKey, customer } = response.data;
+      const { paymentIntent, ephemeralKey, customer } = response.data;
 
-    return {
-      paymentIntent,
-      ephemeralKey,
-      customer,
-    };
+      return {
+        paymentIntent,
+        ephemeralKey,
+        customer,
+      };
+    } catch (error: any) {
+      showToast(error.response.data.message, "error");
+      throw error;
+    } finally {
+      stopLoading();
+    }
   };
 
   const initializePaymentSheet = async () => {
