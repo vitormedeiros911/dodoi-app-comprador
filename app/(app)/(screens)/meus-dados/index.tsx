@@ -6,6 +6,7 @@ import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { IUsuario } from "@/interfaces/usuario.interface";
 import { api } from "@/services/api";
+import { formatDate } from "@/utils/formatDate";
 import { formatEndereco } from "@/utils/formatEndereco";
 import { showToast } from "@/utils/showToast";
 import { useFocusEffect } from "@react-navigation/native";
@@ -54,7 +55,7 @@ export default function MeusDados() {
       setValue("cpf", usuarioData.cpf);
       setValue("email", usuarioData.email);
       setValue("telefone", usuarioData.telefone);
-      setValue("dataNascimento", usuarioData.dataNascimento);
+      setValue("dataNascimento", formatDate(usuarioData.dataNascimento));
 
       if (usuarioData.endereco) {
         setValue("cep", usuarioData.endereco.cep);
@@ -71,16 +72,26 @@ export default function MeusDados() {
   };
 
   const onSubmit = async (data: FormDataProps) => {
-    const endereco = formatEndereco(data);
-
     try {
       startLoading();
+
+      let formattedDate;
+      if (data.dataNascimento) {
+        const dia = data.dataNascimento.substring(0, 2);
+        const mes = data.dataNascimento.substring(3, 5);
+        const ano = data.dataNascimento.substring(6, 10);
+
+        formattedDate = `${ano}-${mes}-${dia}`;
+      }
+
+      const endereco = formatEndereco(data);
+
       await api.put("/usuario", {
         nome: data.nome,
         cpf: data.cpf,
         email: data.email,
         telefone: data.telefone,
-        dataNascimento: data.dataNascimento,
+        dataNascimento: formattedDate,
         endereco,
       });
 

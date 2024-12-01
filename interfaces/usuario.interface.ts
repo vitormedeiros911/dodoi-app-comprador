@@ -4,7 +4,7 @@ export interface IUsuario {
   cpf: string;
   email: string;
   telefone: string;
-  dataNascimento: string;
+  dataNascimento: Date;
   endereco: {
     cep: string;
     logradouro: string;
