@@ -21,6 +21,7 @@ interface IPedido {
   id: string;
   status: string;
   total: number;
+  codigo: string;
   createdAt: Date;
 }
 
@@ -100,16 +101,16 @@ export default function Pedidos() {
         onEndReachedThreshold={0.1}
         style={styles.list}
         showsVerticalScrollIndicator={false}
-        renderItem={({ item }) => (
+        renderItem={({ item: pedido }) => (
           <MemoizedListItem onPress={() => {}} style={styles.listItem}>
             <ThemedText style={styles.detailsTitle}>
-              #12345 - {formatDateTime(item.createdAt, true)}
+              #{pedido.codigo} - {formatDateTime(pedido.createdAt, true)}
             </ThemedText>
             <ThemedText style={styles.detailsText}>
-              Situação: {item.status}
+              Situação: {pedido.status}
             </ThemedText>
             <ThemedText style={styles.detailsText}>
-              {formatBRLFromCents(item.total)}
+              {formatBRLFromCents(pedido.total)}
             </ThemedText>
           </MemoizedListItem>
         )}
