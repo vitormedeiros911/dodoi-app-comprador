@@ -41,7 +41,7 @@ export default function Produto() {
       setIsFavorited(response.data.isFavorito);
     } catch (error: any) {
       router.back();
-      showToast(error.response?.data?.message, "error");
+      showToast(error.response?.data.message, "error");
     }
   };
 
@@ -73,7 +73,7 @@ export default function Produto() {
       await api.post(`/produto/favorito`, { idProduto: produto?.id });
       setIsFavorited(true);
     } catch (error: any) {
-      showToast(error.response?.data?.message, "error");
+      showToast(error.response?.data.message, "error");
     }
   };
 
@@ -82,7 +82,7 @@ export default function Produto() {
       await api.delete(`/produto/${idProduto}/favorito`);
       setIsFavorited(false);
     } catch (error: any) {
-      showToast(error.response?.data?.message, "error");
+      showToast(error.response?.data.message, "error");
     }
   };
 

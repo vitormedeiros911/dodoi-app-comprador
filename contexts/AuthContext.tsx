@@ -89,7 +89,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         token: access_token,
       });
 
-      oneSignalRegisterUser(user.email);
+      oneSignalRegisterUser(user.id);
 
       if (primeiroAcesso) {
         router.navigate("/meus-dados");
@@ -137,7 +137,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
 
     if (userLogged?.token && userLogged?.user?.id) {
       setSession(userLogged);
-      oneSignalRegisterUser(userLogged.user.email);
+      oneSignalRegisterUser(userLogged.user.id);
     } else {
       setSession({} as SessionStorageDto);
       await AsyncStorage.removeItem(USER_STORAGE);

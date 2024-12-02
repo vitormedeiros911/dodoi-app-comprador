@@ -74,7 +74,7 @@ export default function home() {
       if (page === 1) setProdutos(response.data.produtos);
       else setProdutos((prev) => [...prev, ...response.data.produtos]);
     } catch (error: any) {
-      showToast(error.response?.data?.message, "error");
+      showToast(error.response?.data.message, "error");
     }
   };
 
@@ -102,7 +102,7 @@ export default function home() {
       if (page === 1) setFarmacias(response.data.farmacias);
       else setFarmacias((prev) => [...prev, ...response.data.farmacias]);
     } catch (error: any) {
-      showToast(error.response?.data?.message, "error");
+      showToast(error.response?.data.message, "error");
     }
   };
 
