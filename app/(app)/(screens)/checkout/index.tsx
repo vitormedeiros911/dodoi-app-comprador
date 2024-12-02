@@ -183,17 +183,6 @@ export default function Checkout() {
         <ThemedText style={styles.address}>Endereço não cadastrado</ThemedText>
       )}
 
-      {/* <ThemedText style={styles.label}>Cupom</ThemedText>
-      <TextInput
-        style={styles.voucherInput}
-        placeholder="Digite um cupom de desconto"
-        placeholderTextColor={Colors[colorScheme ?? "light"].lightText}
-        value={voucher}
-        onChangeText={(newVoucher) => {
-          setVoucher(newVoucher);
-        }}
-      /> */}
-
       <ThemedView style={styles.footer}>
         <ThemedText style={styles.amount}>
           Total: {formatBRL(quantia)}

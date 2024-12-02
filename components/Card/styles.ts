@@ -24,7 +24,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
 
     price: {
       marginTop: 8,
-      fontSize: 12,
+      fontSize: 14,
       fontWeight: "bold",
     },
   });

@@ -6,6 +6,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
     margin: 6,
     width: 120,
+    height: 150,
   },
   img: {
     width: 80,
@@ -15,5 +16,6 @@ export const styles = StyleSheet.create({
   },
   title: {
     fontSize: 14,
+    lineHeight: 18,
   },
 });

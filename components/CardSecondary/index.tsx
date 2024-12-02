@@ -30,7 +30,7 @@ export default function CardSecondary({
         }
         fallbackSource={require("@/assets/images/imgNotFound.jpg")}
       />
-      <ThemedText style={styles.title} numberOfLines={1} ellipsizeMode="tail">
+      <ThemedText style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {title}
       </ThemedText>
     </TouchableOpacity>

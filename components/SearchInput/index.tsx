@@ -13,10 +13,14 @@ import { ThemedView } from "../ThemedView";
 import { createStyles } from "./styles";
 
 type SearchInputProps = {
+  placeholder: string;
   setBusca: (busca: string) => void;
 };
 
-export default function SearchInput({ setBusca }: SearchInputProps) {
+export default function SearchInput({
+  setBusca,
+  placeholder,
+}: SearchInputProps) {
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
   const [text, setText] = useState("");
@@ -58,7 +62,7 @@ export default function SearchInput({ setBusca }: SearchInputProps) {
     <ThemedView style={styles.container}>
       <TextInput
         style={styles.input}
-        placeholder="Busque por produto ou farmácia"
+        placeholder={placeholder}
         placeholderTextColor={Colors[colorScheme ?? "light"].lightText}
         value={text}
         onChangeText={(newText) => {

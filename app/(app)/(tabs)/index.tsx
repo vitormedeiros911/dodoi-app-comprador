@@ -31,18 +31,18 @@ const MemoizedCard = React.memo(Card);
 const MemoizedCardSecondary = React.memo(CardSecondary);
 
 export default function home() {
-  const { setHeaderContent } = useHeader();
-  const { isLoading, startLoading, stopLoading } = useLoading();
   const [produtos, setProdutos] = useState<IProduto[]>([]);
   const [farmacias, setFarmacias] = useState<IFarmacia[]>([]);
+  const [refreshing, setRefreshing] = useState(false);
   const [busca, setBusca] = useState("");
   const [totalProdutos, setTotalProdutos] = useState(0);
   const [totalFarmacias, setTotalFarmacias] = useState(0);
+
+  const colorScheme = useColorScheme();
   const produtosPageRef = useRef(1);
   const farmaciasPageRef = useRef(1);
-  const abortControllerRef = useRef<AbortController | null>(null);
-  const colorScheme = useColorScheme();
-  const [refreshing, setRefreshing] = useState(false);
+  const { setHeaderContent } = useHeader();
+  const { isLoading, startLoading, stopLoading } = useLoading();
 
   const getProdutos = async (search?: string, page: number = 1) => {
     const params: {
@@ -58,16 +58,10 @@ export default function home() {
 
     if (search) params.nome = search;
 
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
     try {
       const response = await api.get<{ produtos: IProduto[]; total: number }>(
         "/produto",
-        {
-          params,
-          signal: controller.signal,
-        }
+        { params }
       );
       setTotalProdutos(response.data.total);
 
@@ -86,16 +80,10 @@ export default function home() {
 
     if (search) params.nome = search;
 
-    const controller = new AbortController();
-    abortControllerRef.current = controller;
-
     try {
       const response = await api.get<{ farmacias: IFarmacia[]; total: number }>(
         "/farmacia",
-        {
-          params,
-          signal: controller.signal,
-        }
+        { params }
       );
       setTotalFarmacias(response.data.total);
 
@@ -126,7 +114,12 @@ export default function home() {
 
   useFocusEffect(
     useCallback(() => {
-      setHeaderContent(<SearchInput setBusca={setBusca} />);
+      setHeaderContent(
+        <SearchInput
+          setBusca={setBusca}
+          placeholder="Buscar produtos e farmácias"
+        />
+      );
 
       return () => {
         setHeaderContent(null);
@@ -178,7 +171,11 @@ export default function home() {
         data={Categorias}
         title="Categorias"
         renderItem={({ item }) => (
-          <MemoizedCardSecondary imageSource={item.imagem} title={item.nome} />
+          <MemoizedCardSecondary
+            imageSource={item.imagem}
+            title={item.nome}
+            onPress={() => router.push(`/produtosByCategoria/${item.alias}`)}
+          />
         )}
       />
       <HorizontalList

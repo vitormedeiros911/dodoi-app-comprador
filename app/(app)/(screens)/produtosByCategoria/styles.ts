@@ -9,35 +9,10 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
       padding: 20,
     },
 
-    farmaciaContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-
-    infoContainer: {
-      marginTop: 20,
-    },
-
-    infoFarmacia: {
-      marginLeft: 15,
-    },
-
     subTitle: {
+      fontSize: 20,
       fontWeight: "bold",
       marginBottom: 10,
-    },
-
-    image: {
-      width: 80,
-      height: 80,
-      borderRadius: 40,
-    },
-
-    name: {
-      fontSize: 20,
-      maxWidth: "80%",
-      flexShrink: 1,
-      marginBottom: 5,
     },
 
     lightText: {
