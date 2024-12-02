@@ -4,6 +4,7 @@ import LoadingOverlay from "@/components/LoadingOverlay";
 import { AuthContextProvider } from "@/contexts/AuthContext";
 import { CarrinhoProvider } from "@/contexts/CarrinhoContext";
 import { LoadingProvider } from "@/contexts/LoadingContext";
+import { oneSignalInitialize } from "@/lib/oneSignalHelper";
 import { api } from "@/services/api";
 import {
   DarkTheme,
@@ -17,6 +18,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
+import OneSignal from "react-native-onesignal";
 import { RootSiblingParent } from "react-native-root-siblings";
 
 SplashScreen.preventAutoHideAsync();
@@ -35,12 +37,13 @@ export default function RootLayout() {
   }
 
   useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-
-    fetchPublishableKey();
+    if (loaded) SplashScreen.hideAsync();
   }, [loaded]);
+
+  useEffect(() => {
+    oneSignalInitialize();
+    fetchPublishableKey();
+  }, []);
 
   if (!loaded) return <Loading />;
 

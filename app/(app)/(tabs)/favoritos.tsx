@@ -53,7 +53,7 @@ export default function Favoritos() {
         append ? [...prevFavoritos, ...newFavoritos] : newFavoritos
       );
     } catch (error: any) {
-      showToast(error.response.data.message, "error");
+      showToast(error.response?.data?.message, "error");
     }
   };
 

@@ -60,7 +60,7 @@ export default function Farmacia() {
       setFarmacia(response.data);
     } catch (error: any) {
       router.back();
-      showToast(error.response.data.message, "error");
+      showToast(error.response?.data?.message, "error");
     }
   };
 

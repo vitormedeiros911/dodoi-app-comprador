@@ -1,6 +1,7 @@
 import { SessionStorageDto } from "@/dto/SessionStorageDto";
 import { useLoading } from "@/hooks/useLoading";
 import { configureAuthInterceptor } from "@/interceptors/authInterceptor";
+import { oneSignalRegisterUser } from "@/lib/oneSignalHelper";
 import { api } from "@/services/api";
 import { USER_STORAGE } from "@/storage/storageConfig";
 import { storageUserGet, storageUserSave } from "@/storage/storageUser";
@@ -10,6 +11,7 @@ import axios from "axios";
 import { router } from "expo-router";
 import { createContext, useEffect, useState } from "react";
 import { Alert } from "react-native";
+import { OneSignal } from "react-native-onesignal";
 
 export type AuthContextDataProps = {
   session: SessionStorageDto;
@@ -87,6 +89,8 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
         token: access_token,
       });
 
+      oneSignalRegisterUser(user.email);
+
       if (primeiroAcesso) {
         router.navigate("/meus-dados");
         Alert.alert(
@@ -121,6 +125,7 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
       setSession({} as SessionStorageDto);
       delete api.defaults.headers.token;
       await AsyncStorage.removeItem(USER_STORAGE);
+      OneSignal.logout();
     } finally {
       stopLoading();
       router.replace("/login");
@@ -130,8 +135,10 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
   async function loadUserData() {
     const userLogged = await storageUserGet();
 
-    if (userLogged?.token && userLogged?.user?.id) setSession(userLogged);
-    else {
+    if (userLogged?.token && userLogged?.user?.id) {
+      setSession(userLogged);
+      oneSignalRegisterUser(userLogged.user.email);
+    } else {
       setSession({} as SessionStorageDto);
       await AsyncStorage.removeItem(USER_STORAGE);
     }

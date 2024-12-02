@@ -59,7 +59,7 @@ export default function Pedidos() {
         append ? [...prevPedidos, ...newPedidos] : newPedidos
       );
     } catch (error: any) {
-      showToast(error.response.data.message, "error");
+      showToast(error.response?.data?.message, "error");
     }
   };
 

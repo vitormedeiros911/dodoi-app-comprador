@@ -51,7 +51,7 @@ export default function Checkout() {
 
       setUsuario(response.data);
     } catch (error: any) {
-      showToast(error.response.data.message, "error");
+      showToast(error.response?.data?.message, "error");
     }
   };
 
@@ -81,7 +81,7 @@ export default function Checkout() {
         customer,
       };
     } catch (error: any) {
-      showToast(error.response.data.message, "error");
+      showToast(error.response?.data?.message, "error");
       throw error;
     } finally {
       stopLoading();

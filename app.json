@@ -14,6 +14,7 @@
     },
     "ios": {
       "supportsTablet": true,
+      "bundleIdentifier": "com.vitormedeiros911.dodoi",
       "infoPlist": {
         "CFBundleURLTypes": [
           {
@@ -42,6 +43,12 @@
         "@react-native-google-signin/google-signin",
         {
           "iosUrlScheme": "com.googleusercontent.apps.736069001392-fpre8osbg7lqedtv49fr51a2036g008p"
+        }
+      ],
+      [
+        "onesignal-expo-plugin",
+        {
+          "mode": "development"
         }
       ]
     ],

@@ -49,13 +49,16 @@ export default function MeusDados() {
   const getUsuario = async () => {
     try {
       const response = await api.get("/usuario/perfil");
+
       const usuarioData = response.data as IUsuario;
 
       setValue("nome", usuarioData.nome);
       setValue("cpf", usuarioData.cpf);
       setValue("email", usuarioData.email);
       setValue("telefone", usuarioData.telefone);
-      setValue("dataNascimento", formatDate(usuarioData.dataNascimento));
+
+      if (usuarioData.dataNascimento)
+        setValue("dataNascimento", formatDate(usuarioData.dataNascimento));
 
       if (usuarioData.endereco) {
         setValue("cep", usuarioData.endereco.cep);
@@ -67,7 +70,10 @@ export default function MeusDados() {
         setValue("uf", usuarioData.endereco.uf);
       }
     } catch (error: any) {
-      showToast(error.response.data.message, "error");
+      showToast(
+        error.response?.data?.message || "Erro ao buscar dados do usuário.",
+        "error"
+      );
     }
   };
 
@@ -97,7 +103,7 @@ export default function MeusDados() {
 
       showToast("Dados atualizados com sucesso!", "success");
     } catch (error: any) {
-      showToast(error.response.data.message, "error");
+      showToast(error.response?.data?.message, "error");
     } finally {
       stopLoading();
     }
