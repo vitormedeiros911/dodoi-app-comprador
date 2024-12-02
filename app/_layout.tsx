@@ -16,6 +16,7 @@ import { Slot } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect, useState } from "react";
 import { useColorScheme } from "react-native";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 import { RootSiblingParent } from "react-native-root-siblings";
 
 SplashScreen.preventAutoHideAsync();
@@ -44,20 +45,22 @@ export default function RootLayout() {
   if (!loaded) return <Loading />;
 
   return (
-    <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
-      <RootSiblingParent>
-        <LoadingProvider>
-          <AuthContextProvider>
-            <LoadingOverlay />
-            <CarrinhoProvider>
-              <StripeProvider publishableKey={publishableKey}>
-                <Slot />
-              </StripeProvider>
-              <CarrinhoOverlay />
-            </CarrinhoProvider>
-          </AuthContextProvider>
-        </LoadingProvider>
-      </RootSiblingParent>
-    </ThemeProvider>
+    <GestureHandlerRootView>
+      <ThemeProvider value={colorScheme === "dark" ? DarkTheme : DefaultTheme}>
+        <RootSiblingParent>
+          <LoadingProvider>
+            <AuthContextProvider>
+              <LoadingOverlay />
+              <CarrinhoProvider>
+                <StripeProvider publishableKey={publishableKey}>
+                  <Slot />
+                </StripeProvider>
+                <CarrinhoOverlay />
+              </CarrinhoProvider>
+            </AuthContextProvider>
+          </LoadingProvider>
+        </RootSiblingParent>
+      </ThemeProvider>
+    </GestureHandlerRootView>
   );
 }

@@ -41,7 +41,10 @@ export default function MenuPerfil() {
         />
         <ThemedText style={styles.menuText}>Meus Dados</ThemedText>
       </TouchableOpacity>
-      <TouchableOpacity style={styles.menuItem}>
+      <TouchableOpacity
+        style={styles.menuItem}
+        onPress={() => router.navigate("/cartao")}
+      >
         <Ionicons
           name="card-outline"
           size={24}
