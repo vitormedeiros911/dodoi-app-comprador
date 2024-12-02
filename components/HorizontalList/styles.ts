@@ -4,7 +4,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
   return StyleSheet.create({
     container: {
       flex: 1,
-      padding: 8,
+      paddingHorizontal: 10,
       backgroundColor: colorScheme === "light" ? "#fff" : "#121212",
     },
 

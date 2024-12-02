@@ -163,7 +163,10 @@ export default function home() {
 
   return (
     <ScrollView
-      style={{ backgroundColor: Colors[colorScheme ?? "light"].background }}
+      style={{
+        backgroundColor: Colors[colorScheme ?? "light"].background,
+        paddingVerical: 10,
+      }}
       onRefresh={handleRefresh}
       refreshing={refreshing}
     >

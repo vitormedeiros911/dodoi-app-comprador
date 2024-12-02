@@ -90,13 +90,6 @@ export default function Header({ user }: HeaderProps) {
               </Animated.View>
             )}
           </TouchableOpacity>
-          <TouchableOpacity>
-            <Ionicons
-              name="notifications-outline"
-              size={24}
-              color={Colors[colorScheme ?? "light"].tint}
-            />
-          </TouchableOpacity>
         </ThemedView>
       </ThemedView>
       {headerContent}

@@ -2,11 +2,12 @@ import SwipeableListItem from "@/components/SwipeableListItem";
 import { ThemedText } from "@/components/ThemedText";
 import { ThemedView } from "@/components/ThemedView";
 import { Bandeiras } from "@/constants/Bandeiras";
+import { useHeader } from "@/hooks/useHeader";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
 import { showToast } from "@/utils/showToast";
-import { router } from "expo-router";
-import React, { useEffect, useState } from "react";
+import { router, useFocusEffect } from "expo-router";
+import React, { useCallback, useEffect, useState } from "react";
 import { Alert, FlatList, Image, useColorScheme, View } from "react-native";
 
 import { createStyles } from "./styles";
@@ -28,6 +29,7 @@ export default function Cartao() {
   const [refreshing, setRefreshing] = useState(false);
 
   const { startLoading, stopLoading } = useLoading();
+  const { setBackIndicator } = useHeader();
 
   const getCartoes = async () => {
     try {
@@ -86,6 +88,16 @@ export default function Cartao() {
     await getCartoes();
     setRefreshing(false);
   };
+
+  useFocusEffect(
+    useCallback(() => {
+      setBackIndicator(true);
+
+      return () => {
+        setBackIndicator(false);
+      };
+    }, [setBackIndicator])
+  );
 
   return (
     <ThemedView style={styles.container}>

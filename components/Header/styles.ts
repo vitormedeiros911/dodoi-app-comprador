@@ -35,6 +35,7 @@ export const createStyles = (colorScheme: ColorSchemeName) => {
     menuItens: {
       flexDirection: "row",
       gap: 30,
+      marginRight: 10,
       backgroundColor: Colors[colorScheme ?? "light"].background,
     },
     cartBadge: {
