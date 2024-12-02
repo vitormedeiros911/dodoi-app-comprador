@@ -191,7 +191,7 @@ export default function Farmacia() {
         onEndReached={loadMore}
         onEndReachedThreshold={0.1}
         numColumns={3}
-        ListEmptyComponent={<Text>Nenhum produto encontrado.</Text>}
+        ListEmptyComponent={<ThemedText>Nenhum produto encontrado.</ThemedText>}
         ListFooterComponent={
           loadingMore ? (
             <ActivityIndicator
