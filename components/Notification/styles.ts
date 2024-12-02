@@ -22,9 +22,14 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
     icon: {
       marginRight: 8,
     },
-    text: {
+    title: {
       flex: 1,
       fontSize: 16,
+    },
+    text: {
+      flex: 1,
+      fontSize: 14,
+      color: Colors[colorScheme ?? "light"].lightText,
     },
     closeButton: {
       padding: 4,

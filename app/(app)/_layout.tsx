@@ -67,6 +67,7 @@ export default function AppLayout() {
       {notification?.title && (
         <Notification
           title={notification.title}
+          body={notification.body}
           onClose={() => setNotification(undefined)}
         />
       )}
