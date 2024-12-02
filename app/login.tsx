@@ -4,16 +4,8 @@ import logo from "@/assets/images/logo.png";
 import Button from "@/components/Button";
 import { useAuth } from "@/hooks/useAuth";
 import { GoogleSignin } from "@react-native-google-signin/google-signin";
-import { router } from "expo-router";
 import React, { useState } from "react";
-import {
-  Alert,
-  Image,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Image, ImageBackground, StyleSheet, Text, View } from "react-native";
 
 GoogleSignin.configure({
   scopes: ["email", "profile"],
@@ -28,7 +20,7 @@ export default function Login() {
   const handleGoogleSignIn = async () => {
     setIsAuthenticating(true);
 
-    await signIn();
+    signIn();
 
     setIsAuthenticating(false);
   };
