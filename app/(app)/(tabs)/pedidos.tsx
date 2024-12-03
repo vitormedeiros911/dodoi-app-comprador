@@ -5,7 +5,7 @@ import { Colors } from "@/constants/Colors";
 import { useAuth } from "@/hooks/useAuth";
 import { useLoading } from "@/hooks/useLoading";
 import { api } from "@/services/api";
-import { formatBRLFromCents } from "@/utils/formatBRL";
+import { formatBRLWithCents } from "@/utils/formatBRL";
 import { formatDateTime } from "@/utils/formatDate";
 import { showToast } from "@/utils/showToast";
 import React, { useEffect, useState } from "react";
@@ -110,7 +110,7 @@ export default function Pedidos() {
               Situação: {pedido.status}
             </ThemedText>
             <ThemedText style={styles.detailsText}>
-              {formatBRLFromCents(pedido.total)}
+              {formatBRLWithCents(pedido.total)}
             </ThemedText>
           </MemoizedListItem>
         )}

@@ -5,6 +5,6 @@ export const formatBRL = (preco: number) => {
   }).format(preco);
 };
 
-export const formatBRLFromCents = (preco: number) => {
+export const formatBRLWithCents = (preco: number) => {
   return formatBRL(preco / 100);
 };
