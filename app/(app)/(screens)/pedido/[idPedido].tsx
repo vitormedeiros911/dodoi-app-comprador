@@ -202,7 +202,7 @@ export default function Pedido() {
                 Confirmar entrega
               </ThemedText>
             </TouchableOpacity>
-          ) : statusPedido !== "CANCELADO" ? (
+          ) : statusPedido !== "CANCELADO" && statusPedido !== "ENTREGUE" ? (
             <TouchableOpacity
               onPress={handleCancelarPedido}
               style={styles.cancelButton}
