@@ -185,7 +185,7 @@ export default function Produto() {
           <ThemedView style={styles.farmaciaContainer}>
             <ImageWithFallback
               source={{ uri: produto.farmacia.urlImagem }}
-              fallbackSource={require("@/assets/images/defaultFarmaciaImg.png")}
+              fallbackSource={require("@/assets/images/defaultFarmaciaImg.jpg")}
               style={styles.farmaciaImage}
             />
             <ThemedText style={styles.farmaciaName}>

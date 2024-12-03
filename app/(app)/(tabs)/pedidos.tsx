@@ -8,6 +8,7 @@ import { api } from "@/services/api";
 import { formatBRLWithCents } from "@/utils/formatBRL";
 import { formatDateTime } from "@/utils/formatDate";
 import { showToast } from "@/utils/showToast";
+import { router } from "expo-router";
 import React, { useEffect, useState } from "react";
 import {
   ActivityIndicator,
@@ -92,6 +93,10 @@ export default function Pedidos() {
   return (
     <ThemedView style={styles.container}>
       <ThemedText style={styles.title}>Meus pedidos</ThemedText>
+      <ThemedText style={styles.subTitle}>
+        Você já ficou dodói {total} vezes
+      </ThemedText>
+
       <FlatList
         data={pedidos}
         keyExtractor={(item) => item.id}
@@ -102,7 +107,10 @@ export default function Pedidos() {
         style={styles.list}
         showsVerticalScrollIndicator={false}
         renderItem={({ item: pedido }) => (
-          <MemoizedListItem onPress={() => {}} style={styles.listItem}>
+          <MemoizedListItem
+            onPress={() => router.push(`/pedido/${pedido.id}`)}
+            style={styles.listItem}
+          >
             <ThemedText style={styles.detailsTitle}>
               #{pedido.codigo} - {formatDateTime(pedido.createdAt, true)}
             </ThemedText>
@@ -110,7 +118,7 @@ export default function Pedidos() {
               Situação: {pedido.status}
             </ThemedText>
             <ThemedText style={styles.detailsText}>
-              {formatBRLWithCents(pedido.total)}
+              Total: {formatBRLWithCents(pedido.total)}
             </ThemedText>
           </MemoizedListItem>
         )}
@@ -134,12 +142,12 @@ const createColorScheme = (colorScheme: ColorSchemeName) =>
     container: {
       flex: 1,
       backgroundColor: Colors[colorScheme ?? "light"].background,
+      padding: 20,
     },
 
     list: {
       flex: 1,
-      paddingHorizontal: 20,
-      paddingBottom: 20,
+      marginTop: 10,
     },
 
     listItem: {
@@ -149,8 +157,10 @@ const createColorScheme = (colorScheme: ColorSchemeName) =>
     title: {
       fontSize: 24,
       fontWeight: "bold",
-      marginVertical: 20,
-      marginLeft: 20,
+    },
+
+    subTitle: {
+      fontSize: 14,
     },
 
     detailsTitle: {

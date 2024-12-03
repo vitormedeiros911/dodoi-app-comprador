@@ -28,7 +28,7 @@ export default function CardSecondary({
                 uri: imageUrl,
               }
         }
-        fallbackSource={require("@/assets/images/imgNotFound.jpg")}
+        fallbackSource={require("@/assets/images/defaultFarmaciaImg.jpg")}
       />
       <ThemedText style={styles.title} numberOfLines={2} ellipsizeMode="tail">
         {title}

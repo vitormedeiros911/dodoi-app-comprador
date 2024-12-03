@@ -151,7 +151,7 @@ export default function Farmacia() {
       <ThemedView style={styles.farmaciaContainer}>
         <MemoizedImageWithFallback
           source={{ uri: farmacia.urlImagem }}
-          fallbackSource={require("@/assets/images/defaultFarmaciaImg.png")}
+          fallbackSource={require("@/assets/images/defaultFarmaciaImg.jpg")}
           style={styles.image}
         />
         <ThemedView style={styles.infoFarmacia}>
