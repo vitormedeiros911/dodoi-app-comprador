@@ -206,7 +206,7 @@ export default function Farmacia() {
         renderItem={({ item: produto }) => (
           <MemoizedListItem
             style={styles.listItem}
-            onPress={() => router.navigate(`/produto/${produto.id}`)}
+            onPress={() => router.push(`/produto/${produto.id}`)}
           >
             <MemoizedImageWithFallback
               source={{ uri: produto.urlImagem }}

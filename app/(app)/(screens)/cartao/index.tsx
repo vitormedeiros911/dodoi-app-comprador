@@ -114,7 +114,6 @@ export default function Cartao() {
           <MemoizedListItem
             style={styles.listItem}
             onDeletePress={() => handleDelete(cartao.id)}
-            onEditPress={() => router.navigate(`/produto/${cartao.id}`)}
           >
             <Image
               source={Bandeiras[cartao.bandeira] || Bandeiras.default}

@@ -94,6 +94,7 @@ export default function Produto() {
       setIsFavoriting(false);
     }
   };
+
   const toggleFavorited = useCallback(() => {
     if (!produto) return;
     if (isFavoriting) return;

@@ -103,11 +103,11 @@ export function AuthContextProvider({ children }: AuthContextProviderProps) {
             },
             {
               text: "Completar depois",
-              onPress: () => router.navigate("/(app)/(tabs)"),
+              onPress: () => router.replace("/(app)/(tabs)"),
             },
           ]
         );
-      } else if (access_token) router.navigate("/(app)/(tabs)");
+      } else if (access_token) router.replace("/(app)/(tabs)");
     } catch (error) {
       if (axios.isAxiosError(error)) {
         const errorMessage =

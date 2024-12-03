@@ -32,7 +32,7 @@ export default function MenuPerfil() {
     <ThemedView style={styles.container}>
       <TouchableOpacity
         style={styles.menuItem}
-        onPress={() => router.navigate("/meus-dados")}
+        onPress={() => router.push("/meus-dados")}
       >
         <Ionicons
           name="person-outline"
@@ -43,7 +43,7 @@ export default function MenuPerfil() {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.menuItem}
-        onPress={() => router.navigate("/cartao")}
+        onPress={() => router.push("/cartao")}
       >
         <Ionicons
           name="card-outline"
