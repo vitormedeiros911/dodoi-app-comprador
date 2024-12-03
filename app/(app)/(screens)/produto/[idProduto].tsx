@@ -25,6 +25,7 @@ export default function Produto() {
   const [isFavorited, setIsFavorited] = useState(false);
   const [isDescriptionExpanded, setIsDescriptionExpanded] = useState(false);
   const [quantidade, setQuantidade] = useState(1);
+  const [isFavoriting, setIsFavoriting] = useState(false);
 
   const colorScheme = useColorScheme();
   const styles = createStyles(colorScheme);
@@ -69,27 +70,37 @@ export default function Produto() {
   }, [produto, quantidade, adicionarAoCarrinho]);
 
   const addFavorito = async () => {
+    if (isFavoriting) return;
+    setIsFavoriting(true);
     try {
       await api.post(`/produto/favorito`, { idProduto: produto?.id });
       setIsFavorited(true);
     } catch (error: any) {
       showToast(error.response?.data.message, "error");
+    } finally {
+      setIsFavoriting(false);
     }
   };
 
   const removeFavorito = async () => {
+    if (isFavoriting) return;
+    setIsFavoriting(true);
     try {
       await api.delete(`/produto/${idProduto}/favorito`);
       setIsFavorited(false);
     } catch (error: any) {
       showToast(error.response?.data.message, "error");
+    } finally {
+      setIsFavoriting(false);
     }
   };
-
   const toggleFavorited = useCallback(() => {
+    if (!produto) return;
+    if (isFavoriting) return;
+
     if (isFavorited) removeFavorito();
     else addFavorito();
-  }, [isFavorited, produto]);
+  }, [isFavorited, isFavoriting, produto]);
 
   const toggleDescription = useCallback(() => {
     setIsDescriptionExpanded((prev) => !prev);
@@ -155,7 +166,7 @@ export default function Produto() {
             <ThemedText style={styles.title} numberOfLines={3}>
               {produto.nome}
             </ThemedText>
-            <TouchableOpacity onPress={toggleFavorited}>
+            <TouchableOpacity onPress={toggleFavorited} disabled={isFavoriting}>
               {isFavorited ? (
                 <Ionicons name="heart" size={36} color="red" />
               ) : (
