@@ -54,7 +54,7 @@ export default function Pedido() {
 
   const colorScheme = useColorScheme();
   const styles = createColorScheme(colorScheme, statusPedido);
-  const { startLoading, stopLoading } = useLoading();
+  const { startLoading, stopLoading, isLoading } = useLoading();
   const { setBackIndicator } = useHeader();
 
   const { idPedido } = useLocalSearchParams();
@@ -191,23 +191,27 @@ export default function Pedido() {
           )}
         />
       </ThemedView>
-      <ThemedView style={styles.footer}>
-        {statusPedido === "ENVIADO" ? (
-          <TouchableOpacity
-            onPress={handleConfirmarEntrega}
-            style={[styles.acceptButton]}
-          >
-            <ThemedText style={styles.buttonText}>Confirmar entrega</ThemedText>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={handleCancelarPedido}
-            style={styles.cancelButton}
-          >
-            <ThemedText style={styles.buttonText}>Cancelar pedido</ThemedText>
-          </TouchableOpacity>
-        )}
-      </ThemedView>
+      {!isLoading && (
+        <ThemedView style={styles.footer}>
+          {statusPedido === "ENVIADO" ? (
+            <TouchableOpacity
+              onPress={handleConfirmarEntrega}
+              style={styles.acceptButton}
+            >
+              <ThemedText style={styles.buttonText}>
+                Confirmar entrega
+              </ThemedText>
+            </TouchableOpacity>
+          ) : statusPedido !== "CANCELADO" ? (
+            <TouchableOpacity
+              onPress={handleCancelarPedido}
+              style={styles.cancelButton}
+            >
+              <ThemedText style={styles.buttonText}>Cancelar pedido</ThemedText>
+            </TouchableOpacity>
+          ) : null}
+        </ThemedView>
+      )}
     </>
   );
 }
