@@ -15,7 +15,7 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
       alignItems: "center",
       padding: 10,
       marginBottom: 20,
-      width: 80,
+      width: 100,
     },
 
     rightContent: {
@@ -23,7 +23,7 @@ export const createStyles = (colorScheme: ColorSchemeName) =>
       alignItems: "center",
       padding: 10,
       marginBottom: 20,
-      width: 80,
+      width: 100,
     },
 
     text: {

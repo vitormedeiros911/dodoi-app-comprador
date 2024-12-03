@@ -41,7 +41,7 @@ export default function SwipeableListItem({
   };
 
   return (
-    <Swipeable renderRightActions={getRightContent} friction={2.5}>
+    <Swipeable renderRightActions={getRightContent} friction={1.5}>
       <View style={[styles.container, style]}>{children}</View>
     </Swipeable>
   );
