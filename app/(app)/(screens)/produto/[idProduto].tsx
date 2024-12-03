@@ -38,6 +38,7 @@ export default function Produto() {
   const getProduto = async () => {
     try {
       const response = await api.get(`/produto/${idProduto}`);
+
       setProduto(response.data);
       setIsFavorited(response.data.isFavorito);
     } catch (error: any) {
@@ -184,12 +185,12 @@ export default function Produto() {
           </ThemedText>
           <ThemedView style={styles.farmaciaContainer}>
             <ImageWithFallback
-              source={{ uri: produto.farmacia.urlImagem }}
+              source={{ uri: produto.farmacia?.urlImagem }}
               fallbackSource={require("@/assets/images/defaultFarmaciaImg.jpg")}
               style={styles.farmaciaImage}
             />
             <ThemedText style={styles.farmaciaName}>
-              {produto.farmacia.nome}
+              {produto.farmacia?.nome}
             </ThemedText>
           </ThemedView>
           <ThemedText
